@@ -1,20 +1,34 @@
 package modele;
 
 public class Complexe {
-	private int reel;
-	private int imaginaire;
+	private double reel;
+	private double imaginaire;
 	
-	public Complexe (int reel, int imaginaire) {
-		this.reel=reel;
-		this.imaginaire=imaginaire;
+	private Complexe (double reel, double imaginaire) {
+		this.reel = reel;
+		this.imaginaire = imaginaire;
 	}
 	
-	public int getReel (int reel) { return this.reel; }
-	public int getImaginaire (int imaginaire) { return this.imaginaire; }
-	
-	//retourne un nouveau complexe
-	public Complexe initComplexe(int reel, int imaginaire) {
+	//Fabrique statique : retourne un nouveau complexe
+	public static Complexe newComplexe(double reel, double imaginaire) {
 		return new Complexe(reel, imaginaire);
 	}
+	
+	
+	public static Complexe add(Complexe c1, Complexe c2) {
+		double partR = c1.reel + c2.reel;
+		double partI = c1.imaginaire + c2.imaginaire;
+		return newComplexe(partR, partI);
+	}
+	
+	public static Complexe multiply(Complexe c1, Complexe c2) {
+		double partR = c1.reel*c2.reel - (c1.imaginaire*c2.imaginaire);
+		double partI = c1.imaginaire*c2.reel + c1.reel*c2.imaginaire;
+		return newComplexe(partR, partI);
+	}
+	
+	
+	public double getReel () { return this.reel; }
+	public double getImaginaire () { return this.imaginaire; }
 
 }

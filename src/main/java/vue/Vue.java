@@ -31,4 +31,7 @@ public class Vue {
 		stage.setScene(scene_frct);	
 	}
 
+
+
+	
 }

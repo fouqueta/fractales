@@ -1,10 +1,10 @@
 package vue;
+import modele.*;
+import controleur.*;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-import modele.*;
-import controleur.*;
 
 public class Main extends Application{
 	
@@ -12,8 +12,8 @@ public class Main extends Application{
 	
 	@Override
 	public void start(Stage primaryStage) {
-		
-		Fractales fractale = new Fractales();
+		double[] tab = {-1,1,-1,1};
+		Fractales fractale = new Fractales(tab, 0.2,2.5,10,5);
 		Controleur controleur = new Controleur(fractale);
 		vue = new Vue(controleur);
 		controleur.setVue(vue);
@@ -21,7 +21,13 @@ public class Main extends Application{
 	
 	public static void main(String[] args) {
 		launch(args);
+		Complexe c1 = Complexe.newComplexe(-0.7269, 0.1889);
+//		Julia yulia = new Julia();
+//		yulia.createImg();
 	}
+	
+	
+	
 
 
 }
