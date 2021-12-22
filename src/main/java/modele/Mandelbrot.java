@@ -1,10 +1,14 @@
 package modele;
 
-public class Mandelbrot extends Fractales{
+import modele.Fractales.FractaleBuilder;
 
-	public Mandelbrot(int width, int height, double pas, int MAX_ITER) {
-		super(width, height, pas, MAX_ITER);
-		// TODO Auto-generated constructor stub
+public class Mandelbrot extends Fractales{
+	private Complexe c;
+	private FonctionFractale f;
+
+	public Mandelbrot(FractaleBuilder fb, Complexe c) {
+		super(fb);
+		this.c = c;
 	}
 	
 

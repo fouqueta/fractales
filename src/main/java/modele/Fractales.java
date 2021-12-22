@@ -8,12 +8,63 @@ public abstract class Fractales {
 	
 	
 	
-	public Fractales(int width, int height, double pas, int MAX_ITER) {
+	/*public Fractales(int width, int height, double pas, int MAX_ITER) {
 		this.width = width;
 		this.height = height;
 		this.pas = pas;
 		this.MAX_ITER = MAX_ITER;
-	}//BUILDER
+	}*///BUILDER
+	
+	public static class FractaleBuilder{
+		private int width;
+		private int height;
+		private double pas;
+		private int MAX_ITER;
+		
+		private FractaleBuilder() {}
+		
+		public static FractaleBuilder newFractaleBuilder() {
+			return new FractaleBuilder();
+		}
+		
+		public FractaleBuilder width(int largeur) {
+			this.width=largeur;
+			return this;
+		}
+		
+		public FractaleBuilder height(int hauteur) {
+			this.height=hauteur;
+			return this;
+		}
+		public FractaleBuilder pas(double pasDiscretisation) {
+			this.pas=pasDiscretisation;
+			return this;
+		}
+		
+		public FractaleBuilder MAX_ITER(int maxIter) {
+			this.MAX_ITER=maxIter;
+			return this;
+		}
+		
+		/*public Fractales build() {
+			return new Fractales(this);
+		}*/
+		public Julia buildJulia(Complexe c) {
+			return new Julia(this,c);
+		}
+		public Mandelbrot buildMandelbrot(Complexe c) {
+			return new Mandelbrot(this,c);
+		}
+		
+	}
+	
+	protected Fractales (FractaleBuilder f) {
+		this.width=f.width;
+		this.height=f.height;
+		this.pas=f.pas;
+		this.MAX_ITER=f.MAX_ITER;
+	}
+
 	
 	
 //	int divergenceIndex(Complexe z0) {

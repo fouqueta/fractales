@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.ForkJoinPool;
+import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 
@@ -15,11 +16,24 @@ public class Julia extends Fractales {
 	//ForkJoinPool forkJoinPool = PoolUtil.forkJoinPool;
 	//Builder
 	
-	public Julia(int width, int height, double pas, int MAX_ITER, Complexe c) {
-		super(width, height, pas, MAX_ITER);
+	public Julia(FractaleBuilder fb, Complexe c) {
+		super(fb);
 		this.c = c;
 		f = (z,cst) -> z.multiply(z).add(c);
 	}
+	
+	/*public void choisirNom() {
+	System.out.println("Nom du fichier?");
+	Scanner sc = new Scanner(System.in);
+	String s = sc.next();
+	if (!s.contentEquals("")) {
+		createImg(s);
+	}else { 
+		System.out.println("Veuillez taper au moins un caractere");
+		choisirNom();
+	}
+}*/
+
 
 	public void createImg() {
 		var img=new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);

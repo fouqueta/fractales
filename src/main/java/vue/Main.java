@@ -1,5 +1,6 @@
 package vue;
 import modele.*;
+import modele.Fractales.FractaleBuilder;
 import controleur.*;
 
 import javafx.application.Application;
@@ -22,7 +23,15 @@ public class Main extends Application{
 	public static void main(String[] args) {
 		//launch(args);
 		Complexe c1 = Complexe.newComplexe(-0.7269, 0.1889);
-		Julia yulia = new Julia(3001, 2001, 0.001, 1000, c1);
+		//Julia yulia = new Julia(3001, 2001, 0.001, 1000, c1);
+		Julia yulia = FractaleBuilder.newFractaleBuilder()
+				.width(3000)
+				.height(2001)
+				.pas(0.001)
+				.MAX_ITER(100)
+				.buildJulia(c1)
+				;
+
 		yulia.createImg();
 	}
 	
