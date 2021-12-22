@@ -27,7 +27,6 @@ public class Complexe {
 		return newComplexe(partR, partI);
 	}
 	
-	
 	public double getReel () { return this.reel; }
 	public double getImaginaire () { return this.imaginaire; }
 
