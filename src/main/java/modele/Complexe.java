@@ -15,16 +15,20 @@ public class Complexe {
 	}
 	
 	
-	public static Complexe add(Complexe c1, Complexe c2) {
-		double partR = c1.reel + c2.reel;
-		double partI = c1.imaginaire + c2.imaginaire;
+	public Complexe add(Complexe c2) {
+		double partR = this.reel + c2.reel;
+		double partI = this.imaginaire + c2.imaginaire;
 		return newComplexe(partR, partI);
 	}
 	
-	public static Complexe multiply(Complexe c1, Complexe c2) {
-		double partR = c1.reel*c2.reel - (c1.imaginaire*c2.imaginaire);
-		double partI = c1.imaginaire*c2.reel + c1.reel*c2.imaginaire;
+	public Complexe multiply(Complexe c2) {
+		double partR = this.reel*c2.reel - (this.imaginaire*c2.imaginaire);
+		double partI = this.imaginaire*c2.reel + this.reel*c2.imaginaire;
 		return newComplexe(partR, partI);
+	}
+	
+	public double module() {
+		return Math.sqrt(this.reel*this.reel + this.imaginaire*this.imaginaire);
 	}
 	
 	

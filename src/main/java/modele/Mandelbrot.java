@@ -2,8 +2,8 @@ package modele;
 
 public class Mandelbrot extends Fractales{
 
-	public Mandelbrot(double[] rectangle, double pas, double taille, int MAX_ITER, int RADIUS) {
-		super(rectangle, pas, taille, MAX_ITER, RADIUS);
+	public Mandelbrot(int width, int height, double pas, int MAX_ITER) {
+		super(width, height, pas, MAX_ITER);
 		// TODO Auto-generated constructor stub
 	}
 	
