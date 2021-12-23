@@ -23,12 +23,13 @@ public class Main extends Application{
 	public static void main(String[] args) {
 		//launch(args);
 		Complexe c1 = Complexe.newComplexe(-0.7269, 0.1889);
+		//Complexe c1 = Complexe.newComplexe(0.285,0.013);
 		//Julia yulia = new Julia(3001, 2001, 0.001, 1000, c1);
 		Julia yulia = FractaleBuilder.newFractaleBuilder()
-				.width(3000)
-				.height(2001)
-				.pas(0.001)
-				.MAX_ITER(100)
+				.width(20001)
+				.height(20001)
+				.pas(0.0001)
+				.MAX_ITER(1000)
 				.buildJulia(c1)
 				;
 
