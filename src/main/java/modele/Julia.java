@@ -50,10 +50,10 @@ public class Julia extends Fractales {
 				//iterPts(img,f);
 //			}
 //		}
-//		long start=System.currentTimeMillis();
-//		iterPts(img,f);
-//	    long end=System.currentTimeMillis();
-//	    System.out.println("NOT thread took time : "+(end-start));
+		long start=System.currentTimeMillis();
+		iterPts(img,f);
+	    long end=System.currentTimeMillis();
+	    System.out.println("NOT thread took time : "+(end-start));
 	    
 //	   long  start=System.currentTimeMillis();
 //		try {
@@ -65,9 +65,9 @@ public class Julia extends Fractales {
 //	    long end=System.currentTimeMillis();
 //	    System.out.println("Thread took time : "+(end-start));
 	
-		long start=System.currentTimeMillis();
+		start=System.currentTimeMillis();
 		stream(img,f);
-	    long end=System.currentTimeMillis();
+		end=System.currentTimeMillis();
 	    System.out.println("Parallel stream took time : "+(end-start));
     
 	    File f = new File("MyFile.png");
