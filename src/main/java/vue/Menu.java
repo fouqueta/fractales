@@ -13,6 +13,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
+import modele.Fractales;
+import modele.Fractales.FractaleBuilder;
 import javafx.scene.control.Button;
 
 public class Menu {
@@ -98,13 +100,21 @@ public class Menu {
 		
 		julia.setOnAction(actionEvent->{
 			vue.getRoot().getChildren().remove(paneChoixFractale);
+			//TODO: initialiser une fractale type Julia par le biais du constructeur genre Fractales fractale = FractaleBuilder.newFractaleBuilder()
+			//.width(2001)
+			//.height(2001)
+			//pas le pas, initiliser une fois qu'on aura entrer la valeur
+			//.MAX_ITER(1000)
+			//.buildJulia(c1)
+			//;
 			vue.initialisation_pane_fractale();
-			vue.initialisation_pane_parametres();
+			vue.initialisation_pane_parametres("Julia");
 		});
 		mandelbrot.setOnAction(actionEvent->{
 			vue.getRoot().getChildren().remove(paneChoixFractale);
+			//TODO: initialiser une fractale type Mandelbrot du constructeur
 			vue.initialisation_pane_fractale();
-			vue.initialisation_pane_parametres();
+			vue.initialisation_pane_parametres("Mandelbrot");
 		});
 	}
 	

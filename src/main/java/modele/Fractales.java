@@ -55,7 +55,6 @@ public abstract class Fractales {
 		public Mandelbrot buildMandelbrot(Complexe c) {
 			return new Mandelbrot(this,c);
 		}
-		
 	}
 	
 	protected Fractales (FractaleBuilder f) {
@@ -64,7 +63,13 @@ public abstract class Fractales {
 		this.pas=f.pas;
 		this.MAX_ITER=f.MAX_ITER;
 	}
-
+	
+	//GETTER
+	public int getMAX_ITER() { return this.MAX_ITER; }
+	public String getMatrice() { return this.width+" x "+this.height; }
+	public String getStringComplexe() { return toString(); }
+	
+	//SETTER
 	
 	
 //	int divergenceIndex(Complexe z0) {

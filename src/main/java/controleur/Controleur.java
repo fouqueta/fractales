@@ -12,10 +12,14 @@ public class Controleur {
 	}
 
 	
-	public void setVue(Vue vue) {
-		this.vue = vue;
-	}
-	
+	//GETTER
+	public int getIte() { return fractale.getMAX_ITER(); }
+	public String getMatriceSize() { return fractale.getMatrice(); }
 	public Fractales getFractale() { return this.fractale; }
+	
+	//SETTER
+	public void setVue(Vue vue) { this.vue = vue; }
+	
+	
 
 }

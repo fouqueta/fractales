@@ -34,5 +34,9 @@ public class Complexe {
 	
 	public double getReel () { return this.reel; }
 	public double getImaginaire () { return this.imaginaire; }
+	
+	public String toString() {
+		return this.reel+" + i"+this.imaginaire;
+	}
 
 }
