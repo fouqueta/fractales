@@ -10,18 +10,20 @@ import javax.imageio.ImageIO;
 
 import modele.Fractales.FractaleBuilder;
 
-public class Mandelbrot extends Fractales{
-
+public class BurningShip extends Fractales {
 	private FonctionFractale f;
 	private BufferedImage img;
 	
-
-	public Mandelbrot(FractaleBuilder fb) {
+	public BurningShip(FractaleBuilder fb) {
 		super(fb);
-		f = (z,cst) -> z.multiply(z).add(cst);
+		//f = (z,cst) -> z.multiply(z).add(cst);
+		f = ((z,cst) -> { 
+				Complexe zAbs = Complexe.newComplexe(Math.abs(z.getReel()), Math.abs(z.getImaginaire()));
+				return zAbs.multiply(zAbs).add(cst);
+		});
 		img = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
 	}
-	
+
 	
 	@Override
 	public BufferedImage createImg() {		
@@ -53,8 +55,8 @@ public class Mandelbrot extends Fractales{
 
 	public void iterStream(int x, int y, double gapX, double gapY) {
 		int i = 0;
-		double zX = ((3.0/width)*(x+translateX)*gapX)-1.5*gapX;
-		double zY = ((2.0/height)*(y+translateY)*gapY)-1.0*gapY;
+		double zX = ((4.0/width)*(x+translateX)*gapX)-3.0*gapX;
+		double zY = ((2.0/height)*(y+translateY)*gapY)-1.5*gapY;
 		Complexe z = Complexe.newComplexe(zX, zY);
 		Complexe c = z;
 //		int x = (int) (z.getReel()/1.5*(0.5*this.width) + 0.5*this.width);
@@ -124,5 +126,6 @@ public class Mandelbrot extends Fractales{
 		int rgb = img.getRGB((int) (x+moveX), (int) (y+moveY));
 		img.setRGB(x, y, rgb);
 	}
-
+	
+	
 }

@@ -93,7 +93,8 @@ public class Vue {
 		fractale_pane.setStyle("-fx-background-color: #BAEEB4");
 		buttons_zoom();
 		buttons_translate();
-		generateFractale(controleur.generateJulia());
+		//generateFractale(controleur.generateJulia());
+		generateFractale(controleur.generateBurningShip());
 		fractale_scene = new Scene(fractale_pane);
 		stage.setScene(fractale_scene);	
 	}*/
