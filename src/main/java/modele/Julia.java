@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 
 import javax.imageio.ImageIO;
@@ -16,13 +17,13 @@ import javax.imageio.ImageIO;
 public class Julia extends Fractales {
 	private final Complexe c;
 	private FonctionFractale f;
-	//ForkJoinPool forkJoinPool = PoolUtil.forkJoinPool;
-	//Builder
-	
+	private BufferedImage img;
+
 	public Julia(FractaleBuilder fb, Complexe c) {
 		super(fb);
 		this.c = c;
 		f = (z,cst) -> z.multiply(z).add(c);
+		img = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
 	}
 	
 	/*public void choisirNom() {
@@ -38,9 +39,7 @@ public class Julia extends Fractales {
 }*/
 
 
-	public void createImg() {
-		var img=new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
-		
+	public BufferedImage createImg() {		
 //		int r = 64; int g = 224; int b = 208; //turquoise
 //		int col = (r << 16) | (g << 8) | b;
 //		img.setRGB(30,40,col);
@@ -49,111 +48,45 @@ public class Julia extends Fractales {
 				//iterPts(img,f);
 //			}
 //		}
-		long start=System.currentTimeMillis();
-		iterPts(img,f);
-	    long end=System.currentTimeMillis();
-	    System.out.println("NOT thread took time : "+(end-start));
-	    
-//	   long  start=System.currentTimeMillis();
-//		try {
-//			thread(img,f);
-//		} catch (InterruptedException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
+//		long start=System.currentTimeMillis();
+//		iterPts(img,f);
 //	    long end=System.currentTimeMillis();
-//	    System.out.println("Thread took time : "+(end-start));
+//	    System.out.println("NOT thread took time : "+(end-start));
 	
-		start=System.currentTimeMillis();
-		stream(img,f);
-		end=System.currentTimeMillis();
+		long start=System.currentTimeMillis();
+		stream(0,width,0,height);
+	    long end=System.currentTimeMillis();
 	    System.out.println("Parallel stream took time : "+(end-start));
-    
+	    //TODO: separer en 2 fonctions
 	    File f = new File("MyFile.png");
 		try {
 			ImageIO.write(img, "PNG", f);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return img;
 	}
-	 
 
-//	int divergenceIndex(Complexe z0) {
-//	int ite = 0; Complexe zn = z0;
-//	// sortie de boucle si divergence
-//	while (ite < MAX_ITER-1 && zn.module() <= 2)
-//		//zn = f.apply(zn); ite++;
-//	return ite;
-//	}
 	
-	public void thread(BufferedImage img, FonctionFractale f) throws InterruptedException {
-		Julia j = this;
-		Thread t1 = new Thread(() -> j.iterThread(0,width/2,0,height/2, img, f));
-		Thread t2 = new Thread(() -> j.iterThread(0,width/2,height/2,height, img, f));
-		Thread t3 = new Thread(() -> j.iterThread(width/2,width,0,height/2, img, f));
-		Thread t4 = new Thread(() -> j.iterThread(width/2,width,height/2,height, img, f));
-		t1.start();
-		t2.start();
-		t3.start();
-		t4.start();
-	}
-	
-	
-	public void iterThread(int xI, int xF, int yI, int yF, BufferedImage img, FonctionFractale f) {
-		double zX = 0;
-		double zY = 0;
-		for (int x = xI; x < xF; x++) {
-			for (int y = yI; y < yF; y++) {
-//				zX = 1.5 * (x - 0.5*width) / (0.5 * width);
-//				zY = (y - 0.5*height) / (0.5 * height);
-				zX = (3.0/width)*x-1.5;
-				zY = (2.0/height)*y-1.0;
-				Complexe z = Complexe.newComplexe(zX, zY);
-				int i = 0;
-				while (z.module() <= 2 && i < MAX_ITER) {
-					z = f.apply(z,c);
-					i++;
-				}
-				int rgb;
-				if (i == MAX_ITER) {
-					rgb = 0;
-				}
-				else {
-					rgb=Color.HSBtoRGB((float)i/MAX_ITER, 0.7f, 0.7f);
-				}
-				img.setRGB(x, y, rgb);
-			}
-		}
-	}
-	
-	public void stream(BufferedImage img, FonctionFractale f) {
-//		double zX = 0;
-//		double zY = 0;
-//		for (int x = 0; x < this.width; x++) {
-//			for (int y = 0; y < this.height; y++) {
-//				zX = (3.0/width)*x-1.5;
-//				zY = (2.0/height)*y-1.0;
-////				zX = 1.5 * (x - 0.5*this.width) / (0.5 * this.width);
-////				zY = (y - 0.5*this.height) / (0.5 * this.height);
-//				Complexe point = Complexe.newComplexe(zX, zY);
-//				listPts.add(point);
-//			}
-//		}
-//		listPts.parallelStream().forEach(point -> iter(point,img,f));
-		IntStream.range(0, width)
+	public void stream(int startX, int endX, int startY, int endY) {
+//		double gapX = width/zoom/width;
+//		double gapY = height/zoom/height;
+		double gapX = 1./zoom;
+		double gapY = 1./zoom;
+		IntStream.range(startX, endX)
         .parallel()
-        .forEach(i -> IntStream.range(0,height)
+        .forEach(i -> IntStream.range(startY, endY)
                 .parallel()
-                .forEach(j -> iter(i,j,img, f)))
-        ;
+                .forEach(j -> iterStream(i,j, gapX, gapY)));
 	}
 	
-	public void iter(int x, int y, BufferedImage img, FonctionFractale f) {
+	
+	public void iterStream(int x, int y, double gapX, double gapY) {
 		int i = 0;
 //		double zX = 1.5 * (x - 0.5*this.width) / (0.5 * this.width);
 //		double zY = (y - 0.5*this.height) / (0.5 * this.height);
-		double zX = (2.0/width)*x-1.0;
-		double zY = (2.0/height)*y-1.0;
+		double zX = ((3.0/width)*(x+translateX)*gapX)-1.5*gapX;
+		double zY = ((2.0/height)*(y+translateY)*gapY)-1.0*gapY;
 		Complexe z = Complexe.newComplexe(zX, zY);
 //		int x = (int) (z.getReel()/1.5*(0.5*this.width) + 0.5*this.width);
 //		int y = (int) (z.getImaginaire()*(0.5*this.height) + 0.5*this.height);
@@ -170,6 +103,84 @@ public class Julia extends Fractales {
 			rgb=Color.HSBtoRGB((float)(i+500)/MAX_ITER, 0.7f, 0.7f);
 		}
 		img.setRGB(x, y, rgb);
+	}
+	
+	public BufferedImage translate(char dir) {
+		//bornes pour le calcul de la nouvelle bande de pixels, modifiees en fonction de la direction
+		int startX = 0;
+		int endX = width;
+		int startY = 0;
+		int endY = height;
+		
+		switch(dir) {
+		case 'R' : //on se deplace vers la droite, donc translation des points existants vers la gauche car nouveaux points a calculer a droite
+			translate_pixels_RtoL(0, (int) (width-width*0.1), 0, height, width*0.1, 0);
+			startX = (int) (width-width*0.1);
+			endX = width;
+			break;
+		case 'L' : //inversement
+			translate_pixels_LtoR(width, (int) (width*0.1), height, 0, width*0.1, 0);
+			endX = (int) (width*0.1);
+			break;
+		case 'U' : //on se deplace vers le haut, donc translation des points existants vers le bas car nouveaux points a calculer en haut
+			translate_pixels_LtoR(width, 0, height, (int) (height*0.1), 0, height*0.1);
+			endY = (int) (height*0.1);
+			break;
+		case 'D' : //inversement
+			translate_pixels_RtoL(0, width, 0, (int) (height-height*0.1), 0, height*0.1);
+			startY = (int) (height-height*0.1);
+			endY = height;
+			break;
+		}
+		stream(startX, endX, startY, endY);
+		return img;
+	}
+	
+	public void translate_pixels_RtoL(int startX, int endX, int startY, int endY, double moveX, double moveY) {		
+		IntStream.range(startX, endX)
+        .forEach(i -> IntStream.range(startY, endY)
+               .forEach(j -> switch_colors(i,j, moveX, moveY)));
+	}
+	
+	
+	public void translate_pixels_LtoR(int startX, int endX, int startY, int endY, double moveX, double moveY) {		
+		for (int i = startX-1; i >= endX; i--) {
+			for (int j = startY-1; j >= endY; j--) {
+				switch_colors(i,j, -moveX, -moveY);
+			}
+		}
+	}
+	
+	public void switch_colors(int x, int y, double moveX, double moveY) {
+		int rgb = img.getRGB((int) (x+moveX), (int) (y+moveY));
+		img.setRGB(x, y, rgb);
+	}
+	
+	//ton pas c'est le nombre de point que tu veux entre 2 points
+	//pour l'avoir tu fais (nombre intervalles divise par le nombre total de point que je veux)
+	//exemple de 0 a 5, j'ai 6 points donc 5 intervalles, je veux passer de 5 points à 7, je fais 5/7 qui me donne mon pas
+	//pour i de 0 à mon nombre de points
+	//posX = i*pas
+	
+	//zomm initial = 1
+	//la valeur du zoom pour les calcul que je veux = zoom que j'ai/zoom que je veux
+	//exemple, j'ai un zoom de 1, je veux un zoom x2 => 1/2=0.5
+	//si je veux un zoom x2 de mon zoom x2 => 0.5/2=0.25 !
+	//la valeur pour les calcul c'est ce que j'utilise a la place de mon i++, je fais 
+	public void translateImageX(int translateX) {
+//		if (translateX > 0) { //translation vers la droite (nouveaux trucs a gauche)
+//			int startX =;
+//			int endX =;
+//		}
+//		else { //translation vers la gauche (nouveaux trucs a droite)
+//			int startX =;
+//			int endX =;
+//		}
+//		IntStream.range(startX, endX)
+//        .parallel()
+//        .forEach(i -> IntStream.range(startY, endY)
+//                .parallel()
+//                .forEach(j -> ));
 	}
 	
 	

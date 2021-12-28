@@ -16,6 +16,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import modele.Fractales;
 import modele.Fractales.FractaleBuilder;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
 public class Menu {
@@ -35,6 +36,7 @@ public class Menu {
 
 	private Vue vue;
 	private Controleur controleur;
+	private Scene scene;
 	
 	
 	public Menu(Vue vue, Controleur controleur) {

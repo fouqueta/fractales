@@ -1,8 +1,12 @@
 package modele;
 
 public class Fractales {
-	protected final int width;
-	protected final int height;
+
+	protected int width;
+	protected int height;
+	protected double zoom;
+	protected int translateX;
+	protected int translateY;
 	protected double pas;
 	protected int MAX_ITER;
 	
@@ -14,15 +18,11 @@ public class Fractales {
 		this.pas = pas;
 		this.MAX_ITER = MAX_ITER;
 	}*///BUILDER
-	
-	public Fractales () {
-		this.width=2001;
-		this.height=2001;
-	}
+	public Fractales() {}
 	
 	public static class FractaleBuilder{
 		private int width;
-		private int height;
+		private int height;		
 		private double pas;
 		private int MAX_ITER;
 		
@@ -41,6 +41,7 @@ public class Fractales {
 			this.height=hauteur;
 			return this;
 		}
+		
 		public FractaleBuilder pas(double pasDiscretisation) {
 			this.pas=pasDiscretisation;
 			return this;
@@ -62,9 +63,40 @@ public class Fractales {
 	protected Fractales (FractaleBuilder f) {
 		this.width=f.width;
 		this.height=f.height;
+		this.zoom = 1.0;
+		this.translateX = 0;
+		this.translateY = 0;
 		this.pas=f.pas;
 		this.MAX_ITER=f.MAX_ITER;
 	}
+	
+	public void zoom() {
+		this.zoom += 1;
+	}
+	
+	public void dezoom() {
+		this.zoom -= 1;
+		if (this.zoom < 1) { this.zoom = 1; }
+	}
+	
+	public void translateX(boolean sign) {
+		if (sign) {  //Deplacement vers la droite
+			this.translateX += (int) (width*0.1);
+		}
+		else { //Deplacement vers la gauche
+			this.translateX -= (int) (width*0.1);
+		}
+	}
+	
+	public void translateY(boolean sign) {
+		if (sign) { //Deplacement vers le bas
+			this.translateY += (int) (height*0.1);
+		}
+		else { //Deplacement vers le haut
+			this.translateY -= (int) (height*0.1);
+		}
+	}
+
 	
 	//GETTER
 	public String getMatrice() { return this.width+" x "+this.height; }
