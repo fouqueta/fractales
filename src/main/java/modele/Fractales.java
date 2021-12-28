@@ -1,5 +1,7 @@
 package modele;
 
+import java.awt.image.BufferedImage;
+
 public class Fractales {
 	protected int width;
 	protected int height;
@@ -57,8 +59,13 @@ public class Fractales {
 		public Julia buildJulia(Complexe c) {
 			return new Julia(this,c);
 		}
-		public Mandelbrot buildMandelbrot(Complexe c) {
-			return new Mandelbrot(this,c);
+		
+		public Mandelbrot buildMandelbrot() {
+			return new Mandelbrot(this);
+		}
+		
+		public BurningShip buildBurningShip() {
+			return new BurningShip(this);
 		}
 		
 	}
@@ -99,8 +106,11 @@ public class Fractales {
 			this.translateY -= (int) (height*0.1);
 		}
 	}
-
 	
+	public BufferedImage createImg() {
+		System.out.println("Bonjour");
+		return null;
+	}
 	
 //	int divergenceIndex(Complexe z0) {
 //	int ite = 0; Complex zn = z0;

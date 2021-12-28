@@ -33,6 +33,31 @@ public class Controleur {
 	}
 	
 	
+	public BufferedImage generateMandel() {
+		//Complexe c1 = Complexe.newComplexe(-0.7269, 0.1889);
+		fractale = FractaleBuilder.newFractaleBuilder()
+				.width(3001)
+				.height(2001)
+				.pas(0.0001)
+				.MAX_ITER(100)
+				.buildMandelbrot()
+				;
+		return ((Mandelbrot) fractale).createImg();
+	}
+	
+	public BufferedImage generateBurningShip() {
+		//Complexe c1 = Complexe.newComplexe(-0.7269, 0.1889);
+		fractale = FractaleBuilder.newFractaleBuilder()
+				.width(3001)
+				.height(2001)
+				.pas(0.0001)
+				.MAX_ITER(100)
+				.buildBurningShip()
+				;
+		return ((BurningShip) fractale).createImg();
+	}
+	
+	
 	
 	public BufferedImage zoom(boolean zoom) {
 		if (zoom) { //Si true, zoom
@@ -41,19 +66,19 @@ public class Controleur {
 		else { //Si false, dezoom
 			fractale.dezoom();
 		}
-		return ((Julia) fractale).createImg();
+		return fractale.createImg();
 	}
 	
 	public BufferedImage translateX(boolean sign) {
 		fractale.translateX(sign);
 		char dir = sign ? 'R' : 'L';
-		return ((Julia) fractale).translate(dir);
+		return ((BurningShip) fractale).translate(dir);
 	}
 	
 	public BufferedImage translateY(boolean sign) {
 		fractale.translateY(sign);
 		char dir = sign ? 'D' : 'U';
-		return ((Julia) fractale).translate(dir);
+		return ((BurningShip) fractale).translate(dir);
 	}
 	
 

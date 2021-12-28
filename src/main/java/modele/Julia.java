@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 
 import javax.imageio.ImageIO;
@@ -24,7 +22,7 @@ public class Julia extends Fractales {
 	public Julia(FractaleBuilder fb, Complexe c) {
 		super(fb);
 		this.c = c;
-		f = (z,cst) -> z.multiply(z).add(c);
+		f = (z,cst) -> z.multiply(z).add(cst);
 		img = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
 	}
 	
@@ -93,12 +91,12 @@ public class Julia extends Fractales {
 //		int x = (int) (z.getReel()/1.5*(0.5*this.width) + 0.5*this.width);
 //		int y = (int) (z.getImaginaire()*(0.5*this.height) + 0.5*this.height);
 		//System.out.println("ITERATION x = " + x + " et y = " + y);
-		while (z.module() <= 2 && i < MAX_ITER) {
+		while (z.module() <= 2 && i < MAX_ITER-1) {
 			z = f.apply(z,c);
 			i++;
 		}
 		int rgb;
-		if (i == MAX_ITER) {
+		if (i == MAX_ITER-1) {
 			rgb = 0;
 		}
 		else {
