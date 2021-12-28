@@ -16,7 +16,7 @@ public class Controleur {
 		this.fractale=new Fractales();
 	}
 	
-	public BufferedImage create_Julia(double reel, double imaginaire, double pas, int iterateur, int largeur, int hauteur) {
+	public BufferedImage generateJulia(double reel, double imaginaire, double pas, int iterateur, int largeur, int hauteur) {
 		Complexe c = Complexe.newComplexe(reel, imaginaire);
 		fractale = FractaleBuilder.newFractaleBuilder()
 				.width(largeur)
@@ -25,8 +25,6 @@ public class Controleur {
 				.MAX_ITER(iterateur)
 				.buildJulia(c)
 				;
-		//System.out.println(fractale.getMatrice());
-		//System.out.println(c.getReel());
 		return ((Julia) fractale).createImg();
 	}
 	

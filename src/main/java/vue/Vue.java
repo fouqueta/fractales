@@ -34,10 +34,10 @@ public class Vue {
 	private Dimension tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
 	
 	private Stage stage;
-	private Scene scene_frct;
+	private Scene scene_fenetre;
 	
-	private AnchorPane root;
-	private AnchorPane paneFractale;
+	private HBox HBox_fenetre;
+	private AnchorPane paneFenetre;
 	private AnchorPane paneParametres;
 	private GridPane gridPaneParametres;
 	private AnchorPane fractale_pane;
@@ -58,25 +58,25 @@ public class Vue {
 	private TextField TFite;
 	private TextField TFwidth;
 	private TextField TFheight;
+	
 	private Controleur controleur;
 	private Menu menu;
 	private Fractales fractale;
+	private Scene fractale_scene;
 	
-	
-	
-
 	
 	public Vue(Controleur controleur){
 		this.controleur = controleur;
 		this.menu = new Menu(this,controleur);
 		
+		
 		stage = new Stage();
 		stage.setTitle("Fractales");
 		stage.setMaximized(true);
 
-		//root = new AnchorPane();
-		Scene root = new Scene(paneFractale);
-
+		paneFenetre = new AnchorPane();
+		scene_fenetre = new Scene(paneFenetre);
+		stage.setScene(scene_fenetre);
 		//initilisation_scene_frct();
 		menu.initialisation_pane_accueil();
 
@@ -98,10 +98,19 @@ public class Vue {
 		stage.setScene(fractale_scene);	
 	}*/
 	
+	void initialisation_HBox_principale(String s) {
+		HBox_fenetre = new HBox();
+		initialisation_pane_fractale();
+		initialisation_pane_parametres(s);
+		HBox_fenetre.getChildren().addAll(fractale_pane, paneParametres);
+		fractale_scene = new Scene(HBox_fenetre);
+		stage.setScene(fractale_scene);
+	}
+	
 	void initialisation_pane_fractale() {
-		paneFractale = new AnchorPane();
-		paneFractale.setPrefSize((tailleEcran.width*80)/100, tailleEcran.height);
-		root.getChildren().add(paneFractale);
+		fractale_pane = new AnchorPane();
+		fractale_pane.setPrefSize((tailleEcran.width*77)/100, tailleEcran.height);
+		fractale_pane.setStyle("-fx-background-color:#618686");
 	}
 
 	void initialisation_pane_parametres(String s) {
@@ -181,7 +190,9 @@ public class Vue {
 	    paneParametres.getChildren().addAll(titre);
 	    
 	    boutons(s);
-		root.getChildren().add(paneParametres);
+	    buttons_zoom();
+	    buttons_translate();
+		//root.getChildren().add(paneParametres);
 	}
 	
 	
@@ -206,11 +217,11 @@ public class Vue {
 		paneParametres.getChildren().addAll(HBoxBouton1,HBoxBouton2);
 		
 		retourMenu.setOnAction(actionEvent->{
-				root.getChildren().remove(paneParametres);
+			//	root.getChildren().remove(paneParametres);
 				menu.initialisation_pane_accueil();
 		});
 		choixFractale.setOnAction(actionEvent->{
-			root.getChildren().remove(paneParametres);
+			//root.getChildren().remove(paneParametres);
 			try {
 				menu.choixFractale();
 			} catch (IOException e) {
@@ -266,7 +277,8 @@ public class Vue {
 		int iterateur = Integer.parseInt(TFite.getText());
 		int largeur = Integer.parseInt(TFwidth.getText());
 		int hauteur = Integer.parseInt(TFheight.getText());
-		controleur.create_Julia(reel,imaginaire,pas,iterateur,largeur,hauteur);
+		//generateFractale(controleur.generateJulia());
+		generateFractale(controleur.generateJulia(reel,imaginaire,pas,iterateur,largeur,hauteur));
 	}
 	
 	public void FMandelbrot(){
@@ -295,11 +307,11 @@ public class Vue {
 		});
 		HBox buttons_zoom = new HBox();
 		buttons_zoom.setPrefSize(50, 100);
-		buttons_zoom.setLayoutX(tailleEcran.width*0.88);
-		buttons_zoom.setLayoutY(200);
+		buttons_zoom.setLayoutX(paneParametres.getPrefWidth()*0.4);
+		buttons_zoom.setLayoutY(paneParametres.getPrefHeight()*0.55);
 		buttons_zoom.toFront();
 		buttons_zoom.getChildren().addAll(zoom,dezoom);
-		fractale_pane.getChildren().addAll(buttons_zoom);// Mettre la HBox de buttons pas dans fractale_pane mais le pane d'a cote avec tous les autres choix de parametres		
+		paneParametres.getChildren().addAll(buttons_zoom);// Mettre la HBox de buttons pas dans fractale_pane mais le pane d'a cote avec tous les autres choix de parametres		
 	}
 	
 	public void buttons_translate() {
@@ -322,19 +334,15 @@ public class Vue {
 		VBox moveY = new VBox();
 		moveY.getChildren().addAll(moveUp,moveDown);
 		HBox buttons_translate = new HBox();
-		buttons_translate.setLayoutX(tailleEcran.width*0.87);
-		buttons_translate.setLayoutY(300);
+		buttons_translate.setLayoutX(paneParametres.getPrefWidth()*0.4);
+		buttons_translate.setLayoutY(paneParametres.getPrefHeight()*0.6);
 		buttons_translate.toFront();
 		buttons_translate.getChildren().addAll(moveL,moveY,moveR);
-		fractale_pane.getChildren().addAll(buttons_translate);
+		paneParametres.getChildren().addAll(buttons_translate);
 	}
 	
-	
-	
-	
-
 	//GETTER
-	public AnchorPane getRoot() { return this.root; }
+	//public AnchorPane getRoot() { return this.root; }
 	public Stage getStage() { return this.stage; }
 	
 	//FONTIONS AUXILIAIRES

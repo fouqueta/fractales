@@ -24,7 +24,7 @@ public class Menu {
 	private Dimension tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
 	
 	private AnchorPane paneMenu;
-	private AnchorPane paneChoixFractale = new AnchorPane();
+	private AnchorPane paneChoixFractale;
 
 	private HBox HBoxBouton;
 	
@@ -36,13 +36,12 @@ public class Menu {
 
 	private Vue vue;
 	private Controleur controleur;
-	private Scene scene;
-	
+	private Scene menu_scene;
+	private Scene choix_scene;
 	
 	public Menu(Vue vue, Controleur controleur) {
 		this.vue=vue;
 		this.controleur=controleur;
-		
 	}
 	
 	public void initialisation_pane_accueil() {
@@ -55,7 +54,8 @@ public class Menu {
 		titre.setLayoutY((tailleEcran.height*20)/100);
 		paneMenu.getChildren().add(titre);
 		boutons_menu();
-		vue.getRoot().getChildren().add(paneMenu);
+		menu_scene = new Scene(paneMenu);
+		vue.getStage().setScene(menu_scene);
 	}
 	
 	public void boutons_menu() {
@@ -70,7 +70,6 @@ public class Menu {
 		paneMenu.getChildren().add(HBoxBouton);
 		
 		generer_frct.setOnAction(actionEvent->{
-			vue.getRoot().getChildren().remove(paneMenu);
 			try {
 				choixFractale();
 			} catch (IOException e) {
@@ -80,6 +79,7 @@ public class Menu {
 	}
 	
 	public void choixFractale() throws IOException {
+		paneChoixFractale = new AnchorPane();
 		paneChoixFractale.setPrefSize(tailleEcran.width, tailleEcran.height);
 		paneChoixFractale.setStyle("-fx-background-color: #E8EAEA");
 		Label titre = new Label("Choisissez une fractale a generer");
@@ -89,7 +89,8 @@ public class Menu {
 		boutonChoix();
 		imageFractale();
 		paneChoixFractale.getChildren().add(titre);
-		vue.getRoot().getChildren().add(paneChoixFractale);
+		choix_scene = new Scene(paneChoixFractale);
+		vue.getStage().setScene(choix_scene);
 	}
 	
 	public void boutonChoix(){
@@ -104,22 +105,11 @@ public class Menu {
 		paneChoixFractale.getChildren().add(HBoxBouton);	
 		boutonRetour();
 		
-		julia.setOnAction(actionEvent->{
-			vue.getRoot().getChildren().remove(paneChoixFractale);
-			
-			//TODO: initialiser une fractale type Julia par le biais du constructeur genre Fractales fractale = FractaleBuilder.newFractaleBuilder()
-			//.width(2001)
-			//.height(2001)
-			//pas le pas, initiliser une fois qu'on aura entrer la valeur
-			//.MAX_ITER(1000)
-			//.buildJulia(c1)
-			//;
-			vue.initialisation_pane_fractale();
-			vue.initialisation_pane_parametres("Julia");
+		julia.setOnAction(actionEvent->{	
+			vue.initialisation_HBox_principale("Julia");
 			
 		});
 		mandelbrot.setOnAction(actionEvent->{
-			vue.getRoot().getChildren().remove(paneChoixFractale);
 			//TODO: initialiser une fractale type Mandelbrot du constructeur
 			vue.initialisation_pane_fractale();
 			vue.initialisation_pane_parametres("Mandelbrot");
@@ -152,9 +142,7 @@ public class Menu {
         paneChoixFractale.getChildren().add(p);
         
         retour.setOnAction(actionEvent->{
-			vue.getRoot().getChildren().remove(paneChoixFractale);
-			initialisation_pane_accueil();
-
+        	initialisation_pane_accueil();
 		});
 		
 	}
