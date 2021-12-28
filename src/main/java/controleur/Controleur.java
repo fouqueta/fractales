@@ -11,16 +11,25 @@ public class Controleur {
 	private Fractales fractale;
 
 
-	public Controleur(Fractales fractale) {
-		this.fractale = fractale;
+	public Controleur() {
+		//this.fractale = fractale;
+		this.fractale=new Fractales();
 	}
+	
+	public BufferedImage generateJulia(double reel, double imaginaire, double pas, int iterateur, int largeur, int hauteur) {
+		Complexe c = Complexe.newComplexe(reel, imaginaire);
+		fractale = FractaleBuilder.newFractaleBuilder()
+				.width(largeur)
+				.height(hauteur)
+				.pas(pas)
+				.MAX_ITER(iterateur)
+				.buildJulia(c)
+				;
+		return ((Julia) fractale).createImg();
+	}
+	
 
-	
-	public void setVue(Vue vue) {
-		this.vue = vue;
-	}
-	
-	public BufferedImage generateJulia() {
+	/*public BufferedImage generateJulia() {
 		Complexe c1 = Complexe.newComplexe(-0.7269, 0.1889);
 		fractale = FractaleBuilder.newFractaleBuilder()
 				.width(3001)
@@ -30,7 +39,8 @@ public class Controleur {
 				.buildJulia(c1)
 				;
 		return ((Julia) fractale).createImg();
-	}
+	}*/	
+
 	
 	
 	public BufferedImage generateMandel() {
@@ -57,8 +67,6 @@ public class Controleur {
 		return ((BurningShip) fractale).createImg();
 	}
 	
-	
-	
 	public BufferedImage zoom(boolean zoom) {
 		if (zoom) { //Si true, zoom
 			fractale.zoom();
@@ -81,5 +89,7 @@ public class Controleur {
 		return ((BurningShip) fractale).translate(dir);
 	}
 	
-
+	//SETTER
+	public void setVue(Vue vue) { this.vue = vue; }
+	
 }

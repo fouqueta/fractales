@@ -13,8 +13,9 @@ public class Main extends Application{
 	
 	@Override
 	public void start(Stage primaryStage) {
-		Fractales fractales = new Fractales();
-		Controleur controleur = new Controleur(fractales);
+
+		Controleur controleur = new Controleur();
+
 		vue = new Vue(controleur);
 		controleur.setVue(vue);
 	}
@@ -23,8 +24,4 @@ public class Main extends Application{
 		launch(args);
 	}
 	
-	
-	
-
-
 }

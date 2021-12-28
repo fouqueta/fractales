@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 import modele.Fractales.FractaleBuilder;
 
 public class Mandelbrot extends Fractales{
+
 	private FonctionFractale f;
 	private BufferedImage img;
 	

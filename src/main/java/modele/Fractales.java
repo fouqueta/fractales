@@ -3,6 +3,7 @@ package modele;
 import java.awt.image.BufferedImage;
 
 public class Fractales {
+
 	protected int width;
 	protected int height;
 	protected double zoom;
@@ -53,9 +54,6 @@ public class Fractales {
 			return this;
 		}
 		
-		/*public Fractales build() {
-			return new Fractales(this);
-		}*/
 		public Julia buildJulia(Complexe c) {
 			return new Julia(this,c);
 		}
@@ -67,7 +65,6 @@ public class Fractales {
 		public BurningShip buildBurningShip() {
 			return new BurningShip(this);
 		}
-		
 	}
 	
 	protected Fractales (FractaleBuilder f) {
@@ -107,10 +104,14 @@ public class Fractales {
 		}
 	}
 	
+	//GETTER
+	public String getMatrice() { return this.width+" x "+this.height; }
+
 	public BufferedImage createImg() {
 		System.out.println("Bonjour");
 		return null;
 	}
+
 	
 //	int divergenceIndex(Complexe z0) {
 //	int ite = 0; Complex zn = z0;

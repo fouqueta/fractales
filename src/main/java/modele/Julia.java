@@ -16,9 +16,7 @@ public class Julia extends Fractales {
 	private final Complexe c;
 	private FonctionFractale f;
 	private BufferedImage img;
-	
 
-	
 	public Julia(FractaleBuilder fb, Complexe c) {
 		super(fb);
 		this.c = c;
@@ -57,7 +55,7 @@ public class Julia extends Fractales {
 		stream(0,width,0,height);
 	    long end=System.currentTimeMillis();
 	    System.out.println("Parallel stream took time : "+(end-start));
-    
+	    //TODO: separer en 2 fonctions
 	    File f = new File("MyFile.png");
 		try {
 			ImageIO.write(img, "PNG", f);
