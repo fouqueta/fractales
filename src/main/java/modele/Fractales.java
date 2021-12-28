@@ -1,6 +1,6 @@
 package modele;
 
-public abstract class Fractales {
+public class Fractales {
 	protected final int width;
 	protected final int height;
 	protected double pas;
@@ -14,6 +14,11 @@ public abstract class Fractales {
 		this.pas = pas;
 		this.MAX_ITER = MAX_ITER;
 	}*///BUILDER
+	
+	public Fractales () {
+		this.width=2001;
+		this.height=2001;
+	}
 	
 	public static class FractaleBuilder{
 		private int width;
@@ -46,9 +51,6 @@ public abstract class Fractales {
 			return this;
 		}
 		
-		/*public Fractales build() {
-			return new Fractales(this);
-		}*/
 		public Julia buildJulia(Complexe c) {
 			return new Julia(this,c);
 		}
@@ -65,12 +67,8 @@ public abstract class Fractales {
 	}
 	
 	//GETTER
-	public int getMAX_ITER() { return this.MAX_ITER; }
 	public String getMatrice() { return this.width+" x "+this.height; }
-	public String getStringComplexe() { return toString(); }
-	
-	//SETTER
-	
+
 	
 //	int divergenceIndex(Complexe z0) {
 //	int ite = 0; Complex zn = z0;

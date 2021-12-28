@@ -6,6 +6,7 @@ import java.awt.Toolkit;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+import controleur.Controleur;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -33,10 +34,13 @@ public class Menu {
 	private Button retour = new Button ("Retour");
 
 	private Vue vue;
+	private Controleur controleur;
 	
 	
-	public Menu(Vue vue) {
+	public Menu(Vue vue, Controleur controleur) {
 		this.vue=vue;
+		this.controleur=controleur;
+		
 	}
 	
 	public void initialisation_pane_accueil() {
@@ -100,6 +104,7 @@ public class Menu {
 		
 		julia.setOnAction(actionEvent->{
 			vue.getRoot().getChildren().remove(paneChoixFractale);
+			
 			//TODO: initialiser une fractale type Julia par le biais du constructeur genre Fractales fractale = FractaleBuilder.newFractaleBuilder()
 			//.width(2001)
 			//.height(2001)
@@ -109,6 +114,7 @@ public class Menu {
 			//;
 			vue.initialisation_pane_fractale();
 			vue.initialisation_pane_parametres("Julia");
+			
 		});
 		mandelbrot.setOnAction(actionEvent->{
 			vue.getRoot().getChildren().remove(paneChoixFractale);

@@ -14,9 +14,8 @@ import javax.imageio.ImageIO;
 //(yb-ya)/(xb-xa) = a
 
 public class Julia extends Fractales {
-	private Complexe c;
+	private final Complexe c;
 	private FonctionFractale f;
-	private ArrayList<Complexe> listPts = new ArrayList<Complexe>();
 	//ForkJoinPool forkJoinPool = PoolUtil.forkJoinPool;
 	//Builder
 	
