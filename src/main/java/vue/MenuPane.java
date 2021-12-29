@@ -96,8 +96,8 @@ public class MenuPane {
 		paneChoixFractale.setStyle("-fx-background-color: #E8EAEA");
 		Label titre = new Label("Choisissez une fractale a generer");
 		titre.setFont(new Font("Arial", 20));
-		titre.setLayoutX((tailleEcran.width*43)/100);
-		titre.setLayoutY((tailleEcran.height*20)/100);
+		titre.setLayoutX(tailleEcran.width*0.43);
+		titre.setLayoutY(tailleEcran.height*0.2);
 		boutonChoix();
 		imageFractale();
 		paneChoixFractale.getChildren().add(titre);
@@ -112,8 +112,8 @@ public class MenuPane {
 		julia = new Button("Julia");
 		mandelbrot = new Button("Mandelbrot");
 		HBoxBouton.getChildren().addAll(julia,mandelbrot);
-		HBoxBouton.setLayoutX((paneChoixFractale_x*36)/100);
-		HBoxBouton.setLayoutY((paneChoixFractale_y*65)/100);
+		HBoxBouton.setLayoutX(paneChoixFractale_x*0.36);
+		HBoxBouton.setLayoutY(paneChoixFractale_y*0.65);
 		paneChoixFractale.getChildren().add(HBoxBouton);	
 		paneChoixFractale.getChildren().add(boutonRetour());
 		
@@ -132,16 +132,16 @@ public class MenuPane {
 		Image imageJulia = new Image(new FileInputStream("src/main/ressources/julia.jpg"));
 	    ImageView imageView1 = new ImageView();
 	    imageView1.setImage(imageJulia);
-	    imageView1.setX((tailleEcran.width*25)/100);
-	    imageView1.setY((tailleEcran.width*15)/100);
+	    imageView1.setX(tailleEcran.width*0.25);
+	    imageView1.setY(tailleEcran.width*0.15);
 	    imageView1.setFitWidth(400);
       	imageView1.setPreserveRatio(true);
       	paneChoixFractale.getChildren().add(imageView1);
       	Image imageMandelbrot = new Image(new FileInputStream("src/main/ressources/mandelbrot.png"));
 	    ImageView imageView2 = new ImageView();
 	    imageView2.setImage(imageMandelbrot);
-	    imageView2.setX((tailleEcran.width*52)/100);
-	    imageView2.setY((tailleEcran.width*15)/100);
+	    imageView2.setX(tailleEcran.width*0.52);
+	    imageView2.setY(tailleEcran.width*0.15);
 	    imageView2.setFitWidth(422);
       	imageView2.setPreserveRatio(true);
       	paneChoixFractale.getChildren().add(imageView2);
@@ -163,7 +163,7 @@ public class MenuPane {
 	
 	public Pane boutonRetour() {
 		Pane p = new Pane();
-		p.relocate((tailleEcran.width*50)/100, (tailleEcran.height*80)/100);
+		p.relocate(tailleEcran.width*0.5, tailleEcran.height*0.8);
         p.getChildren().add(retour);
         
         retour.setOnAction(actionEvent->{

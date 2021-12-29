@@ -16,11 +16,14 @@ public class Controleur {
 		this.fractale=new Fractales();
 	}
 	
-	public BufferedImage generateJulia(double reel, double imaginaire, double pas, int iterateur, int largeur, int hauteur, int color) {
+	
+	public BufferedImage generateJulia(double reel, double imaginaire, double pas, int iterateur, double infX, double supX, double infY, double supY, int color) {
 		Complexe c = Complexe.newComplexe(reel, imaginaire);
 		fractale = FractaleBuilder.newFractaleBuilder()
-				.width(largeur)
-				.height(hauteur)
+				.borneInfX(infX)
+				.borneSupX(supX)
+				.borneInfY(infY)
+				.borneSupY(supY)
 				.pas(pas)
 				.MAX_ITER(iterateur)
 				.couleur(color)
@@ -28,6 +31,19 @@ public class Controleur {
 				;
 		return fractale.generateFractal();
 	}
+
+//	public BufferedImage generateJulia(double reel, double imaginaire, double pas, int iterateur, int largeur, int hauteur, int color) {
+//		Complexe c = Complexe.newComplexe(reel, imaginaire);
+//		fractale = FractaleBuilder.newFractaleBuilder()
+//				.width(largeur)
+//				.height(hauteur)
+//				.pas(pas)
+//				.MAX_ITER(iterateur)
+//				.couleur(color)
+//				.buildJulia(c)
+//				;
+//		return fractale.generateFractal();
+//	}
 	
 
 	/*public BufferedImage generateJulia() {
@@ -46,8 +62,8 @@ public class Controleur {
 	
 	public BufferedImage generateMandelbrot() {
 		fractale = FractaleBuilder.newFractaleBuilder()
-				.width(3001)
-				.height(2001)
+//				.width(3001)
+//				.height(2001)
 				.pas(0.0001)
 				.MAX_ITER(100)
 				.buildMandelbrot()
@@ -57,8 +73,8 @@ public class Controleur {
 	
 	public BufferedImage generateBurningShip() {
 		fractale = FractaleBuilder.newFractaleBuilder()
-				.width(3001)
-				.height(2001)
+//				.width(3001)
+//				.height(2001)
 				.pas(0.0001)
 				.MAX_ITER(100)
 				.buildBurningShip()
@@ -68,8 +84,8 @@ public class Controleur {
 	
 	public BufferedImage generateTricorne() {
 		fractale = FractaleBuilder.newFractaleBuilder()
-				.width(3001)
-				.height(2001)
+//				.width(3001)
+//				.height(2001)
 				.pas(0.0001)
 				.MAX_ITER(100)
 				.buildTricorn()
