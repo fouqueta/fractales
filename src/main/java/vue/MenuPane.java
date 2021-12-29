@@ -21,10 +21,16 @@ import javafx.scene.control.Button;
 
 public class MenuPane {
 	
+	
 	private Dimension tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
+	
+	private Scene menu_scene;
+	private Scene choix_scene;
+	private Scene sauvegardes_scene;
 	
 	private AnchorPane paneMenu;
 	private AnchorPane paneChoixFractale;
+	private AnchorPane paneChoixSauvegardes;
 
 	private HBox HBoxBouton;
 	
@@ -36,8 +42,7 @@ public class MenuPane {
 
 	private Vue vue;
 	private Controleur controleur;
-	private Scene menu_scene;
-	private Scene choix_scene;
+	
 	
 	public MenuPane(Vue vue, Controleur controleur) {
 		this.vue=vue;
@@ -76,6 +81,13 @@ public class MenuPane {
 				e.printStackTrace();
 			}
 		});
+		visualisation_frct.setOnAction(actionEvent->{
+			try {
+				fractale_sauvegarde();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		});
 	}
 	
 	public void choixFractale() throws IOException {
@@ -103,7 +115,7 @@ public class MenuPane {
 		HBoxBouton.setLayoutX((paneChoixFractale_x*36)/100);
 		HBoxBouton.setLayoutY((paneChoixFractale_y*65)/100);
 		paneChoixFractale.getChildren().add(HBoxBouton);	
-		boutonRetour();
+		paneChoixFractale.getChildren().add(boutonRetour());
 		
 		julia.setOnAction(actionEvent->{	
 			vue.initialisation_HBox_principale("Julia");
@@ -117,7 +129,7 @@ public class MenuPane {
 	}
 	
 	public void imageFractale() throws IOException{
-		Image imageJulia = new Image(new FileInputStream("julia.jpg"));
+		Image imageJulia = new Image(new FileInputStream("src/main/ressources/julia.jpg"));
 	    ImageView imageView1 = new ImageView();
 	    imageView1.setImage(imageJulia);
 	    imageView1.setX((tailleEcran.width*25)/100);
@@ -125,7 +137,7 @@ public class MenuPane {
 	    imageView1.setFitWidth(400);
       	imageView1.setPreserveRatio(true);
       	paneChoixFractale.getChildren().add(imageView1);
-      	Image imageMandelbrot = new Image(new FileInputStream("mandelbrot.png"));
+      	Image imageMandelbrot = new Image(new FileInputStream("src/main/ressources/mandelbrot.png"));
 	    ImageView imageView2 = new ImageView();
 	    imageView2.setImage(imageMandelbrot);
 	    imageView2.setX((tailleEcran.width*52)/100);
@@ -135,15 +147,29 @@ public class MenuPane {
       	paneChoixFractale.getChildren().add(imageView2);
 	}
 	
-	public void boutonRetour() {
+	public void fractale_sauvegarde() throws IOException{
+		paneChoixSauvegardes = new AnchorPane();
+		paneChoixSauvegardes.setPrefSize(tailleEcran.width, tailleEcran.height);
+		paneChoixSauvegardes.setStyle("-fx-background-color: #E8EAEA");
+		Label titre = new Label("FRACTALES SAUVEGARDEES");
+		titre.setFont(new Font("Arial", 20));
+		titre.setLayoutX((tailleEcran.width*43)/100);
+		titre.setLayoutY((tailleEcran.height*5)/100);
+		paneChoixSauvegardes.getChildren().add(titre);
+		sauvegardes_scene = new Scene(paneChoixSauvegardes);
+		paneChoixSauvegardes.getChildren().add(boutonRetour());
+		vue.getStage().setScene(sauvegardes_scene);
+	}
+	
+	public Pane boutonRetour() {
 		Pane p = new Pane();
 		p.relocate((tailleEcran.width*50)/100, (tailleEcran.height*80)/100);
         p.getChildren().add(retour);
-        paneChoixFractale.getChildren().add(p);
         
         retour.setOnAction(actionEvent->{
         	initialisation_pane_accueil();
 		});
+        return p;
 		
 	}
 
