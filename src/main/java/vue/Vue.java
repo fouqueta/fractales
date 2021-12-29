@@ -51,8 +51,10 @@ public class Vue {
 	private TextField TFimaginaire;
 	private TextField TFpas;
 	private TextField TFite;
-	private TextField TFwidth;
-	private TextField TFheight;
+	private TextField TFinfX;
+	private TextField TFsupX;
+	private TextField TFinfY;
+	private TextField TFsupY;
 	
 	private int couleur;
 	
@@ -74,27 +76,10 @@ public class Vue {
 		paneFenetre = new AnchorPane();
 		scene_fenetre = new Scene(paneFenetre);
 		stage.setScene(scene_fenetre);
-		//initilisation_scene_frct();
 		menu.initialisation_pane_accueil();
-
-		//stage.setFullScreen(true);
-		
-		//init_scene_fractale();
-
 		stage.show();
 	}
 	
-	/*public void init_scene_fractale() {
-		fractale_pane = new AnchorPane();
-		fractale_pane.setPrefSize(tailleEcran.width*0.8,tailleEcran.height*0.8);
-		fractale_pane.setStyle("-fx-background-color: #BAEEB4");
-		buttons_zoom();
-		buttons_translate();
-		//generateFractale(controleur.generateJulia());
-		generateFractale(controleur.generateBurningShip());
-		fractale_scene = new Scene(fractale_pane);
-		stage.setScene(fractale_scene);	
-	}*/
 	
 	void initialisation_HBox_principale(String s) {
 		HBox_fenetre = new HBox();
@@ -107,13 +92,13 @@ public class Vue {
 	
 	void initialisation_pane_fractale() {
 		fractale_pane = new AnchorPane();
-		fractale_pane.setPrefSize((tailleEcran.width*77)/100, tailleEcran.height);
+		fractale_pane.setPrefSize(tailleEcran.width*0.77, tailleEcran.height);
 		fractale_pane.setStyle("-fx-background-color:#618686");
 	}
 
 	void initialisation_pane_parametres(String s) {
 		paneParametres = new AnchorPane();
-		paneParametres.setPrefSize((tailleEcran.width*23)/100, tailleEcran.height);
+		paneParametres.setPrefSize(tailleEcran.width*0.23, tailleEcran.height);
 	    AnchorPane.setRightAnchor(paneParametres, 0.0);
 		paneParametres.setStyle("-fx-background-color:#D7E5E5");
 		
@@ -125,7 +110,7 @@ public class Vue {
 		gridPaneParametres.setPadding(new Insets(60, 0, 0, 15));
 		gridPaneParametres.setHgap(7);
 		gridPaneParametres.setVgap(10);
-		gridPaneParametres.setMaxWidth((tailleEcran.width*23)/100);
+		gridPaneParametres.setMaxWidth(tailleEcran.width*0.23);
 		
 		Label type = new Label("Type de fractale:"); //type de fractale
 		type.setFont(new Font("Arial", 13));
@@ -154,16 +139,18 @@ public class Vue {
 		TFpas = new TextField();
 	    gridPaneParametres.add(TFpas, 2, 5,2,1);
 	    
-		Label taille = new Label("Taille matrice de pixels:"); //taille matrice 
-	    gridPaneParametres.add(taille, 0, 6, 2, 1);
-	    TFwidth = new TextField();
-	    TFwidth.setPromptText("largeur");
-	    TFwidth.setMaxSize(100,100);
-	    gridPaneParametres.add(TFwidth, 2, 6);
-	    TFheight = new TextField();
-	    TFheight.setPromptText("hauteur");
-	    TFheight.setMaxSize(100,100);
-	    gridPaneParametres.add(TFheight, 3, 6);
+		Label taille = new Label("Bornes du plan complexe:"); //label plan complexe 
+		//label abscisses
+		//label ordonnees
+	    gridPaneParametres.add(taille, 0, 7, 2, 1);
+	    TFinfX = new TextField();
+	    TFinfX.setPromptText("borne inferieure");
+	    TFinfX.setMaxSize(100,100);
+	    gridPaneParametres.add(TFinfX, 2, 6);
+	    TFsupX = new TextField();
+	    TFsupX.setPromptText("borne superieure");
+	    TFsupX.setMaxSize(100,100);
+	    gridPaneParametres.add(TFsupX, 3, 6);
 	    
 	    Label nbIte = new Label("Nombre d'iteration maximal:"); //nombre iteration max 
 	    //nbIte.setFont(new Font(10));
@@ -203,16 +190,16 @@ public class Vue {
 		restaurer = new Button("Restaurer");
 		sauvegarder = new Button("Sauvegarder");
 		HBoxBouton1.getChildren().addAll(valider,restaurer,sauvegarder);
-		HBoxBouton1.setLayoutX((paneParametres_x*20)/100);
-		HBoxBouton1.setLayoutY((paneParametres_y*78)/100);
+		HBoxBouton1.setLayoutX(paneParametres_x*0.2);
+		HBoxBouton1.setLayoutY(paneParametres_y*0.78);
 		
 		HBox HBoxBouton2= new HBox(15);
 		retourMenu = new Button("Retour au menu");
 		choixFractale = new Button("Generer une autre fractale");
 		quitter = new Button("Quitter");
 		HBoxBouton2.getChildren().addAll(choixFractale, retourMenu, quitter);
-		HBoxBouton2.setLayoutX((paneParametres_x*3)/100);
-		HBoxBouton2.setLayoutY((paneParametres_y*85)/100);
+		HBoxBouton2.setLayoutX(paneParametres_x*0.03);
+		HBoxBouton2.setLayoutY(paneParametres_y*0.85);
 		paneParametres.getChildren().addAll(HBoxBouton1,HBoxBouton2);
 		
 		retourMenu.setOnAction(actionEvent->{
@@ -273,9 +260,6 @@ public class Vue {
 		});
 	}
 	
-	public void restoreSliderColor() {
-		
-	}
 	
 	public int initSliderColor() {
 		Label labelColor = new Label("Choisir la couleur");
@@ -306,42 +290,28 @@ public class Vue {
 	    	couleur = newVal.intValue();
 	    });
 	    return couleur;
-//		couleurMenu = new MenuButton("Couleur");
-//		CheckMenuItem rouge = new CheckMenuItem("Rouge");
-//        CheckMenuItem bleu = new CheckMenuItem("Bleu");
-//        CheckMenuItem vert = new CheckMenuItem("Vert");
-//        CheckMenuItem jaune = new CheckMenuItem("Jaune");
-//        CheckMenuItem violet = new CheckMenuItem("Violet");
-//        couleurMenu.setLayoutX(paneParametres.getPrefWidth()*0.05);
-//        couleurMenu.setLayoutY(paneParametres.getPrefHeight()*0.43);
-//        couleurMenu.getItems().addAll(rouge,bleu,vert,jaune,violet);
-//        paneParametres.getChildren().add(couleurMenu);
-//        rouge.setOnAction(actionEvent->{
-//			couleur = 0;
-//		});
-//        bleu.setOnAction(actionEvent->{
-//			couleur = 600;
-//		});
-//        vert.setOnAction(actionEvent->{
-//			couleur = 400;
-//		});
-//        jaune.setOnAction(actionEvent->{
-//			couleur = 100;
-//		});
-//        violet.setOnAction(actionEvent->{
-//			couleur = 700;
-//		});
-//        return couleur;
 	}
+	
+//	void FJulia() {
+//		double reel = Double.parseDouble(TFreel.getText());
+//		double imaginaire = Double.parseDouble(TFimaginaire.getText());
+//		double pas = Double.parseDouble(TFpas.getText());
+//		int iterateur = Integer.parseInt(TFite.getText());
+//		int largeur = Integer.parseInt(TFwidth.getText());
+//		int hauteur = Integer.parseInt(TFheight.getText());
+//		generateFractale(controleur.generateJulia(reel,imaginaire,pas,iterateur,largeur,hauteur,couleur));
+//	}
 	
 	void FJulia() {
 		double reel = Double.parseDouble(TFreel.getText());
 		double imaginaire = Double.parseDouble(TFimaginaire.getText());
 		double pas = Double.parseDouble(TFpas.getText());
 		int iterateur = Integer.parseInt(TFite.getText());
-		int largeur = Integer.parseInt(TFwidth.getText());
-		int hauteur = Integer.parseInt(TFheight.getText());
-		generateFractale(controleur.generateJulia(reel,imaginaire,pas,iterateur,largeur,hauteur,couleur));
+		double infX = Double.parseDouble(TFinfX.getText());
+		double supX = Double.parseDouble(TFsupX.getText());
+		double infY = Double.parseDouble(TFinfY.getText());
+		double supY = Double.parseDouble(TFsupX.getText());
+		generateFractale(controleur.generateJulia(reel,imaginaire,pas,iterateur,infX,supX,infY,supY,couleur));
 	}
 	
 	public void FMandelbrot(){
@@ -429,8 +399,8 @@ public class Vue {
 	
 	public void set_erreur() {
 		erreur.setFont(new Font("Arial", 15));
-		erreur.setLayoutX((paneParametres.getPrefWidth()*10)/100);
-		erreur.setLayoutY((paneParametres.getPrefHeight()*82)/100);
+		erreur.setLayoutX(paneParametres.getPrefWidth()*0.1);
+		erreur.setLayoutY(paneParametres.getPrefHeight()*0.82);
 		paneParametres.getChildren().add(erreur);
 	}
 	
