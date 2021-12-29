@@ -19,7 +19,7 @@ import modele.Fractales.FractaleBuilder;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
-public class Menu {
+public class MenuPane {
 	
 	private Dimension tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
 	
@@ -39,7 +39,7 @@ public class Menu {
 	private Scene menu_scene;
 	private Scene choix_scene;
 	
-	public Menu(Vue vue, Controleur controleur) {
+	public MenuPane(Vue vue, Controleur controleur) {
 		this.vue=vue;
 		this.controleur=controleur;
 	}

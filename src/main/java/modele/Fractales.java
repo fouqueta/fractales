@@ -18,6 +18,7 @@ public class Fractales {
 	protected int MAX_ITER;
 	protected FonctionFractale f;
 	protected BufferedImage img;
+	protected int couleur;
 	
 	
 	
@@ -34,6 +35,7 @@ public class Fractales {
 		private int height;		
 		private double pas;
 		private int MAX_ITER;
+		private int couleur;
 		
 		private FractaleBuilder() {}
 		
@@ -58,6 +60,11 @@ public class Fractales {
 		
 		public FractaleBuilder MAX_ITER(int maxIter) {
 			this.MAX_ITER=maxIter;
+			return this;
+		}
+		
+		public FractaleBuilder couleur(int color) {
+			this.couleur=color;
 			return this;
 		}
 		
@@ -87,6 +94,7 @@ public class Fractales {
 		this.pas=f.pas;
 		this.MAX_ITER=f.MAX_ITER;
 		this.img = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
+		this.couleur=f.couleur;
 	}
 	
 	public void zoom() {
@@ -117,35 +125,36 @@ public class Fractales {
 	}
 	
 	
-	public BufferedImage createImg() {		
+	public BufferedImage generateFractal() {
 		long start=System.currentTimeMillis();
-		stream(0,width,0,height);
+		stream(0,width,0,height, couleur);
 	    long end=System.currentTimeMillis();
 	    System.out.println("Parallel stream took time : "+(end-start));
-    
-	    File f = new File("MyFile.png");
+	    return img;
+	}
+	
+	public void saveFractal() {
+		File f = new File("MyFile.png");
 		try {
 			ImageIO.write(img, "PNG", f);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return img;
 	}
 	
-	
 	//Utilisation de parallel stream pour le calcul des fractales
-	public void stream(int startX, int endX, int startY, int endY) {
+	public void stream(int startX, int endX, int startY, int endY, int couleur) {
 		double gapX = 1./zoom;
 		double gapY = 1./zoom;
 		IntStream.range(startX, endX)
         .parallel()
         .forEach(i -> IntStream.range(startY, endY)
                 .parallel()
-                .forEach(j -> iterStream(i,j, gapX, gapY)));
+                .forEach(j -> iterStream(i,j, gapX, gapY, couleur)));
 	}
 	
 	//pour un point dans la plan, calcule son nombre nombre d'iterations et lui associe une couleur en fonction
-	public void iterStream(int x, int y, double gapX, double gapY) { }
+	public void iterStream(int x, int y, double gapX, double gapY, int couleur) { }
 	
 	//Deplacement de la fractale en fonction de la direction dir
 	public BufferedImage translate(char dir) {
@@ -154,6 +163,7 @@ public class Fractales {
 		int endX = width;
 		int startY = 0;
 		int endY = height;
+		int color = couleur;
 		
 		switch(dir) {
 		case 'R' : //on se deplace vers la droite, donc translation des points existants vers la gauche car nouveaux points a calculer a droite
@@ -175,7 +185,7 @@ public class Fractales {
 			endY = height;
 			break;
 		}
-		stream(startX, endX, startY, endY);
+		stream(startX, endX, startY, endY, color);
 		return img;
 	}
 	
