@@ -16,13 +16,14 @@ public class Controleur {
 		this.fractale=new Fractales();
 	}
 	
-	public BufferedImage generateJulia(double reel, double imaginaire, double pas, int iterateur, int largeur, int hauteur) {
+	public BufferedImage generateJulia(double reel, double imaginaire, double pas, int iterateur, int largeur, int hauteur, int color) {
 		Complexe c = Complexe.newComplexe(reel, imaginaire);
 		fractale = FractaleBuilder.newFractaleBuilder()
 				.width(largeur)
 				.height(hauteur)
 				.pas(pas)
 				.MAX_ITER(iterateur)
+				.couleur(color)
 				.buildJulia(c)
 				;
 		return fractale.generateFractal();
@@ -101,8 +102,10 @@ public class Controleur {
 	public void saveFractaleControleur() {
 		fractale.saveFractal();
 	}
+
 	
 	//SETTER
 	public void setVue(Vue vue) { this.vue = vue; }
+
 	
 }

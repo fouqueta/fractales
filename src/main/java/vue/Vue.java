@@ -10,7 +10,9 @@ import modele.*;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -19,6 +21,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
 
 import modele.Fractales.FractaleBuilder;
 import javafx.embed.swing.SwingFXUtils;
@@ -59,15 +62,18 @@ public class Vue {
 	private TextField TFwidth;
 	private TextField TFheight;
 	
+	private MenuButton couleurMenu;
+	private int couleur;
+	
 	private Controleur controleur;
-	private Menu menu;
+	private MenuPane menu;
 	private Fractales fractale;
 	private Scene fractale_scene;
 	
 	
 	public Vue(Controleur controleur){
 		this.controleur = controleur;
-		this.menu = new Menu(this,controleur);
+		this.menu = new MenuPane(this,controleur);
 		
 		
 		stage = new Stage();
@@ -193,6 +199,7 @@ public class Vue {
 	    boutons(s);
 	    buttons_zoom();
 	    buttons_translate();
+	    couleur_menuItem();
 		//root.getChildren().add(paneParametres);
 	}
 	
@@ -274,6 +281,35 @@ public class Vue {
 		});
 	}
 	
+	public int couleur_menuItem() {
+		couleurMenu = new MenuButton("Couleur");
+		CheckMenuItem rouge = new CheckMenuItem("Rouge");
+        CheckMenuItem bleu = new CheckMenuItem("Bleu");
+        CheckMenuItem vert = new CheckMenuItem("Vert");
+        CheckMenuItem jaune = new CheckMenuItem("Jaune");
+        CheckMenuItem violet = new CheckMenuItem("Violet");
+        couleurMenu.setLayoutX(paneParametres.getPrefWidth()*0.05);
+        couleurMenu.setLayoutY(paneParametres.getPrefHeight()*0.43);
+        couleurMenu.getItems().addAll(rouge,bleu,vert,jaune,violet);
+        paneParametres.getChildren().add(couleurMenu);
+        rouge.setOnAction(actionEvent->{
+			couleur = 0;
+		});
+        bleu.setOnAction(actionEvent->{
+			couleur = 600;
+		});
+        vert.setOnAction(actionEvent->{
+			couleur = 400;
+		});
+        jaune.setOnAction(actionEvent->{
+			couleur = 100;
+		});
+        violet.setOnAction(actionEvent->{
+			couleur = 700;
+		});
+        return couleur;
+	}
+	
 	void FJulia() {
 		double reel = Double.parseDouble(TFreel.getText());
 		double imaginaire = Double.parseDouble(TFimaginaire.getText());
@@ -281,8 +317,8 @@ public class Vue {
 		int iterateur = Integer.parseInt(TFite.getText());
 		int largeur = Integer.parseInt(TFwidth.getText());
 		int hauteur = Integer.parseInt(TFheight.getText());
-		//generateFractale(controleur.generateJulia());
-		generateFractale(controleur.generateJulia(reel,imaginaire,pas,iterateur,largeur,hauteur));
+		int couleur = couleur_menuItem();
+		generateFractale(controleur.generateJulia(reel,imaginaire,pas,iterateur,largeur,hauteur,couleur));
 	}
 	
 	public void FMandelbrot(){
@@ -311,7 +347,7 @@ public class Vue {
 		HBox buttons_zoom = new HBox();
 		buttons_zoom.setPrefSize(50, 100);
 		buttons_zoom.setLayoutX(paneParametres.getPrefWidth()*0.4);
-		buttons_zoom.setLayoutY(paneParametres.getPrefHeight()*0.55);
+		buttons_zoom.setLayoutY(paneParametres.getPrefHeight()*0.65);
 		buttons_zoom.toFront();
 		buttons_zoom.getChildren().addAll(zoom,dezoom);
 		paneParametres.getChildren().addAll(buttons_zoom);// Mettre la HBox de buttons pas dans fractale_pane mais le pane d'a cote avec tous les autres choix de parametres		
@@ -338,14 +374,13 @@ public class Vue {
 		moveY.getChildren().addAll(moveUp,moveDown);
 		HBox buttons_translate = new HBox();
 		buttons_translate.setLayoutX(paneParametres.getPrefWidth()*0.4);
-		buttons_translate.setLayoutY(paneParametres.getPrefHeight()*0.6);
+		buttons_translate.setLayoutY(paneParametres.getPrefHeight()*0.70);
 		buttons_translate.toFront();
 		buttons_translate.getChildren().addAll(moveL,moveY,moveR);
 		paneParametres.getChildren().addAll(buttons_translate);
 	}
 	
 	//GETTER
-	//public AnchorPane getRoot() { return this.root; }
 	public Stage getStage() { return this.stage; }
 	
 	//FONTIONS AUXILIAIRES
