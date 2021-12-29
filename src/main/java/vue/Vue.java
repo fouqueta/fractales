@@ -325,7 +325,7 @@ public class Vue {
 		double infX = Double.parseDouble(TFinfX.getText());
 		double supX = Double.parseDouble(TFsupX.getText());
 		double infY = Double.parseDouble(TFinfY.getText());
-		double supY = Double.parseDouble(TFsupX.getText());
+		double supY = Double.parseDouble(TFsupY.getText());
 		generateFractale(controleur.generateJulia(reel,imaginaire,pas,iterateur,infX,supX,infY,supY,couleur));
 	}
 	
