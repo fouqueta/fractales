@@ -10,9 +10,8 @@ import modele.*;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuButton;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -21,16 +20,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
-
-import modele.Fractales.FractaleBuilder;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
 
 public class Vue {
 	
@@ -62,7 +54,6 @@ public class Vue {
 	private TextField TFwidth;
 	private TextField TFheight;
 	
-	private MenuButton couleurMenu;
 	private int couleur;
 	
 	private Controleur controleur;
@@ -199,7 +190,7 @@ public class Vue {
 	    boutons(s);
 	    buttons_zoom();
 	    buttons_translate();
-	    couleur_menuItem();
+	    initSliderColor();
 		//root.getChildren().add(paneParametres);
 	}
 	
@@ -243,6 +234,7 @@ public class Vue {
 		});
 		valider.setOnAction(actionEvent->{
 			paneParametres.getChildren().remove(erreur);
+			//restoreSliderColor();
 			if (TFpas.getText().isEmpty() || TFreel.getText().isEmpty() || TFimaginaire.getText().isEmpty() || TFite.getText().isEmpty()|| TFwidth.getText().isEmpty()|| TFheight.getText().isEmpty()) { 
 				erreur = new Label("Veuillez remplir tous les champs");
 				set_erreur();
@@ -281,33 +273,65 @@ public class Vue {
 		});
 	}
 	
-	public int couleur_menuItem() {
-		couleurMenu = new MenuButton("Couleur");
-		CheckMenuItem rouge = new CheckMenuItem("Rouge");
-        CheckMenuItem bleu = new CheckMenuItem("Bleu");
-        CheckMenuItem vert = new CheckMenuItem("Vert");
-        CheckMenuItem jaune = new CheckMenuItem("Jaune");
-        CheckMenuItem violet = new CheckMenuItem("Violet");
-        couleurMenu.setLayoutX(paneParametres.getPrefWidth()*0.05);
-        couleurMenu.setLayoutY(paneParametres.getPrefHeight()*0.43);
-        couleurMenu.getItems().addAll(rouge,bleu,vert,jaune,violet);
-        paneParametres.getChildren().add(couleurMenu);
-        rouge.setOnAction(actionEvent->{
-			couleur = 0;
-		});
-        bleu.setOnAction(actionEvent->{
-			couleur = 600;
-		});
-        vert.setOnAction(actionEvent->{
-			couleur = 400;
-		});
-        jaune.setOnAction(actionEvent->{
-			couleur = 100;
-		});
-        violet.setOnAction(actionEvent->{
-			couleur = 700;
-		});
-        return couleur;
+	public void restoreSliderColor() {
+		
+	}
+	
+	public int initSliderColor() {
+		Label labelColor = new Label("Choisir la couleur");
+	    Slider sliderColor = new Slider();
+	    Label infoColor = new Label("-");
+	  
+	    sliderColor.setMin(0);
+	    sliderColor.setMax(1000);
+	    sliderColor.setValue(0);
+	    sliderColor.setShowTickLabels(true);
+	    sliderColor.setShowTickMarks(true);
+	    sliderColor.setMajorTickUnit(150);
+	    sliderColor.setBlockIncrement(150);
+	    sliderColor.setSnapToTicks(true);
+	    sliderColor.setPrefWidth(paneParametres.getPrefWidth()*0.9);
+	    
+		VBox VBoxCouleurs = new VBox();
+		VBoxCouleurs.setPadding(new Insets(20));
+	    VBoxCouleurs.setSpacing(10);
+	    VBoxCouleurs.getChildren().addAll(labelColor, sliderColor, infoColor);
+	    VBoxCouleurs.setLayoutX(paneParametres.getPrefWidth()*0.01);
+	    VBoxCouleurs.setLayoutY(paneParametres.getPrefHeight()*0.43);
+	    paneParametres.getChildren().add(VBoxCouleurs);
+	    
+	    sliderColor.valueProperty().addListener((obs, oldval, newVal) -> {
+	    	sliderColor.setValue(newVal.intValue());
+	    	infoColor.setText("Valeur : " + newVal.intValue());
+	    	couleur = newVal.intValue();
+	    });
+	    return couleur;
+//		couleurMenu = new MenuButton("Couleur");
+//		CheckMenuItem rouge = new CheckMenuItem("Rouge");
+//        CheckMenuItem bleu = new CheckMenuItem("Bleu");
+//        CheckMenuItem vert = new CheckMenuItem("Vert");
+//        CheckMenuItem jaune = new CheckMenuItem("Jaune");
+//        CheckMenuItem violet = new CheckMenuItem("Violet");
+//        couleurMenu.setLayoutX(paneParametres.getPrefWidth()*0.05);
+//        couleurMenu.setLayoutY(paneParametres.getPrefHeight()*0.43);
+//        couleurMenu.getItems().addAll(rouge,bleu,vert,jaune,violet);
+//        paneParametres.getChildren().add(couleurMenu);
+//        rouge.setOnAction(actionEvent->{
+//			couleur = 0;
+//		});
+//        bleu.setOnAction(actionEvent->{
+//			couleur = 600;
+//		});
+//        vert.setOnAction(actionEvent->{
+//			couleur = 400;
+//		});
+//        jaune.setOnAction(actionEvent->{
+//			couleur = 100;
+//		});
+//        violet.setOnAction(actionEvent->{
+//			couleur = 700;
+//		});
+//        return couleur;
 	}
 	
 	void FJulia() {
@@ -317,7 +341,6 @@ public class Vue {
 		int iterateur = Integer.parseInt(TFite.getText());
 		int largeur = Integer.parseInt(TFwidth.getText());
 		int hauteur = Integer.parseInt(TFheight.getText());
-		int couleur = couleur_menuItem();
 		generateFractale(controleur.generateJulia(reel,imaginaire,pas,iterateur,largeur,hauteur,couleur));
 	}
 	

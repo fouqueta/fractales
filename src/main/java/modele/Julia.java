@@ -79,7 +79,7 @@ public class Julia extends Fractales {
 			rgb = 0;
 		}
 		else {
-			rgb=Color.HSBtoRGB((float)(i+couleur)/MAX_ITER, 0.7f, 0.7f);
+			rgb=Color.HSBtoRGB((float) (i+couleur)/MAX_ITER, 0.7f, 0.7f);
 		}
 		img.setRGB(x, y, rgb);
 	}
