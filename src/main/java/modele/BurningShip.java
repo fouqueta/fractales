@@ -16,8 +16,8 @@ public class BurningShip extends Fractales {
 	@Override
 	public void iterStream(int x, int y, double gapX, double gapY, int couleur) {
 		int i = 0;
-		double zX = ((4.0/width)*(x+translateX)*gapX)-3.0*gapX;
-		double zY = ((2.0/height)*(y+translateY)*gapY)-1.5*gapY;
+		double zX = (((borneSupX - borneInfX)/width)*(x+translateX)*gapX) + borneInfX*gapX;
+		double zY = (((borneSupY - borneInfY)/height)*(y+translateY)*gapY) + borneInfY*gapY;
 		Complexe z = Complexe.newComplexe(zX, zY);
 		Complexe c = z;
 		while (z.module() <= 2 && i < MAX_ITER-1) {

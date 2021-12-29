@@ -11,14 +11,19 @@ public class Fractales {
 
 	protected int width;
 	protected int height;
+	protected double borneInfX;
+	protected double borneSupX;
+	protected double borneInfY;
+	protected double borneSupY;
 	protected double zoom;
 	protected int translateX;
 	protected int translateY;
 	protected double pas;
+	protected int couleur;
+	protected String name;
 	protected int MAX_ITER;
 	protected FonctionFractale f;
 	protected BufferedImage img;
-	protected int couleur;
 	
 	
 	
@@ -31,8 +36,12 @@ public class Fractales {
 	public Fractales() {}
 	
 	public static class FractaleBuilder{
-		private int width;
-		private int height;		
+//		private int width;
+//		private int height;
+		private double borneInfX;
+		private double borneSupX;
+		private double borneInfY;
+		private double borneSupY;
 		private double pas;
 		private int MAX_ITER;
 		private int couleur;
@@ -43,13 +52,30 @@ public class Fractales {
 			return new FractaleBuilder();
 		}
 		
-		public FractaleBuilder width(int largeur) {
-			this.width=largeur;
+//		public FractaleBuilder width(int largeur) {
+//			this.width=largeur;
+//			return this;
+//		}
+//		
+//		public FractaleBuilder height(int hauteur) {
+//			this.height=hauteur;
+//			return this;
+//		}
+		
+		public FractaleBuilder borneInfX(double x1) {
+			this.borneInfX = x1;
 			return this;
 		}
-		
-		public FractaleBuilder height(int hauteur) {
-			this.height=hauteur;
+		public FractaleBuilder borneSupX(double x2) {
+			this.borneSupX = x2;
+			return this;
+		}
+		public FractaleBuilder borneInfY(double y1) {
+			this.borneInfY = y1;
+			return this;
+		}
+		public FractaleBuilder borneSupY(double y2) {
+			this.borneSupY = y2;
 			return this;
 		}
 		
@@ -86,43 +112,23 @@ public class Fractales {
 	}
 	
 	protected Fractales (FractaleBuilder f) {
-		this.width=f.width;
-		this.height=f.height;
+//		this.width=f.width;
+//		this.height=f.height;
+		this.borneInfX = f.borneInfX;
+		this.borneSupX = f.borneSupX;
+		this.borneInfY = f.borneInfY;
+		this.borneSupY = f.borneSupY;		
+		this.pas = f.pas;
+		this.width = (int) ((borneSupX - borneInfX) * 1/pas +1);
+		this.height = (int) ((borneSupY - borneInfY) * 1/pas +1);
+		this.MAX_ITER = f.MAX_ITER;
 		this.zoom = 1.0;
 		this.translateX = 0;
 		this.translateY = 0;
-		this.pas=f.pas;
-		this.MAX_ITER=f.MAX_ITER;
 		this.img = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
 		this.couleur=f.couleur;
 	}
 	
-	public void zoom() {
-		this.zoom += 1;
-	}
-	
-	public void dezoom() {
-		this.zoom -= 1;
-		if (this.zoom < 1) { this.zoom = 1; }
-	}
-	
-	public void translateX(boolean sign) {
-		if (sign) {  //Deplacement vers la droite
-			this.translateX += (int) (width*0.1);
-		}
-		else { //Deplacement vers la gauche
-			this.translateX -= (int) (width*0.1);
-		}
-	}
-	
-	public void translateY(boolean sign) {
-		if (sign) { //Deplacement vers le bas
-			this.translateY += (int) (height*0.1);
-		}
-		else { //Deplacement vers le haut
-			this.translateY -= (int) (height*0.1);
-		}
-	}
 	
 	
 	public BufferedImage generateFractal() {
@@ -134,9 +140,11 @@ public class Fractales {
 	}
 	
 	public void saveFractal() {
-		File f = new File("MyFile.png");
+		File fImg = new File("src/main/sauvegardes/" + name + ".png");
+		File fTxt = new File("src/main/sauvegardes/" + name + ".txt");
+		
 		try {
-			ImageIO.write(img, "PNG", f);
+			ImageIO.write(img, "PNG", fImg);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -209,6 +217,33 @@ public class Fractales {
 		img.setRGB(x, y, rgb);
 	}
 	
+	
+	public void zoom() {
+		this.zoom += 1;
+	}
+	
+	public void dezoom() {
+		this.zoom -= 1;
+		if (this.zoom < 1) { this.zoom = 1; }
+	}
+	
+	public void translateX(boolean sign) {
+		if (sign) {  //Deplacement vers la droite
+			this.translateX += (int) (width*0.1);
+		}
+		else { //Deplacement vers la gauche
+			this.translateX -= (int) (width*0.1);
+		}
+	}
+	
+	public void translateY(boolean sign) {
+		if (sign) { //Deplacement vers le bas
+			this.translateY += (int) (height*0.1);
+		}
+		else { //Deplacement vers le haut
+			this.translateY -= (int) (height*0.1);
+		}
+	}
 	
 	//GETTER
 	public String getMatrice() { return this.width+" x "+this.height; }
