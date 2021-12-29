@@ -31,6 +31,10 @@ public class Complexe {
 		return Math.sqrt(this.reel*this.reel + this.imaginaire*this.imaginaire);
 	}
 	
+	public Complexe conjugate() {
+		return newComplexe(this.reel, -this.imaginaire);
+	}
+	
 	
 	public double getReel () { return this.reel; }
 	public double getImaginaire () { return this.imaginaire; }

@@ -25,7 +25,7 @@ public class Controleur {
 				.MAX_ITER(iterateur)
 				.buildJulia(c)
 				;
-		return ((Julia) fractale).createImg();
+		return fractale.createImg();
 	}
 	
 
@@ -43,8 +43,7 @@ public class Controleur {
 
 	
 	
-	public BufferedImage generateMandel() {
-		//Complexe c1 = Complexe.newComplexe(-0.7269, 0.1889);
+	public BufferedImage generateMandelbrot() {
 		fractale = FractaleBuilder.newFractaleBuilder()
 				.width(3001)
 				.height(2001)
@@ -52,11 +51,10 @@ public class Controleur {
 				.MAX_ITER(100)
 				.buildMandelbrot()
 				;
-		return ((Mandelbrot) fractale).createImg();
+		return fractale.createImg();
 	}
 	
 	public BufferedImage generateBurningShip() {
-		//Complexe c1 = Complexe.newComplexe(-0.7269, 0.1889);
 		fractale = FractaleBuilder.newFractaleBuilder()
 				.width(3001)
 				.height(2001)
@@ -64,7 +62,18 @@ public class Controleur {
 				.MAX_ITER(100)
 				.buildBurningShip()
 				;
-		return ((BurningShip) fractale).createImg();
+		return fractale.createImg();
+	}
+	
+	public BufferedImage generateTricorne() {
+		fractale = FractaleBuilder.newFractaleBuilder()
+				.width(3001)
+				.height(2001)
+				.pas(0.0001)
+				.MAX_ITER(100)
+				.buildTricorn()
+				;
+		return fractale.createImg();
 	}
 	
 	public BufferedImage zoom(boolean zoom) {
@@ -80,13 +89,13 @@ public class Controleur {
 	public BufferedImage translateX(boolean sign) {
 		fractale.translateX(sign);
 		char dir = sign ? 'R' : 'L';
-		return ((BurningShip) fractale).translate(dir);
+		return fractale.translate(dir);
 	}
 	
 	public BufferedImage translateY(boolean sign) {
 		fractale.translateY(sign);
 		char dir = sign ? 'D' : 'U';
-		return ((BurningShip) fractale).translate(dir);
+		return fractale.translate(dir);
 	}
 	
 	//SETTER
