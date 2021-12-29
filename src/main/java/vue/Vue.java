@@ -231,6 +231,9 @@ public class Vue {
 				System.exit(1);
 			}
 		});
+		sauvegarder.setOnAction(actionEvent->{
+			controleur.saveFractaleControleur();
+		});
 		valider.setOnAction(actionEvent->{
 			paneParametres.getChildren().remove(erreur);
 			if (TFpas.getText().isEmpty() || TFreel.getText().isEmpty() || TFimaginaire.getText().isEmpty() || TFite.getText().isEmpty()|| TFwidth.getText().isEmpty()|| TFheight.getText().isEmpty()) { 
@@ -285,7 +288,6 @@ public class Vue {
 	public void FMandelbrot(){
 		
 	}
-	
 	
 	public void generateFractale(BufferedImage img) {
 		Image image = SwingFXUtils.toFXImage(img, null);

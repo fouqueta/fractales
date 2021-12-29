@@ -25,7 +25,7 @@ public class Controleur {
 				.MAX_ITER(iterateur)
 				.buildJulia(c)
 				;
-		return fractale.createImg();
+		return fractale.generateFractal();
 	}
 	
 
@@ -51,7 +51,7 @@ public class Controleur {
 				.MAX_ITER(100)
 				.buildMandelbrot()
 				;
-		return fractale.createImg();
+		return fractale.generateFractal();
 	}
 	
 	public BufferedImage generateBurningShip() {
@@ -62,7 +62,7 @@ public class Controleur {
 				.MAX_ITER(100)
 				.buildBurningShip()
 				;
-		return fractale.createImg();
+		return fractale.generateFractal();
 	}
 	
 	public BufferedImage generateTricorne() {
@@ -73,7 +73,7 @@ public class Controleur {
 				.MAX_ITER(100)
 				.buildTricorn()
 				;
-		return fractale.createImg();
+		return fractale.generateFractal();
 	}
 	
 	public BufferedImage zoom(boolean zoom) {
@@ -83,7 +83,7 @@ public class Controleur {
 		else { //Si false, dezoom
 			fractale.dezoom();
 		}
-		return fractale.createImg();
+		return fractale.generateFractal();
 	}
 	
 	public BufferedImage translateX(boolean sign) {
@@ -96,6 +96,10 @@ public class Controleur {
 		fractale.translateY(sign);
 		char dir = sign ? 'D' : 'U';
 		return fractale.translate(dir);
+	}
+	
+	public void saveFractaleControleur() {
+		fractale.saveFractal();
 	}
 	
 	//SETTER

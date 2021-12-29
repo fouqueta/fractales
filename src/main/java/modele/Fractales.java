@@ -117,7 +117,7 @@ public class Fractales {
 	}
 	
 	
-	public BufferedImage createImg() {		
+	/*public BufferedImage createImg() {		
 		long start=System.currentTimeMillis();
 		stream(0,width,0,height);
 	    long end=System.currentTimeMillis();
@@ -130,8 +130,24 @@ public class Fractales {
 			e.printStackTrace();
 		}
 		return img;
+	}*/
+	
+	public BufferedImage generateFractal() {
+		long start=System.currentTimeMillis();
+		stream(0,width,0,height);
+	    long end=System.currentTimeMillis();
+	    System.out.println("Parallel stream took time : "+(end-start));
+	    return img;
 	}
 	
+	public void saveFractal() {
+		File f = new File("MyFile.png");
+		try {
+			ImageIO.write(img, "PNG", f);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	//Utilisation de parallel stream pour le calcul des fractales
 	public void stream(int startX, int endX, int startY, int endY) {
