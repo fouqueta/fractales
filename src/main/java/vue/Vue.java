@@ -139,37 +139,49 @@ public class Vue {
 		TFpas = new TextField();
 	    gridPaneParametres.add(TFpas, 2, 5,2,1);
 	    
-		Label taille = new Label("Bornes du plan complexe:"); //label plan complexe 
-		//label abscisses
-		//label ordonnees
-	    gridPaneParametres.add(taille, 0, 7, 2, 1);
-	    TFinfX = new TextField();
-	    TFinfX.setPromptText("borne inferieure");
-	    TFinfX.setMaxSize(100,100);
-	    gridPaneParametres.add(TFinfX, 2, 6);
-	    TFsupX = new TextField();
-	    TFsupX.setPromptText("borne superieure");
-	    TFsupX.setMaxSize(100,100);
-	    gridPaneParametres.add(TFsupX, 3, 6);
-	    
 	    Label nbIte = new Label("Nombre d'iteration maximal:"); //nombre iteration max 
-	    //nbIte.setFont(new Font(10));
-	    gridPaneParametres.add(nbIte, 0, 7, 3 ,1);
+	    gridPaneParametres.add(nbIte, 0, 6, 3 ,1);
 	    TFite = new TextField();
 	    TFite.setMaxSize(100,100);
-	    gridPaneParametres.add(TFite, 3, 7);
-	   
-	    //TODO: choix de couleur 
+	    gridPaneParametres.add(TFite, 3, 6);
 	    
 	    Label Ldescription = new Label();      
 	    Ldescription.setText("Description de la fractale:");  
-	    Ldescription.setLayoutX((paneParametres.getPrefWidth()*7)/100);
-	    Ldescription.setLayoutY((paneParametres.getPrefHeight()*32)/100);
+	    Ldescription.setLayoutX(paneParametres.getPrefWidth()*0.07);
+	    Ldescription.setLayoutY(paneParametres.getPrefHeight()*0.28);
 	    paneParametres.getChildren().add(Ldescription);
 	    Text description = new Text(); //TODO: rajouter texte de description + gerer taille du texte au moment d'afficher
 	    description.setText("Bonjour je suis kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");  
 	    description.setWrappingWidth(300);
 	    gridPaneParametres.add(description, 0, 11, 4,1);
+	    
+	    Label Lborne = new Label("Bornes du plan complexe"); 
+	    Lborne.setFont(new Font("Arial", 13));
+	    Lborne.setLayoutX(paneParametres.getPrefWidth()*0.07);
+	    Lborne.setLayoutY(paneParametres.getPrefHeight()*0.5);
+	    paneParametres.getChildren().add(Lborne);
+	    
+	    Label abscisse = new Label("abscisses:"); //taille matrice 
+	    gridPaneParametres.add(abscisse, 0, 24, 2, 1);
+	    TFinfX = new TextField();
+	    TFinfX.setPromptText("borne inf");
+	    TFinfX.setMaxSize(100,100);
+	    gridPaneParametres.add(TFinfX, 2, 24);
+	    TFsupX = new TextField();
+	    TFsupX.setPromptText("borne sup");
+	    TFsupX.setMaxSize(100,100);
+	    gridPaneParametres.add(TFsupX, 3, 24);
+	    
+	    Label ordonnee = new Label("ordonnees:"); //taille matrice 
+	    gridPaneParametres.add(ordonnee, 0, 25, 2, 1);
+	    TFinfY = new TextField();
+	    TFinfY.setPromptText("borne inf");
+	    TFinfY.setMaxSize(100,100);
+	    gridPaneParametres.add(TFinfY, 2, 25);
+	    TFsupY = new TextField();
+	    TFsupY.setPromptText("borne sup");
+	    TFsupY.setMaxSize(100,100);
+	    gridPaneParametres.add(TFsupY, 3, 25);
 	    
 	    paneParametres.getChildren().addAll(gridPaneParametres);
 	    paneParametres.getChildren().addAll(titre);
@@ -222,7 +234,8 @@ public class Vue {
 		valider.setOnAction(actionEvent->{
 			paneParametres.getChildren().remove(erreur);
 			//restoreSliderColor();
-			if (TFpas.getText().isEmpty() || TFreel.getText().isEmpty() || TFimaginaire.getText().isEmpty() || TFite.getText().isEmpty()|| TFwidth.getText().isEmpty()|| TFheight.getText().isEmpty()) { 
+			if (TFpas.getText().isEmpty() || TFreel.getText().isEmpty() || TFimaginaire.getText().isEmpty() || TFite.getText().isEmpty() || 
+					TFinfX.getText().isEmpty() || TFsupX.getText().isEmpty() || TFinfY.getText().isEmpty() || TFinfY.getText().isEmpty() ) { 
 				erreur = new Label("Veuillez remplir tous les champs");
 				set_erreur();
 			}else if (!(isDouble(TFreel.getText()) && isDouble(TFimaginaire.getText()))){
@@ -234,7 +247,7 @@ public class Vue {
 			}else if (!isInt(TFite.getText())){
 				erreur = new Label("Veuillez entrer un iterateur de type int");
 				set_erreur();
-			}else if (!(isInt(TFwidth.getText()) && isInt(TFheight.getText()))){
+			}else if (!(isDouble(TFinfX.getText()) && isDouble(TFsupX.getText()) && isDouble(TFinfY.getText()) && isDouble(TFsupY.getText()))){
 				erreur = new Label("Veuillez entrer une largeur ou hauteur de type int");
 				set_erreur();
 			}else {
@@ -252,8 +265,10 @@ public class Vue {
 			TFimaginaire.clear();
 			TFpas.clear();
 			TFite.clear();
-			TFwidth.clear();
-			TFheight.clear();
+			TFinfX.clear();
+			TFsupX.clear();
+			TFinfY.clear();
+			TFsupY.clear();
 		});
 		quitter.setOnAction(actionEvent->{
 			stage.close();
@@ -281,7 +296,7 @@ public class Vue {
 	    VBoxCouleurs.setSpacing(10);
 	    VBoxCouleurs.getChildren().addAll(labelColor, sliderColor, infoColor);
 	    VBoxCouleurs.setLayoutX(paneParametres.getPrefWidth()*0.01);
-	    VBoxCouleurs.setLayoutY(paneParametres.getPrefHeight()*0.43);
+	    VBoxCouleurs.setLayoutY(paneParametres.getPrefHeight()*0.35);
 	    paneParametres.getChildren().add(VBoxCouleurs);
 	    
 	    sliderColor.valueProperty().addListener((obs, oldval, newVal) -> {
