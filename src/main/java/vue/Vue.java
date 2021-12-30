@@ -229,7 +229,7 @@ public class Vue {
 			}
 		});
 		sauvegarder.setOnAction(actionEvent->{
-			controleur.saveFractaleControleur();
+			controleur.saveFractale();
 		});
 		valider.setOnAction(actionEvent->{
 			paneParametres.getChildren().remove(erreur);

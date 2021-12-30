@@ -1,6 +1,4 @@
 package vue;
-import modele.*;
-import modele.Fractales.FractaleBuilder;
 import controleur.*;
 
 import javafx.application.Application;

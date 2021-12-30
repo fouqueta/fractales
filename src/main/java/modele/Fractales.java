@@ -3,6 +3,12 @@ package modele;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.IntStream;
 
 import javax.imageio.ImageIO;
@@ -141,13 +147,38 @@ public class Fractales {
 	
 	public void saveFractal() {
 		File fImg = new File("src/main/sauvegardes/" + name + ".png");
-		File fTxt = new File("src/main/sauvegardes/" + name + ".txt");
-		
+		//File fTxt = new File("src/main/sauvegardes/" + name + ".txt");
+		List<String> lignes = Arrays.asList(
+				"TYPE DE FRACTALE:" + typeFractale(),
+				"ATTRIBUTS:VALEURS",
+				"borneInfX:" + borneInfX,
+				"borneSupX:" + borneSupX,
+				"borneInfY:" + borneInfY,
+				"borneSupY:" + borneSupY,
+				"pas:" + pas,
+				"MAX_ITER:" + MAX_ITER,
+				"couleur:" + couleur, //jusqu'à couleur on utilise les builder, le reste faudra generer avec des setters/ OU TOUT EN BUILDER ?
+				"name:" + name,
+				"width:" + width,
+				"height:" + height,
+				"zoom:" + zoom,
+				"translateX:" + translateX,
+				"translateY:" + translateY
+		);
+		Path fTxt = Paths.get("src/main/sauvegardes/" + name + ".txt");
 		try {
 			ImageIO.write(img, "PNG", fImg);
+			Files.write(fTxt, lignes, Charset.forName("UTF-8"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public String typeFractale() {
+		if (this instanceof Julia) { return "Julia"; }
+		else if (this instanceof Mandelbrot) { return "Mandelbrot"; }
+		else if (this instanceof BurningShip) { return "BurningShip"; }
+		else { return "Tricorn"; }
 	}
 	
 	//Utilisation de parallel stream pour le calcul des fractales
