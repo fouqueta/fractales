@@ -249,14 +249,19 @@ public class Vue {
 			}
 		});
 		sauvegarder.setOnAction(actionEvent->{
+			if (TFfichier.getText().isEmpty()){
+				erreur = new Label("Veuillez remplir tous les champs");
+				set_erreur();
+			}else {
 			controleur.saveFractale();
+			}
 		});
 		valider.setOnAction(actionEvent->{
 			paneParametres.getChildren().remove(erreur);
 			fractale_pane.getChildren().remove(i);
 			//restoreSliderColor();
 			if (TFpas.getText().isEmpty() || TFreel.getText().isEmpty() || TFimaginaire.getText().isEmpty() || TFite.getText().isEmpty() || 
-					TFinfX.getText().isEmpty() || TFsupX.getText().isEmpty() || TFinfY.getText().isEmpty() || TFinfY.getText().isEmpty() || TFfichier.getText().isEmpty()) { 
+					TFinfX.getText().isEmpty() || TFsupX.getText().isEmpty() || TFinfY.getText().isEmpty() || TFinfY.getText().isEmpty()) { 
 				erreur = new Label("Veuillez remplir tous les champs");
 				set_erreur();
 			}else if (!(isDouble(TFreel.getText()) && isDouble(TFimaginaire.getText()))){
