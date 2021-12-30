@@ -276,10 +276,14 @@ public class Vue {
 			}else if (!(isDouble(TFinfX.getText()) && isDouble(TFsupX.getText()) && isDouble(TFinfY.getText()) && isDouble(TFsupY.getText()))){
 				erreur = new Label("Veuillez entrer une largeur ou hauteur de type double");
 				set_erreur();
-			}else if ((Double.parseDouble(TFsupX.getText())>1.43)){
-				erreur = new Label("Veuillez entrer une borne sup de X < 1.44");
+			}else if (Double.parseDouble(TFsupX.getText()) - Double.parseDouble(TFinfX.getText()) > 2.93){
+				erreur = new Label("Rentrer des bornes abscisses d'une distance < 2.94");
 				set_erreur();
-			}else {
+			}else if (Double.parseDouble(TFsupY.getText()) - Double.parseDouble(TFinfY.getText()) > 2.){
+				erreur = new Label("Rentrer des bornes ordonnees d'une distance <= 2");
+				set_erreur();
+			}
+			else {
 				if (s.equals("Julia")) {
 					System.out.println("gne");
 					FJulia();
@@ -357,11 +361,6 @@ public class Vue {
 		double infY = Double.parseDouble(TFinfY.getText());
 		double supY = Double.parseDouble(TFsupY.getText());
 		generateFractale(controleur.generateJulia(reel,imaginaire,pas,iterateur,infX,supX,infY,supY,couleur,TFfichier.getText()));
-		System.out.println("zoom = " + this.zoom);
-		
-		System.out.println("x = " + this.translateX);
-		
-		System.out.println("y = " + this.translateY);
 	}
 	
 	public void FJuliaTxt(String s) {
@@ -394,9 +393,9 @@ public class Vue {
 					break;
 				case "translateY": translateY=Integer.parseInt(attributs[1]); 
 					break;
-				case "reel": reel=Double.parseDouble(attributs[1]);
+				case "constante partie reelle": reel=Double.parseDouble(attributs[1]);
 					break;
-				case "imaginaire": imaginaire=Double.parseDouble(attributs[1]); 
+				case "constante partie imaginaire": imaginaire=Double.parseDouble(attributs[1]); 
 					break;
 			}
 		}
