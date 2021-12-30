@@ -82,14 +82,40 @@ public class Controleur {
 
 	
 	
-	public BufferedImage generateMandelbrot() {
+	public BufferedImage generateMandelbrot(double pas, int iterateur, double infX, double supX, double infY, double supY, int color, String name) {
 		fractale = FractaleBuilder.newFractaleBuilder()
-//				.width(3001)
-//				.height(2001)
-				.pas(0.0001)
-				.MAX_ITER(100)
+				.borneInfX(infX)
+				.borneSupX(supX)
+				.borneInfY(infY)
+				.borneSupY(supY)
+				.pas(pas)
+				.MAX_ITER(iterateur)
+				.couleur(color)
+				.name(name)
 				.buildMandelbrot()
 				;
+		
+		return fractale.generateFractal();
+	}
+	
+	public BufferedImage generateMandelbrotBis(String type, double borneInfX, double borneSupX, double borneInfY, double borneSupY, double pas, int MAX_ITER, int couleur, String name, double zoom, int translateX, int translateY) {
+		System.out.println("oui");
+		fractale = FractaleBuilder.newFractaleBuilder()
+				.type(type)
+				.borneInfX(borneInfX)
+				.borneSupX(borneSupX)
+				.borneInfY(borneInfY)
+				.borneSupY(borneSupY)
+				.pas(pas)
+				.MAX_ITER(MAX_ITER)
+				.couleur(couleur)
+				.name(name)
+				.zoom(zoom)
+				.translateX(translateX)
+				.translateY(translateY)
+				.buildMandelbrot()
+				;
+		
 		return fractale.generateFractal();
 	}
 	
@@ -104,14 +130,76 @@ public class Controleur {
 		return fractale.generateFractal();
 	}
 	
-	public BufferedImage generateTricorne() {
+	public BufferedImage generateTricorn(double pas, int iterateur, double infX, double supX, double infY, double supY, int color, String name) {
 		fractale = FractaleBuilder.newFractaleBuilder()
-//				.width(3001)
-//				.height(2001)
-				.pas(0.0001)
-				.MAX_ITER(100)
+				.borneInfX(infX)
+				.borneSupX(supX)
+				.borneInfY(infY)
+				.borneSupY(supY)
+				.pas(pas)
+				.MAX_ITER(iterateur)
+				.couleur(color)
+				.name(name)
 				.buildTricorn()
 				;
+		
+		return fractale.generateFractal();
+	}
+	
+	public BufferedImage generateTricornBis(String type, double borneInfX, double borneSupX, double borneInfY, double borneSupY, double pas, int MAX_ITER, int couleur, String name, double zoom, int translateX, int translateY) {
+		System.out.println("oui");
+		fractale = FractaleBuilder.newFractaleBuilder()
+				.type(type)
+				.borneInfX(borneInfX)
+				.borneSupX(borneSupX)
+				.borneInfY(borneInfY)
+				.borneSupY(borneSupY)
+				.pas(pas)
+				.MAX_ITER(MAX_ITER)
+				.couleur(couleur)
+				.name(name)
+				.zoom(zoom)
+				.translateX(translateX)
+				.translateY(translateY)
+				.buildTricorn()
+				;
+		
+		return fractale.generateFractal();
+	}
+	
+	public BufferedImage generateBurningShip(double pas, int iterateur, double infX, double supX, double infY, double supY, int color, String name) {
+		fractale = FractaleBuilder.newFractaleBuilder()
+				.borneInfX(infX)
+				.borneSupX(supX)
+				.borneInfY(infY)
+				.borneSupY(supY)
+				.pas(pas)
+				.MAX_ITER(iterateur)
+				.couleur(color)
+				.name(name)
+				.buildBurningShip()
+				;
+		
+		return fractale.generateFractal();
+	}
+	
+	public BufferedImage generateBurningShipBis(String type, double borneInfX, double borneSupX, double borneInfY, double borneSupY, double pas, int MAX_ITER, int couleur, String name, double zoom, int translateX, int translateY) {
+		fractale = FractaleBuilder.newFractaleBuilder()
+				.type(type)
+				.borneInfX(borneInfX)
+				.borneSupX(borneSupX)
+				.borneInfY(borneInfY)
+				.borneSupY(borneSupY)
+				.pas(pas)
+				.MAX_ITER(MAX_ITER)
+				.couleur(couleur)
+				.name(name)
+				.zoom(zoom)
+				.translateX(translateX)
+				.translateY(translateY)
+				.buildBurningShip()
+				;
+		
 		return fractale.generateFractal();
 	}
 	

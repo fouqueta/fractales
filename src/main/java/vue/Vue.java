@@ -141,20 +141,27 @@ public class Vue {
 	    	typeF = new Label("Julia"); 
 	    }else if (s.equals("Mandelbrot")) {
 	    	typeF = new Label("Mandelbrot");
+	    }else if (s.equals("Tricorn")) {
+	    	typeF = new Label("Tricorn");
+	    }else if (s.equals("BurningShip")) {
+	    	typeF = new Label("BurningShip");
 	    }
 		typeF.setFont(new Font("Arial", 13));
 	    gridPaneParametres.add(typeF, 2, 3, 2, 1);
 	    
-	    Label constanteC = new Label("constante c:"); //constante c
-	    gridPaneParametres.add(constanteC, 0, 4, 2, 1);
-	    TFreel = new TextField();
-	    TFreel.setPromptText("reel");
-	    TFreel.setMaxSize(100,100);
-	    gridPaneParametres.add(TFreel, 2, 4);
-	    TFimaginaire = new TextField();
-	    TFimaginaire.setPromptText("imaginaire");
-	    TFimaginaire.setMaxSize(100,100);
-	    gridPaneParametres.add(TFimaginaire, 3, 4);
+	    if(s.equals("Julia")) {
+		    Label constanteC = new Label("constante c:"); //constante c
+		    gridPaneParametres.add(constanteC, 0, 4, 2, 1);
+		    TFreel = new TextField();
+		    TFreel.setPromptText("reel");
+		    TFreel.setMaxSize(100,100);
+		    gridPaneParametres.add(TFreel, 2, 4);
+		    TFimaginaire = new TextField();
+		    TFimaginaire.setPromptText("imaginaire");
+		    TFimaginaire.setMaxSize(100,100);
+		    gridPaneParametres.add(TFimaginaire, 3, 4);
+	   }
+	
 		
 		Label pas = new Label("Pas de discretisation:"); //pas de discretisation
 	    gridPaneParametres.add(pas, 0, 5, 2, 1);
@@ -253,20 +260,25 @@ public class Vue {
 				erreur = new Label("Veuillez remplir tous les champs");
 				set_erreur();
 			}else {
-			controleur.saveFractale();
+				controleur.saveFractale();
 			}
 		});
 		valider.setOnAction(actionEvent->{
 			paneParametres.getChildren().remove(erreur);
 			fractale_pane.getChildren().remove(i);
 			//restoreSliderColor();
-			if (TFpas.getText().isEmpty() || TFreel.getText().isEmpty() || TFimaginaire.getText().isEmpty() || TFite.getText().isEmpty() || 
-					TFinfX.getText().isEmpty() || TFsupX.getText().isEmpty() || TFinfY.getText().isEmpty() || TFinfY.getText().isEmpty()) { 
+			if(s.equals("Julia")) {
+				if (TFreel.getText().isEmpty() || TFimaginaire.getText().isEmpty()) {
+					erreur = new Label("Veuillez remplir tous les champs");
+					set_erreur();
+				}else if (!(isDouble(TFreel.getText()) && isDouble(TFimaginaire.getText()))){
+					erreur = new Label("Veuillez entrer un reel ou imaginaire de type double");
+					set_erreur();
+				}
+			}
+			if (TFpas.getText().isEmpty() || TFite.getText().isEmpty() || TFinfX.getText().isEmpty() || TFsupX.getText().isEmpty() || TFinfY.getText().isEmpty() || TFsupY.getText().isEmpty()) { 
 				erreur = new Label("Veuillez remplir tous les champs");
 				set_erreur();
-			}else if (!(isDouble(TFreel.getText()) && isDouble(TFimaginaire.getText()))){
-				erreur = new Label("Veuillez entrer un reel ou imaginaire de type double");
-				set_erreur();	
 			}else if (!isDouble(TFpas.getText())) {
 				erreur = new Label("Veuillez entrer un pas de type double");
 				set_erreur();
@@ -285,23 +297,26 @@ public class Vue {
 			}
 			else {
 				if (s.equals("Julia")) {
-					System.out.println("gne");
 					FJulia();
-				} else if (s.equals("Mandelbrot")) {
-					FMandelbrot();
+				} else  {
+					FAutre(s);
 				}
 			}
 		});
 		restaurer.setOnAction(actionEvent->{
+			fractale_pane.getChildren().remove(i);
 			paneParametres.getChildren().remove(erreur);
-			TFreel.clear();
-			TFimaginaire.clear();
+			if(s.equals("Julia")) {
+				TFreel.clear();
+				TFimaginaire.clear();
+			}
 			TFpas.clear();
 			TFite.clear();
 			TFinfX.clear();
 			TFsupX.clear();
 			TFinfY.clear();
 			TFsupY.clear();
+			TFfichier.clear();
 		});
 		quitter.setOnAction(actionEvent->{
 			stage.close();
@@ -355,12 +370,31 @@ public class Vue {
 		double reel = Double.parseDouble(TFreel.getText());
 		double imaginaire = Double.parseDouble(TFimaginaire.getText());
 		double pas = Double.parseDouble(TFpas.getText());
-		int iterateur = Integer.parseInt(TFite.getText());
-		double infX = Double.parseDouble(TFinfX.getText());
-		double supX = Double.parseDouble(TFsupX.getText());
-		double infY = Double.parseDouble(TFinfY.getText());
-		double supY = Double.parseDouble(TFsupY.getText());
-		generateFractale(controleur.generateJulia(reel,imaginaire,pas,iterateur,infX,supX,infY,supY,couleur,TFfichier.getText()));
+		int MAX_ITER = Integer.parseInt(TFite.getText());
+		double borneInfX = Double.parseDouble(TFinfX.getText());
+		double borneSupX = Double.parseDouble(TFsupX.getText());
+		double borneInfY = Double.parseDouble(TFinfY.getText());
+		double borneSupY = Double.parseDouble(TFsupY.getText());
+		String nom = TFfichier.getText();
+		generateFractale(controleur.generateJulia(reel,imaginaire,pas,MAX_ITER,borneInfX,borneSupX,borneInfY,borneSupY,couleur,nom));
+	}
+	
+	public void FAutre(String s) {
+		double pas = Double.parseDouble(TFpas.getText());
+		int MAX_ITER = Integer.parseInt(TFite.getText());
+		double borneInfX = Double.parseDouble(TFinfX.getText());
+		double borneSupX = Double.parseDouble(TFsupX.getText());
+		double borneInfY = Double.parseDouble(TFinfY.getText());
+		double borneSupY = Double.parseDouble(TFsupY.getText());
+		String nom = TFfichier.getText();
+		if (s.equals("Mandelbrot")) {
+			generateFractale(controleur.generateMandelbrot(pas,MAX_ITER,borneInfX,borneSupX,borneInfY,borneSupY,couleur,nom));
+		}else if (s.equals("Tricorn")) {
+			System.out.println("oui");
+			generateFractale(controleur.generateTricorn(pas,MAX_ITER,borneInfX,borneSupX,borneInfY,borneSupY,couleur,nom));
+		}else if (s.equals("BurningShip")){
+			generateFractale(controleur.generateBurningShip(pas,MAX_ITER,borneInfX,borneSupX,borneInfY,borneSupY,couleur,nom));
+		}
 	}
 	
 	public void FJuliaTxt(String s) {
@@ -369,38 +403,46 @@ public class Vue {
 			String caract = scan.nextLine();
 			String[] attributs = caract.split(":");
 			switch (attributs[0]) {
-				case "TYPE DE FRACTALE": type=attributs[1];
+				case "TYPE DE FRACTALE": type=attributs[1];System.out.println(type);
 					break;
-				case "borneInfX": borneInfX=Double.parseDouble(attributs[1]);
-					;break;
-				case "borneSupX":borneSupX=Double.parseDouble(attributs[1]);
+				case "borneInfX": borneInfX=Double.parseDouble(attributs[1]);System.out.println(borneInfX);
 					break;
-				case "borneInfY": borneInfY=Double.parseDouble(attributs[1]); 	
+				case "borneSupX":borneSupX=Double.parseDouble(attributs[1]);System.out.println(borneSupX);
 					break;
-				case "borneSupY": borneSupY=Double.parseDouble(attributs[1]);
+				case "borneInfY": borneInfY=Double.parseDouble(attributs[1]); 	System.out.println(borneInfY);
 					break;
-				case "pas": pas=Double.parseDouble(attributs[1]); 
+				case "borneSupY": borneSupY=Double.parseDouble(attributs[1]);System.out.println(borneSupY);
 					break;
-				case "MAX_ITER": MAX_ITER=Integer.parseInt(attributs[1]); 
+				case "pas": pas=Double.parseDouble(attributs[1]); System.out.println(pas);
 					break;
-				case "couleur": couleur=Integer.parseInt(attributs[1]); 
+				case "MAX_ITER": MAX_ITER=Integer.parseInt(attributs[1]); System.out.println(MAX_ITER);
 					break;
-				case "name": name=attributs[1]; 
+				case "couleur": couleur=Integer.parseInt(attributs[1]); System.out.println(couleur);
 					break;
-				case "zoom": zoom=Double.parseDouble(attributs[1]);
+				case "name": name=attributs[1]; System.out.println(name);
 					break;
-				case "translateX": translateX=Integer.parseInt(attributs[1]); 
+				case "zoom": zoom=Double.parseDouble(attributs[1]);System.out.println(zoom);
 					break;
-				case "translateY": translateY=Integer.parseInt(attributs[1]); 
+				case "translateX": translateX=Integer.parseInt(attributs[1]); System.out.println(translateX);
 					break;
-				case "constante partie reelle": reel=Double.parseDouble(attributs[1]);
+				case "translateY": translateY=Integer.parseInt(attributs[1]); System.out.println(translateY);
 					break;
-				case "constante partie imaginaire": imaginaire=Double.parseDouble(attributs[1]); 
+				case "constante partie reelle": reel=Double.parseDouble(attributs[1]);System.out.println(reel);
+					break;
+				case "constante partie imaginaire": imaginaire=Double.parseDouble(attributs[1]); System.out.println(imaginaire);
 					break;
 			}
 		}
 		JuliaPredef();
-		generateFractale(controleur.generateJuliaBis(type,borneInfX,borneSupX,borneInfY,borneSupY,pas,MAX_ITER,couleur,name,zoom,translateX,translateY,reel,imaginaire));
+		if (type.equals("Julia")) {
+			generateFractale(controleur.generateJuliaBis(type,borneInfX,borneSupX,borneInfY,borneSupY,pas,MAX_ITER,couleur,name,zoom,translateX,translateY,reel,imaginaire));
+		}else if (type.equals("Mandelbrot")) {
+			generateFractale(controleur.generateMandelbrotBis(type,borneInfX,borneSupX,borneInfY,borneSupY,pas,MAX_ITER,couleur,name,zoom,translateX,translateY));
+		}else if (type.equals("Tricorn")) {
+			generateFractale(controleur.generateTricornBis(type,borneInfX,borneSupX,borneInfY,borneSupY,pas,MAX_ITER,couleur,name,zoom,translateX,translateY));
+		}else if (type.equals("BurningShip")){
+			generateFractale(controleur.generateBurningShipBis(type,borneInfX,borneSupX,borneInfY,borneSupY,pas,MAX_ITER,couleur,name,zoom,translateX,translateY));
+		}
 	}
 	
 	public void FMandelbrot(){
@@ -409,14 +451,16 @@ public class Vue {
 	
 	public void JuliaPredef() {
 		pane_parametres(type);
+		if (type.equals("Julia")){
+			TFreel.setText(String.valueOf(reel));
+			TFimaginaire.setText(String.valueOf(imaginaire));
+		}
 		TFinfX.setText(String.valueOf(borneInfX));
 		TFsupX.setText(String.valueOf(borneSupX));
 		TFinfY.setText(String.valueOf(borneInfY));
 		TFsupY.setText(String.valueOf(borneSupY));
 		TFpas.setText(String.valueOf(pas));
 		TFite.setText(String.valueOf(MAX_ITER));
-		TFreel.setText(String.valueOf(reel));
-		TFimaginaire.setText(String.valueOf(imaginaire));
 		sliderColor.setValue(couleur);
 		TFfichier.setText(name);
 	}
