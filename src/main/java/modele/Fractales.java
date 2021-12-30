@@ -16,6 +16,7 @@ import javax.imageio.ImageIO;
 
 public class Fractales {
 
+	protected String type;
 	protected int width;
 	protected int height;
 	protected double borneInfX;
@@ -45,6 +46,7 @@ public class Fractales {
 	public static class FractaleBuilder{
 //		private int width;
 //		private int height;
+		private String type;
 		private double borneInfX;
 		private double borneSupX;
 		private double borneInfY;
@@ -52,6 +54,12 @@ public class Fractales {
 		private double pas;
 		private int MAX_ITER;
 		private int couleur;
+		private String name;
+		//private int width;
+		//private int height;
+		private double zoom;
+		private int translateX;
+		private int translateY;
 		
 		private FractaleBuilder() {}
 		
@@ -69,6 +77,10 @@ public class Fractales {
 //			return this;
 //		}
 		
+		public FractaleBuilder type(String type) {
+			this.type=type;
+			return this;
+		}
 		public FractaleBuilder borneInfX(double x1) {
 			this.borneInfX = x1;
 			return this;
@@ -101,6 +113,25 @@ public class Fractales {
 			return this;
 		}
 		
+		public FractaleBuilder name(String nom) {
+			this.name=nom;
+			return this;
+		}
+		public FractaleBuilder zoom(double zoom) {
+			this.zoom=zoom;
+			return this;
+		}
+		
+		public FractaleBuilder translateX(int translateX) {
+			this.translateX=translateX;
+			return this;
+		}
+		
+		public FractaleBuilder translateY(int translateY) {
+			this.translateY=translateY;
+			return this;
+		}
+		
 		public Julia buildJulia(Complexe c) {
 			return new Julia(this,c);
 		}
@@ -121,6 +152,7 @@ public class Fractales {
 	protected Fractales (FractaleBuilder f) {
 //		this.width=f.width;
 //		this.height=f.height;
+		this.type=f.type;
 		this.borneInfX = f.borneInfX;
 		this.borneSupX = f.borneSupX;
 		this.borneInfY = f.borneInfY;
@@ -129,6 +161,8 @@ public class Fractales {
 		this.width = (int) ((borneSupX - borneInfX) * 1/pas +1);
 		this.height = (int) ((borneSupY - borneInfY) * 1/pas +1);
 		this.MAX_ITER = f.MAX_ITER;
+		this.name = f.name;
+		
 		this.zoom = 1.0;
 		this.translateX = 0;
 		this.translateY = 0;
@@ -136,9 +170,13 @@ public class Fractales {
 		this.couleur=f.couleur;
 	}
 	
+
+
+	
 	
 	
 	public BufferedImage generateFractal() {
+		//System.out.println(borneInfX+" "+borneSupX+" "+borneInfY+" "+borneSupY+" "+pas+" "+MAX_ITER+" "+couleur+" "+name+" "+zoom+" "+translateX+" "+translateY+" " );
 		long start=System.currentTimeMillis();
 		stream(0,width,0,height, couleur);
 	    long end=System.currentTimeMillis();
@@ -166,8 +204,8 @@ public class Fractales {
 		lignes.add("translateX:" + translateX);
 		lignes.add("translateY:" + translateY);
 		if (this instanceof Julia) {
-			lignes.add(2,"constante partie reelle:" + ((Julia) this).getReelC());
-			lignes.add(3,"constante partie imaginaire:" + ((Julia) this).getImaginaireC());
+			lignes.add(2,"reel:" + ((Julia) this).getReelC());
+			lignes.add(3,"imaginaire:" + ((Julia) this).getImaginaireC());
 		}
 		Path fTxt = Paths.get("src/main/sauvegardes/" + name + ".txt");
 		try {

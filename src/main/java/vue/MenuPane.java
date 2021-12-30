@@ -3,28 +3,40 @@ package vue;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Scanner;
 
 import controleur.Controleur;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import modele.Fractales;
 import modele.Fractales.FractaleBuilder;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
 public class MenuPane {
 	
+	
 	private Dimension tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
+	
+	private Scene menu_scene;
+	private Scene choix_scene;
+	private Scene sauvegardes_scene;
 	
 	private AnchorPane paneMenu;
 	private AnchorPane paneChoixFractale;
+	private AnchorPane paneChoixSauvegardes;
+	private GridPane gridFractales;
 
 	private HBox HBoxBouton;
 	
@@ -33,11 +45,15 @@ public class MenuPane {
 	private Button julia;
 	private Button mandelbrot;
 	private Button retour = new Button ("Retour");
+	private Button nbFractale;
+	
+	private Image imagePredef;
+	private ImageView imageView;
+	private Scanner scan;
 
 	private Vue vue;
 	private Controleur controleur;
-	private Scene menu_scene;
-	private Scene choix_scene;
+	
 	
 	public MenuPane(Vue vue, Controleur controleur) {
 		this.vue=vue;
@@ -76,6 +92,13 @@ public class MenuPane {
 				e.printStackTrace();
 			}
 		});
+		visualisation_frct.setOnAction(actionEvent->{
+			try {
+				fractale_sauvegarde();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		});
 	}
 	
 	public void choixFractale() throws IOException {
@@ -103,16 +126,17 @@ public class MenuPane {
 		HBoxBouton.setLayoutX(paneChoixFractale_x*0.36);
 		HBoxBouton.setLayoutY(paneChoixFractale_y*0.65);
 		paneChoixFractale.getChildren().add(HBoxBouton);	
-		boutonRetour();
+		paneChoixFractale.getChildren().add(boutonRetour());
 		
 		julia.setOnAction(actionEvent->{	
-			vue.initialisation_HBox_principale("Julia");
+			vue.initialisation_HBox_principale();
+			vue.pane_parametres("Julia");
 			
 		});
 		mandelbrot.setOnAction(actionEvent->{
 			//TODO: initialiser une fractale type Mandelbrot du constructeur
 			vue.initialisation_pane_fractale();
-			vue.initialisation_pane_parametres("Mandelbrot");
+			vue.pane_parametres("Mandelbrot");
 		});
 	}
 	
@@ -135,16 +159,92 @@ public class MenuPane {
       	paneChoixFractale.getChildren().add(imageView2);
 	}
 	
-	public void boutonRetour() {
+	public void fractale_sauvegarde() throws IOException{
+		paneChoixSauvegardes = new AnchorPane();
+		paneChoixSauvegardes.setPrefSize(tailleEcran.width, tailleEcran.height);
+		paneChoixSauvegardes.setStyle("-fx-background-color: #E8EAEA");
+		Label titre = new Label("FRACTALES SAUVEGARDEES");
+		titre.setFont(new Font("Arial", 20));
+		titre.setLayoutX((tailleEcran.width*43)/100);
+		titre.setLayoutY((tailleEcran.height*5)/100);
+		paneChoixSauvegardes.getChildren().add(titre);
+		sauvegardes_scene = new Scene(paneChoixSauvegardes);
+		paneChoixSauvegardes.getChildren().add(boutonRetour());
+		affichage_sauvegarde();
+		vue.getStage().setScene(sauvegardes_scene);
+	}
+	
+	public void affichage_sauvegarde() throws FileNotFoundException {
+		gridFractales = new GridPane();
+		gridFractales.setHgap(20);
+		gridFractales.setVgap(60);
+		gridFractales.setMaxWidth(tailleEcran.width);
+		gridFractales.setMaxHeight(tailleEcran.height);
+		
+		File path = new File("src/main/sauvegardes");
+		File [] files = path.listFiles();
+		int x=1;
+		int y=2;
+		for (int i = 0; i < files.length; i++){
+	        if (files[i].isFile()){
+	        	int k=files[i].getName().lastIndexOf('.');
+	        	if (k>0) {
+	        		if((files[i].getName().substring(k+1)).equals("png")) {
+	        			System.out.println("coucou");
+			            imagePredef = new Image(new FileInputStream(files[i]));
+					    imageView = new ImageView();
+					    imageView.setImage(imagePredef);
+					    imageView.setX(tailleEcran.width*0.52);
+					    imageView.setY(tailleEcran.width*0.15);
+					    imageView.setFitWidth(300);
+				      	imageView.setPreserveRatio(true);
+				      	gridFractales.add(imageView, x,y);
+				      	//nbFractale = new Button(Integer.toString(x));
+				      	
+				      	nbFractale = new Button(files[i].getName());
+				      	gridFractales.add(nbFractale, x,y+1);  
+	        		}
+				      if((files[i].getName().substring(k+1)).equals("txt")) { 
+				    	  String s = files[i].getName();
+				      	nbFractale.setOnAction(actionEvent->{
+				      		vue.initialisation_HBox_principale();
+				      		vue.FJuliaTxt(s);
+				      		
+				      		
+				      		
+						});
+				      	x++;	
+				      }
+	        	}
+	        }
+		}
+		paneChoixSauvegardes.getChildren().add(gridFractales);
+	}
+
+	
+	
+	
+	public Pane boutonRetour() {
 		Pane p = new Pane();
 		p.relocate(tailleEcran.width*0.5, tailleEcran.height*0.8);
         p.getChildren().add(retour);
-        paneChoixFractale.getChildren().add(p);
         
         retour.setOnAction(actionEvent->{
         	initialisation_pane_accueil();
 		});
-		
+        return p;
 	}
+	
+	//FONCTIONS AUXILIAIRE
+	public void new_scan(String fichier) {
+    	try {
+    		scan = new Scanner(new File(fichier), "UTF-8");
+    	}
+    	catch(Exception e) {
+    		System.out.println("Erreur lors d ouverture fichier:");
+    		e.printStackTrace();
+    		System.exit(1);
+    	}
+    }
 
 }

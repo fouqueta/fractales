@@ -2,7 +2,9 @@ package vue;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.File;
 import java.io.IOException;
+import java.util.Scanner;
 import java.awt.image.BufferedImage;
 
 import controleur.*;
@@ -55,8 +57,27 @@ public class Vue {
 	private TextField TFsupX;
 	private TextField TFinfY;
 	private TextField TFsupY;
+	private TextField TFfichier;
 	
+	
+	private Scanner scan;
+	private Slider sliderColor;
+	private ImageView i;
+	
+	private String type;
+	private double borneInfX;
+	private double borneSupX;
+	private double borneInfY;
+	private double borneSupY;
+	private double pas;
+	private int MAX_ITER;
 	private int couleur;
+	private String name;
+	private double zoom;
+	private int translateX;
+	private int translateY;
+	private double reel;
+	private double imaginaire;
 	
 	private Controleur controleur;
 	private MenuPane menu;
@@ -81,10 +102,10 @@ public class Vue {
 	}
 	
 	
-	void initialisation_HBox_principale(String s) {
+	void initialisation_HBox_principale() {
 		HBox_fenetre = new HBox();
 		initialisation_pane_fractale();
-		initialisation_pane_parametres(s);
+		initialisation_pane_parametres();
 		HBox_fenetre.getChildren().addAll(fractale_pane, paneParametres);
 		fractale_scene = new Scene(HBox_fenetre);
 		stage.setScene(fractale_scene);
@@ -96,12 +117,14 @@ public class Vue {
 		fractale_pane.setStyle("-fx-background-color:#618686");
 	}
 
-	void initialisation_pane_parametres(String s) {
+	void initialisation_pane_parametres() {
 		paneParametres = new AnchorPane();
 		paneParametres.setPrefSize(tailleEcran.width*0.23, tailleEcran.height);
 	    AnchorPane.setRightAnchor(paneParametres, 0.0);
 		paneParametres.setStyle("-fx-background-color:#D7E5E5");
-		
+	}
+	
+		void pane_parametres(String s) {
 		Label titre = new Label("Parametres");
 		titre.setFont(new Font("Arial", 20));
 		titre.setPadding(new Insets(40, 0, 0, 140));
@@ -145,43 +168,41 @@ public class Vue {
 	    TFite.setMaxSize(100,100);
 	    gridPaneParametres.add(TFite, 3, 6);
 	    
-	    Label Ldescription = new Label();      
-	    Ldescription.setText("Description de la fractale:");  
-	    Ldescription.setLayoutX(paneParametres.getPrefWidth()*0.07);
-	    Ldescription.setLayoutY(paneParametres.getPrefHeight()*0.28);
-	    paneParametres.getChildren().add(Ldescription);
-	    Text description = new Text(); //TODO: rajouter texte de description + gerer taille du texte au moment d'afficher
-	    description.setText("Bonjour je suis kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");  
-	    description.setWrappingWidth(300);
-	    gridPaneParametres.add(description, 0, 11, 4,1);
 	    
 	    Label Lborne = new Label("Bornes du plan complexe"); 
 	    Lborne.setFont(new Font("Arial", 13));
 	    Lborne.setLayoutX(paneParametres.getPrefWidth()*0.07);
-	    Lborne.setLayoutY(paneParametres.getPrefHeight()*0.5);
+	    Lborne.setLayoutY(paneParametres.getPrefHeight()*0.40);
 	    paneParametres.getChildren().add(Lborne);
 	    
 	    Label abscisse = new Label("abscisses:"); //taille matrice 
-	    gridPaneParametres.add(abscisse, 0, 24, 2, 1);
+	    gridPaneParametres.add(abscisse, 0, 22, 2, 1);
 	    TFinfX = new TextField();
 	    TFinfX.setPromptText("borne inf");
 	    TFinfX.setMaxSize(100,100);
-	    gridPaneParametres.add(TFinfX, 2, 24);
+	    gridPaneParametres.add(TFinfX, 2, 22);
 	    TFsupX = new TextField();
 	    TFsupX.setPromptText("borne sup");
 	    TFsupX.setMaxSize(100,100);
-	    gridPaneParametres.add(TFsupX, 3, 24);
+	    gridPaneParametres.add(TFsupX, 3, 22);
 	    
 	    Label ordonnee = new Label("ordonnees:"); //taille matrice 
-	    gridPaneParametres.add(ordonnee, 0, 25, 2, 1);
+	    gridPaneParametres.add(ordonnee, 0, 23, 2, 1);
 	    TFinfY = new TextField();
 	    TFinfY.setPromptText("borne inf");
 	    TFinfY.setMaxSize(100,100);
-	    gridPaneParametres.add(TFinfY, 2, 25);
+	    gridPaneParametres.add(TFinfY, 2, 23);
 	    TFsupY = new TextField();
 	    TFsupY.setPromptText("borne sup");
 	    TFsupY.setMaxSize(100,100);
-	    gridPaneParametres.add(TFsupY, 3, 25);
+	    gridPaneParametres.add(TFsupY, 3, 23);
+	    
+	    Label fichier = new Label("Nom du fichier:"); //Nom du fichier
+	    gridPaneParametres.add(fichier, 0, 25, 2, 1);
+		TFfichier = new TextField();
+	    gridPaneParametres.add(TFfichier, 2, 25, 2,1);
+	    Label nom = new Label("Si un fichier deja existant comporte le meme nom, \nil sera ecrase");
+	    gridPaneParametres.add(nom, 0, 26, 4,1);
 	    
 	    paneParametres.getChildren().addAll(gridPaneParametres);
 	    paneParametres.getChildren().addAll(titre);
@@ -233,9 +254,10 @@ public class Vue {
 		});
 		valider.setOnAction(actionEvent->{
 			paneParametres.getChildren().remove(erreur);
+			fractale_pane.getChildren().remove(i);
 			//restoreSliderColor();
 			if (TFpas.getText().isEmpty() || TFreel.getText().isEmpty() || TFimaginaire.getText().isEmpty() || TFite.getText().isEmpty() || 
-					TFinfX.getText().isEmpty() || TFsupX.getText().isEmpty() || TFinfY.getText().isEmpty() || TFinfY.getText().isEmpty() ) { 
+					TFinfX.getText().isEmpty() || TFsupX.getText().isEmpty() || TFinfY.getText().isEmpty() || TFinfY.getText().isEmpty() || TFfichier.getText().isEmpty()) { 
 				erreur = new Label("Veuillez remplir tous les champs");
 				set_erreur();
 			}else if (!(isDouble(TFreel.getText()) && isDouble(TFimaginaire.getText()))){
@@ -248,7 +270,10 @@ public class Vue {
 				erreur = new Label("Veuillez entrer un iterateur de type int");
 				set_erreur();
 			}else if (!(isDouble(TFinfX.getText()) && isDouble(TFsupX.getText()) && isDouble(TFinfY.getText()) && isDouble(TFsupY.getText()))){
-				erreur = new Label("Veuillez entrer une largeur ou hauteur de type int");
+				erreur = new Label("Veuillez entrer une largeur ou hauteur de type double");
+				set_erreur();
+			}else if ((Double.parseDouble(TFsupX.getText())>1.43)){
+				erreur = new Label("Veuillez entrer une borne sup de X < 1.44");
 				set_erreur();
 			}else {
 				if (s.equals("Julia")) {
@@ -278,7 +303,7 @@ public class Vue {
 	
 	public int initSliderColor() {
 		Label labelColor = new Label("Choisir la couleur");
-	    Slider sliderColor = new Slider();
+	    sliderColor = new Slider();
 	    Label infoColor = new Label("-");
 	  
 	    sliderColor.setMin(0);
@@ -296,7 +321,7 @@ public class Vue {
 	    VBoxCouleurs.setSpacing(10);
 	    VBoxCouleurs.getChildren().addAll(labelColor, sliderColor, infoColor);
 	    VBoxCouleurs.setLayoutX(paneParametres.getPrefWidth()*0.01);
-	    VBoxCouleurs.setLayoutY(paneParametres.getPrefHeight()*0.35);
+	    VBoxCouleurs.setLayoutY(paneParametres.getPrefHeight()*0.25);
 	    paneParametres.getChildren().add(VBoxCouleurs);
 	    
 	    sliderColor.valueProperty().addListener((obs, oldval, newVal) -> {
@@ -317,6 +342,7 @@ public class Vue {
 //		generateFractale(controleur.generateJulia(reel,imaginaire,pas,iterateur,largeur,hauteur,couleur));
 //	}
 	
+	
 	void FJulia() {
 		double reel = Double.parseDouble(TFreel.getText());
 		double imaginaire = Double.parseDouble(TFimaginaire.getText());
@@ -326,16 +352,70 @@ public class Vue {
 		double supX = Double.parseDouble(TFsupX.getText());
 		double infY = Double.parseDouble(TFinfY.getText());
 		double supY = Double.parseDouble(TFsupY.getText());
-		generateFractale(controleur.generateJulia(reel,imaginaire,pas,iterateur,infX,supX,infY,supY,couleur));
+		generateFractale(controleur.generateJulia(reel,imaginaire,pas,iterateur,infX,supX,infY,supY,couleur,TFfichier.getText()));
+	}
+	
+	public void FJuliaTxt(String s) {
+		new_scan("src/main/sauvegardes/"+s);
+		while (scan.hasNextLine()) {
+			String caract = scan.nextLine();
+			String[] attributs = caract.split(":");
+			switch (attributs[0]) {
+				case "TYPE DE FRACTALE": type=attributs[1];
+					break;
+				case "borneInfX": borneInfX=Double.parseDouble(attributs[1]);
+					;break;
+				case "borneSupX":borneSupX=Double.parseDouble(attributs[1]);
+					break;
+				case "borneInfY": borneInfY=Double.parseDouble(attributs[1]); 	
+					break;
+				case "borneSupY": borneSupY=Double.parseDouble(attributs[1]);
+					break;
+				case "pas": pas=Double.parseDouble(attributs[1]); 
+					break;
+				case "MAX_ITER": MAX_ITER=Integer.parseInt(attributs[1]); 
+					break;
+				case "couleur": couleur=Integer.parseInt(attributs[1]); 
+					break;
+				case "name": name=attributs[1]; 
+					break;
+				case "zoom": zoom=Double.parseDouble(attributs[1]);
+					break;
+				case "translateX": translateX=Integer.parseInt(attributs[1]); 
+					break;
+				case "translateY": translateY=Integer.parseInt(attributs[1]); 
+					break;
+				case "reel": reel=Double.parseDouble(attributs[1]);
+					break;
+				case "imaginaire": imaginaire=Double.parseDouble(attributs[1]); 
+					break;
+			}
+		}
+		JuliaPredef();
+		generateFractale(controleur.generateJuliaBis(type,borneInfX,borneSupX,borneInfY,borneSupY,pas,MAX_ITER,couleur,name,zoom,translateX,translateY,reel,imaginaire));
 	}
 	
 	public void FMandelbrot(){
 		
 	}
 	
+	public void JuliaPredef() {
+		pane_parametres(type);
+		TFinfX.setText(String.valueOf(borneInfX));
+		TFsupX.setText(String.valueOf(borneSupX));
+		TFinfY.setText(String.valueOf(borneInfY));
+		TFsupY.setText(String.valueOf(borneSupY));
+		TFpas.setText(String.valueOf(pas));
+		TFite.setText(String.valueOf(MAX_ITER));
+		TFreel.setText(String.valueOf(reel));
+		TFimaginaire.setText(String.valueOf(imaginaire));
+		sliderColor.setValue(couleur);
+		TFfichier.setText(name);
+	}
+	
 	public void generateFractale(BufferedImage img) {
 		Image image = SwingFXUtils.toFXImage(img, null);
-		ImageView i = new ImageView(image);
+		i = new ImageView(image);
 		i.toBack();
 		i.setFitHeight(tailleEcran.height*0.93);
 		i.setPreserveRatio(true);
@@ -410,6 +490,17 @@ public class Vue {
         	System.out.println("La valeur entree n'est pas de type int");
             return false;
         }
+    }
+	
+	public void new_scan(String fichier) {
+    	try {
+    		scan = new Scanner(new File(fichier), "UTF-8");
+    	}
+    	catch(Exception e) {
+    		System.out.println("Erreur lors d ouverture fichier:");
+    		e.printStackTrace();
+    		System.exit(1);
+    	}
     }
 	
 	public void set_erreur() {
