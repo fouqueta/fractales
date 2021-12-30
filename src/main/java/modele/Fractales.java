@@ -3,6 +3,13 @@ package modele;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.IntStream;
 
 import javax.imageio.ImageIO;
@@ -179,14 +186,44 @@ public class Fractales {
 	
 	public void saveFractal() {
 		File fImg = new File("src/main/sauvegardes/" + name + ".png");
-		File fTxt = new File("src/main/sauvegardes/" + name + ".txt");
-		
+		//File fTxt = new File("src/main/sauvegardes/" + name + ".txt");
+		List<String> lignes = new ArrayList<String>();
+		lignes.add("TYPE DE FRACTALE:" + typeFractale());
+		lignes.add("ATTRIBUTS:VALEURS");
+		lignes.add("borneInfX:" + borneInfX);
+		lignes.add("borneSupX:" + borneSupX);
+		lignes.add("borneInfY:" + borneInfY);
+		lignes.add("borneSupY:" + borneSupY);
+		lignes.add("pas:" + pas);
+		lignes.add("MAX_ITER:" + MAX_ITER);
+		lignes.add("couleur:" + couleur); //jusqu'à couleur on utilise les builder, le reste faudra generer avec des setters/ OU TOUT EN BUILDER ?
+		lignes.add("name:" + name);
+		lignes.add("width:" + width);
+		lignes.add("height:" + height);
+		lignes.add("zoom:" + zoom);
+		lignes.add("translateX:" + translateX);
+		lignes.add("translateY:" + translateY);
+		if (this instanceof Julia) {
+			lignes.add(2,"constante partie reelle:" + ((Julia) this).getReelC());
+			lignes.add(3,"constante partie imaginaire:" + ((Julia) this).getImaginaireC());
+		}
+		Path fTxt = Paths.get("src/main/sauvegardes/" + name + ".txt");
 		try {
 			ImageIO.write(img, "PNG", fImg);
+			Files.write(fTxt, lignes, Charset.forName("UTF-8"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+	
+	//retourne le String type correspondant au type de la fractale
+	public String typeFractale() {
+		if (this instanceof Julia) { return "Julia"; }
+		else if (this instanceof Mandelbrot) { return "Mandelbrot"; }
+		else if (this instanceof BurningShip) { return "BurningShip"; }
+		else { return "Tricorn"; }
+	}
+	
 	
 	//Utilisation de parallel stream pour le calcul des fractales
 	public void stream(int startX, int endX, int startY, int endY, int couleur) {

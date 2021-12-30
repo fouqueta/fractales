@@ -137,7 +137,7 @@ public class Controleur {
 		return fractale.translate(dir);
 	}
 	
-	public void saveFractaleControleur() {
+	public void saveFractale() {
 		fractale.saveFractal();
 	}
 
