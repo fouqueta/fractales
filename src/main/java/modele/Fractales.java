@@ -204,8 +204,8 @@ public class Fractales {
 		lignes.add("translateX:" + translateX);
 		lignes.add("translateY:" + translateY);
 		if (this instanceof Julia) {
-			lignes.add(2,"constante partie reelle:" + ((Julia) this).getReelC());
-			lignes.add(3,"constante partie imaginaire:" + ((Julia) this).getImaginaireC());
+			lignes.add(2,"reel:" + ((Julia) this).getReelC());
+			lignes.add(3,"imaginaire:" + ((Julia) this).getImaginaireC());
 		}
 		Path fTxt = Paths.get("src/main/sauvegardes/" + name + ".txt");
 		try {
