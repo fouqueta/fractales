@@ -20,7 +20,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
@@ -102,7 +101,7 @@ public class Vue {
 	}
 	
 	
-	void initialisation_HBox_principale() {
+	public void initialisation_HBox_principale() {
 		HBox_fenetre = new HBox();
 		initialisation_pane_fractale();
 		initialisation_pane_parametres();
@@ -111,13 +110,13 @@ public class Vue {
 		stage.setScene(fractale_scene);
 	}
 	
-	void initialisation_pane_fractale() {
+	public void initialisation_pane_fractale() {
 		fractale_pane = new AnchorPane();
 		fractale_pane.setPrefSize(tailleEcran.width*0.77, tailleEcran.height);
 		fractale_pane.setStyle("-fx-background-color:#618686");
 	}
 
-	void initialisation_pane_parametres() {
+	public void initialisation_pane_parametres() {
 		paneParametres = new AnchorPane();
 		paneParametres.setPrefSize(tailleEcran.width*0.23, tailleEcran.height);
 	    AnchorPane.setRightAnchor(paneParametres, 0.0);
@@ -343,7 +342,7 @@ public class Vue {
 //	}
 	
 	
-	void FJulia() {
+	public void FJulia() {
 		double reel = Double.parseDouble(TFreel.getText());
 		double imaginaire = Double.parseDouble(TFimaginaire.getText());
 		double pas = Double.parseDouble(TFpas.getText());
@@ -353,6 +352,11 @@ public class Vue {
 		double infY = Double.parseDouble(TFinfY.getText());
 		double supY = Double.parseDouble(TFsupY.getText());
 		generateFractale(controleur.generateJulia(reel,imaginaire,pas,iterateur,infX,supX,infY,supY,couleur,TFfichier.getText()));
+		System.out.println("zoom = " + this.zoom);
+		
+		System.out.println("x = " + this.translateX);
+		
+		System.out.println("y = " + this.translateY);
 	}
 	
 	public void FJuliaTxt(String s) {

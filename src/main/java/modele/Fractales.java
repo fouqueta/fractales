@@ -8,7 +8,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -35,17 +34,9 @@ public class Fractales {
 	
 	
 	
-	/*public Fractales(int width, int height, double pas, int MAX_ITER) {
-		this.width = width;
-		this.height = height;
-		this.pas = pas;
-		this.MAX_ITER = MAX_ITER;
-	}*///BUILDER
 	public Fractales() {}
 	
 	public static class FractaleBuilder{
-//		private int width;
-//		private int height;
 		private String type;
 		private double borneInfX;
 		private double borneSupX;
@@ -55,27 +46,16 @@ public class Fractales {
 		private int MAX_ITER;
 		private int couleur;
 		private String name;
-		//private int width;
-		//private int height;
-		private double zoom;
-		private int translateX;
-		private int translateY;
+		private double zoom = 1.0;
+		private int translateX = 0;
+		private int translateY = 0;
 		
 		private FractaleBuilder() {}
 		
 		public static FractaleBuilder newFractaleBuilder() {
 			return new FractaleBuilder();
 		}
-		
-//		public FractaleBuilder width(int largeur) {
-//			this.width=largeur;
-//			return this;
-//		}
-//		
-//		public FractaleBuilder height(int hauteur) {
-//			this.height=hauteur;
-//			return this;
-//		}
+
 		
 		public FractaleBuilder type(String type) {
 			this.type=type;
@@ -117,6 +97,7 @@ public class Fractales {
 			this.name=nom;
 			return this;
 		}
+		
 		public FractaleBuilder zoom(double zoom) {
 			this.zoom=zoom;
 			return this;
@@ -150,8 +131,6 @@ public class Fractales {
 	}
 	
 	protected Fractales (FractaleBuilder f) {
-//		this.width=f.width;
-//		this.height=f.height;
 		this.type=f.type;
 		this.borneInfX = f.borneInfX;
 		this.borneSupX = f.borneSupX;
@@ -163,17 +142,13 @@ public class Fractales {
 		this.MAX_ITER = f.MAX_ITER;
 		this.name = f.name;
 		
-		this.zoom = 1.0;
-		this.translateX = 0;
-		this.translateY = 0;
+		this.zoom = f.zoom;
+		this.translateX = f.translateX;
+		this.translateY = f.translateY;
 		this.img = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
 		this.couleur=f.couleur;
 	}
-	
-
-
-	
-	
+		
 	
 	public BufferedImage generateFractal() {
 		//System.out.println(borneInfX+" "+borneSupX+" "+borneInfY+" "+borneSupY+" "+pas+" "+MAX_ITER+" "+couleur+" "+name+" "+zoom+" "+translateX+" "+translateY+" " );
@@ -186,7 +161,7 @@ public class Fractales {
 	
 	public void saveFractal() {
 		File fImg = new File("src/main/sauvegardes/" + name + ".png");
-		//File fTxt = new File("src/main/sauvegardes/" + name + ".txt");
+		
 		List<String> lignes = new ArrayList<String>();
 		lignes.add("TYPE DE FRACTALE:" + typeFractale());
 		lignes.add("ATTRIBUTS:VALEURS");
