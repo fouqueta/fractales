@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 
 public class Fractales {
 
+	protected String type;
 	protected int width;
 	protected int height;
 	protected double borneInfX;
@@ -38,6 +39,7 @@ public class Fractales {
 	public static class FractaleBuilder{
 //		private int width;
 //		private int height;
+		private String type;
 		private double borneInfX;
 		private double borneSupX;
 		private double borneInfY;
@@ -68,6 +70,10 @@ public class Fractales {
 //			return this;
 //		}
 		
+		public FractaleBuilder type(String type) {
+			this.type=type;
+			return this;
+		}
 		public FractaleBuilder borneInfX(double x1) {
 			this.borneInfX = x1;
 			return this;
@@ -139,6 +145,7 @@ public class Fractales {
 	protected Fractales (FractaleBuilder f) {
 //		this.width=f.width;
 //		this.height=f.height;
+		this.type=f.type;
 		this.borneInfX = f.borneInfX;
 		this.borneSupX = f.borneSupX;
 		this.borneInfY = f.borneInfY;

@@ -17,7 +17,7 @@ public class Controleur {
 	}
 	
 	
-	public BufferedImage generateJulia(double reel, double imaginaire, double pas, int iterateur, double infX, double supX, double infY, double supY, int color) {
+	public BufferedImage generateJulia(double reel, double imaginaire, double pas, int iterateur, double infX, double supX, double infY, double supY, int color, String name) {
 		Complexe c = Complexe.newComplexe(reel, imaginaire);
 		fractale = FractaleBuilder.newFractaleBuilder()
 				.borneInfX(infX)
@@ -27,14 +27,16 @@ public class Controleur {
 				.pas(pas)
 				.MAX_ITER(iterateur)
 				.couleur(color)
+				.name(name)
 				.buildJulia(c)
 				;
 		return fractale.generateFractal();
 	}
 	
-	public BufferedImage generateJuliaBis(double borneInfX, double borneSupX, double borneInfY, double borneSupY, double pas, int MAX_ITER, int couleur, String name, double zoom, int translateX, int translateY, double reel, double imaginaire) {
+	public BufferedImage generateJuliaBis(String type, double borneInfX, double borneSupX, double borneInfY, double borneSupY, double pas, int MAX_ITER, int couleur, String name, double zoom, int translateX, int translateY, double reel, double imaginaire) {
 		Complexe c = Complexe.newComplexe(reel, imaginaire);
 		fractale = FractaleBuilder.newFractaleBuilder()
+				.type(type)
 				.borneInfX(borneInfX)
 				.borneSupX(borneSupX)
 				.borneInfY(borneInfY)

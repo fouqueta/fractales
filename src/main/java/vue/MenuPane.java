@@ -50,20 +50,6 @@ public class MenuPane {
 	private Image imagePredef;
 	private ImageView imageView;
 	private Scanner scan;
-	
-	double borneInfX;
-	double borneSupX;
-	double borneInfY;
-	double borneSupY;
-	double pas;
-	int MAX_ITER;
-	int couleur;
-	String name;
-	double zoom;
-	int translateX;
-	int translateY;
-	double reel;
-	double imaginaire;
 
 	private Vue vue;
 	private Controleur controleur;
@@ -213,72 +199,28 @@ public class MenuPane {
 					    imageView.setFitWidth(300);
 				      	imageView.setPreserveRatio(true);
 				      	gridFractales.add(imageView, x,y);
-				      	nbFractale = new Button(Integer.toString(x));
+				      	//nbFractale = new Button(Integer.toString(x));
+				      	
+				      	nbFractale = new Button(files[i].getName());
 				      	gridFractales.add(nbFractale, x,y+1);  
 	        		}
 				      if((files[i].getName().substring(k+1)).equals("txt")) { 
 				    	  String s = files[i].getName();
 				      	nbFractale.setOnAction(actionEvent->{
 				      		vue.initialisation_HBox_principale();
-				      		FJuliaTxt(s);
+				      		vue.FJuliaTxt(s);
+				      		
+				      		
+				      		
 						});
-				      	x++;
-				      	
-				      	
-	        		}
+				      	x++;	
+				      }
 	        	}
-	        	
-	        	
-	        	
-	        	
-	            
-		
 	        }
-		
-	        }
-		
-		
-		paneChoixSauvegardes.getChildren().add(gridFractales);
-		
-		
-	}
-	
-	void FJuliaTxt(String s) {
-		/*double borneInfX;
-		double borneSupX;
-		double borneInfY;
-		double borneSupY;
-		double pas;
-		int MAX_ITER;
-		int couleur;
-		String name;
-		double zoom;
-		int translateX;
-		int translateY;
-		double reel;
-		double imaginaire;*/
-		new_scan("src/main/sauvegardes/"+s);
-		while (scan.hasNextLine()) {
-			String caract = scan.nextLine();
-			String[] attributs = caract.split(":");
-			switch (attributs[0]) {
-				case "borneInfX": borneInfX=Double.parseDouble(attributs[1]); System.out.println("oui1");break;
-				case "borneSupX":borneSupX=Double.parseDouble(attributs[1]); System.out.println("oui2");break;
-				case "borneInfY": borneInfY=Double.parseDouble(attributs[1]); System.out.println("oui3");break;
-				case "borneSupY": borneSupY=Double.parseDouble(attributs[1]); System.out.println("oui4");break;
-				case "pas": pas=Double.parseDouble(attributs[1]); System.out.println("oui5");break;
-				case "MAX_ITER": MAX_ITER=Integer.parseInt(attributs[1]); System.out.println("oui6");break;
-				case "couleur": couleur=Integer.parseInt(attributs[1]); System.out.println("oui7");break;
-				case "name": name=attributs[1]; System.out.println("oui8");break;
-				case "zoom": zoom=Double.parseDouble(attributs[1]);System.out.println("oui9"); break;
-				case "translateX": translateX=Integer.parseInt(attributs[1]); System.out.println("oui10");break;
-				case "translateY": translateY=Integer.parseInt(attributs[1]); System.out.println("oui11");break;
-				case "reel": reel=Double.parseDouble(attributs[1]); System.out.println("oui12");break;
-				case "imaginaire": imaginaire=Double.parseDouble(attributs[1]); System.out.println("oui13");break;
-			}
 		}
-		vue.generateFractale(controleur.generateJuliaBis(borneInfX,borneSupX,borneInfY,borneSupY,pas,MAX_ITER,couleur,name,zoom,translateX,translateY,reel,imaginaire));
+		paneChoixSauvegardes.getChildren().add(gridFractales);
 	}
+
 	
 	
 	
