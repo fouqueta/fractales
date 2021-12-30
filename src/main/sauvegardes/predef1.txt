@@ -1,0 +1,17 @@
+TYPE DE FRACTALE:Julia
+ATTRIBUTS:VALEURS
+borneInfX:-1.5
+borneSupX:1.5
+borneInfY:-1.0
+borneSupY:1.0
+pas:0.001
+MAX_ITER:1000
+couleur:450
+name:predef1
+width:3001
+height:2001
+zoom:1.0
+translateX:0
+translateY:0
+reel:-0.7269
+imaginaire:0.1889

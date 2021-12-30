@@ -2,7 +2,9 @@ package vue;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.File;
 import java.io.IOException;
+import java.util.Scanner;
 import java.awt.image.BufferedImage;
 
 import controleur.*;
@@ -58,6 +60,8 @@ public class Vue {
 	
 	private int couleur;
 	
+	private ImageView i;
+	
 	private Controleur controleur;
 	private MenuPane menu;
 	private Fractales fractale;
@@ -81,10 +85,10 @@ public class Vue {
 	}
 	
 	
-	void initialisation_HBox_principale(String s) {
+	void initialisation_HBox_principale() {
 		HBox_fenetre = new HBox();
 		initialisation_pane_fractale();
-		initialisation_pane_parametres(s);
+		initialisation_pane_parametres();
 		HBox_fenetre.getChildren().addAll(fractale_pane, paneParametres);
 		fractale_scene = new Scene(HBox_fenetre);
 		stage.setScene(fractale_scene);
@@ -96,12 +100,14 @@ public class Vue {
 		fractale_pane.setStyle("-fx-background-color:#618686");
 	}
 
-	void initialisation_pane_parametres(String s) {
+	void initialisation_pane_parametres() {
 		paneParametres = new AnchorPane();
 		paneParametres.setPrefSize(tailleEcran.width*0.23, tailleEcran.height);
 	    AnchorPane.setRightAnchor(paneParametres, 0.0);
 		paneParametres.setStyle("-fx-background-color:#D7E5E5");
-		
+	}
+	
+		void pane_parametres(String s) {
 		Label titre = new Label("Parametres");
 		titre.setFont(new Font("Arial", 20));
 		titre.setPadding(new Insets(40, 0, 0, 140));
@@ -233,6 +239,7 @@ public class Vue {
 		});
 		valider.setOnAction(actionEvent->{
 			paneParametres.getChildren().remove(erreur);
+			fractale_pane.getChildren().remove(i);
 			//restoreSliderColor();
 			if (TFpas.getText().isEmpty() || TFreel.getText().isEmpty() || TFimaginaire.getText().isEmpty() || TFite.getText().isEmpty() || 
 					TFinfX.getText().isEmpty() || TFsupX.getText().isEmpty() || TFinfY.getText().isEmpty() || TFinfY.getText().isEmpty() ) { 
@@ -248,7 +255,10 @@ public class Vue {
 				erreur = new Label("Veuillez entrer un iterateur de type int");
 				set_erreur();
 			}else if (!(isDouble(TFinfX.getText()) && isDouble(TFsupX.getText()) && isDouble(TFinfY.getText()) && isDouble(TFsupY.getText()))){
-				erreur = new Label("Veuillez entrer une largeur ou hauteur de type int");
+				erreur = new Label("Veuillez entrer une largeur ou hauteur de type double");
+				set_erreur();
+			}else if ((Double.parseDouble(TFsupX.getText())>1.43)){
+				erreur = new Label("Veuillez entrer une borne sup de X < 1.44");
 				set_erreur();
 			}else {
 				if (s.equals("Julia")) {
@@ -317,6 +327,7 @@ public class Vue {
 //		generateFractale(controleur.generateJulia(reel,imaginaire,pas,iterateur,largeur,hauteur,couleur));
 //	}
 	
+	
 	void FJulia() {
 		double reel = Double.parseDouble(TFreel.getText());
 		double imaginaire = Double.parseDouble(TFimaginaire.getText());
@@ -335,7 +346,7 @@ public class Vue {
 	
 	public void generateFractale(BufferedImage img) {
 		Image image = SwingFXUtils.toFXImage(img, null);
-		ImageView i = new ImageView(image);
+		i = new ImageView(image);
 		i.toBack();
 		i.setFitHeight(tailleEcran.height*0.93);
 		i.setPreserveRatio(true);

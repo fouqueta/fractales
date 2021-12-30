@@ -3,19 +3,24 @@ package vue;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Scanner;
 
 import controleur.Controleur;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import modele.Fractales;
 import modele.Fractales.FractaleBuilder;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
@@ -31,6 +36,7 @@ public class MenuPane {
 	private AnchorPane paneMenu;
 	private AnchorPane paneChoixFractale;
 	private AnchorPane paneChoixSauvegardes;
+	private GridPane gridFractales;
 
 	private HBox HBoxBouton;
 	
@@ -39,6 +45,25 @@ public class MenuPane {
 	private Button julia;
 	private Button mandelbrot;
 	private Button retour = new Button ("Retour");
+	private Button nbFractale;
+	
+	private Image imagePredef;
+	private ImageView imageView;
+	private Scanner scan;
+	
+	double borneInfX;
+	double borneSupX;
+	double borneInfY;
+	double borneSupY;
+	double pas;
+	int MAX_ITER;
+	int couleur;
+	String name;
+	double zoom;
+	int translateX;
+	int translateY;
+	double reel;
+	double imaginaire;
 
 	private Vue vue;
 	private Controleur controleur;
@@ -118,13 +143,14 @@ public class MenuPane {
 		paneChoixFractale.getChildren().add(boutonRetour());
 		
 		julia.setOnAction(actionEvent->{	
-			vue.initialisation_HBox_principale("Julia");
+			vue.initialisation_HBox_principale();
+			vue.pane_parametres("Julia");
 			
 		});
 		mandelbrot.setOnAction(actionEvent->{
 			//TODO: initialiser une fractale type Mandelbrot du constructeur
 			vue.initialisation_pane_fractale();
-			vue.initialisation_pane_parametres("Mandelbrot");
+			vue.pane_parametres("Mandelbrot");
 		});
 	}
 	
@@ -158,8 +184,103 @@ public class MenuPane {
 		paneChoixSauvegardes.getChildren().add(titre);
 		sauvegardes_scene = new Scene(paneChoixSauvegardes);
 		paneChoixSauvegardes.getChildren().add(boutonRetour());
+		affichage_sauvegarde();
 		vue.getStage().setScene(sauvegardes_scene);
 	}
+	
+	public void affichage_sauvegarde() throws FileNotFoundException {
+		gridFractales = new GridPane();
+		gridFractales.setHgap(20);
+		gridFractales.setVgap(60);
+		gridFractales.setMaxWidth(tailleEcran.width);
+		gridFractales.setMaxHeight(tailleEcran.height);
+		
+		File path = new File("src/main/sauvegardes");
+		File [] files = path.listFiles();
+		int x=1;
+		int y=2;
+		for (int i = 0; i < files.length; i++){
+	        if (files[i].isFile()){
+	        	int k=files[i].getName().lastIndexOf('.');
+	        	if (k>0) {
+	        		if((files[i].getName().substring(k+1)).equals("png")) {
+	        			System.out.println("coucou");
+			            imagePredef = new Image(new FileInputStream(files[i]));
+					    imageView = new ImageView();
+					    imageView.setImage(imagePredef);
+					    imageView.setX(tailleEcran.width*0.52);
+					    imageView.setY(tailleEcran.width*0.15);
+					    imageView.setFitWidth(300);
+				      	imageView.setPreserveRatio(true);
+				      	gridFractales.add(imageView, x,y);
+				      	nbFractale = new Button(Integer.toString(x));
+				      	gridFractales.add(nbFractale, x,y+1);  
+	        		}
+				      if((files[i].getName().substring(k+1)).equals("txt")) { 
+				    	  String s = files[i].getName();
+				      	nbFractale.setOnAction(actionEvent->{
+				      		vue.initialisation_HBox_principale();
+				      		FJuliaTxt(s);
+						});
+				      	x++;
+				      	
+				      	
+	        		}
+	        	}
+	        	
+	        	
+	        	
+	        	
+	            
+		
+	        }
+		
+	        }
+		
+		
+		paneChoixSauvegardes.getChildren().add(gridFractales);
+		
+		
+	}
+	
+	void FJuliaTxt(String s) {
+		/*double borneInfX;
+		double borneSupX;
+		double borneInfY;
+		double borneSupY;
+		double pas;
+		int MAX_ITER;
+		int couleur;
+		String name;
+		double zoom;
+		int translateX;
+		int translateY;
+		double reel;
+		double imaginaire;*/
+		new_scan("src/main/sauvegardes/"+s);
+		while (scan.hasNextLine()) {
+			String caract = scan.nextLine();
+			String[] attributs = caract.split(":");
+			switch (attributs[0]) {
+				case "borneInfX": borneInfX=Double.parseDouble(attributs[1]); System.out.println("oui1");break;
+				case "borneSupX":borneSupX=Double.parseDouble(attributs[1]); System.out.println("oui2");break;
+				case "borneInfY": borneInfY=Double.parseDouble(attributs[1]); System.out.println("oui3");break;
+				case "borneSupY": borneSupY=Double.parseDouble(attributs[1]); System.out.println("oui4");break;
+				case "pas": pas=Double.parseDouble(attributs[1]); System.out.println("oui5");break;
+				case "MAX_ITER": MAX_ITER=Integer.parseInt(attributs[1]); System.out.println("oui6");break;
+				case "couleur": couleur=Integer.parseInt(attributs[1]); System.out.println("oui7");break;
+				case "name": name=attributs[1]; System.out.println("oui8");break;
+				case "zoom": zoom=Double.parseDouble(attributs[1]);System.out.println("oui9"); break;
+				case "translateX": translateX=Integer.parseInt(attributs[1]); System.out.println("oui10");break;
+				case "translateY": translateY=Integer.parseInt(attributs[1]); System.out.println("oui11");break;
+				case "reel": reel=Double.parseDouble(attributs[1]); System.out.println("oui12");break;
+				case "imaginaire": imaginaire=Double.parseDouble(attributs[1]); System.out.println("oui13");break;
+			}
+		}
+		vue.generateFractale(controleur.generateJuliaBis(borneInfX,borneSupX,borneInfY,borneSupY,pas,MAX_ITER,couleur,name,zoom,translateX,translateY,reel,imaginaire));
+	}
+	
+	
 	
 	public Pane boutonRetour() {
 		Pane p = new Pane();
@@ -170,7 +291,18 @@ public class MenuPane {
         	initialisation_pane_accueil();
 		});
         return p;
-		
 	}
+	
+	//FONCTIONS AUXILIAIRE
+	public void new_scan(String fichier) {
+    	try {
+    		scan = new Scanner(new File(fichier), "UTF-8");
+    	}
+    	catch(Exception e) {
+    		System.out.println("Erreur lors d ouverture fichier:");
+    		e.printStackTrace();
+    		System.exit(1);
+    	}
+    }
 
 }

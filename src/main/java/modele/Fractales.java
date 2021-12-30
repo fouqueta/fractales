@@ -45,6 +45,12 @@ public class Fractales {
 		private double pas;
 		private int MAX_ITER;
 		private int couleur;
+		private String name;
+		//private int width;
+		//private int height;
+		private double zoom;
+		private int translateX;
+		private int translateY;
 		
 		private FractaleBuilder() {}
 		
@@ -94,6 +100,25 @@ public class Fractales {
 			return this;
 		}
 		
+		public FractaleBuilder name(String nom) {
+			this.name=nom;
+			return this;
+		}
+		public FractaleBuilder zoom(double zoom) {
+			this.zoom=zoom;
+			return this;
+		}
+		
+		public FractaleBuilder translateX(int translateX) {
+			this.translateX=translateX;
+			return this;
+		}
+		
+		public FractaleBuilder translateY(int translateY) {
+			this.translateY=translateY;
+			return this;
+		}
+		
 		public Julia buildJulia(Complexe c) {
 			return new Julia(this,c);
 		}
@@ -122,6 +147,8 @@ public class Fractales {
 		this.width = (int) ((borneSupX - borneInfX) * 1/pas +1);
 		this.height = (int) ((borneSupY - borneInfY) * 1/pas +1);
 		this.MAX_ITER = f.MAX_ITER;
+		this.name = f.name;
+		
 		this.zoom = 1.0;
 		this.translateX = 0;
 		this.translateY = 0;
@@ -129,9 +156,13 @@ public class Fractales {
 		this.couleur=f.couleur;
 	}
 	
+
+
+	
 	
 	
 	public BufferedImage generateFractal() {
+		//System.out.println(borneInfX+" "+borneSupX+" "+borneInfY+" "+borneSupY+" "+pas+" "+MAX_ITER+" "+couleur+" "+name+" "+zoom+" "+translateX+" "+translateY+" " );
 		long start=System.currentTimeMillis();
 		stream(0,width,0,height, couleur);
 	    long end=System.currentTimeMillis();

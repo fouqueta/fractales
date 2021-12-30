@@ -31,6 +31,26 @@ public class Controleur {
 				;
 		return fractale.generateFractal();
 	}
+	
+	public BufferedImage generateJuliaBis(double borneInfX, double borneSupX, double borneInfY, double borneSupY, double pas, int MAX_ITER, int couleur, String name, double zoom, int translateX, int translateY, double reel, double imaginaire) {
+		Complexe c = Complexe.newComplexe(reel, imaginaire);
+		fractale = FractaleBuilder.newFractaleBuilder()
+				.borneInfX(borneInfX)
+				.borneSupX(borneSupX)
+				.borneInfY(borneInfY)
+				.borneSupY(borneSupY)
+				.pas(pas)
+				.MAX_ITER(MAX_ITER)
+				.couleur(couleur)
+				.name(name)
+				.zoom(zoom)
+				.translateX(translateX)
+				.translateY(translateY)
+				.buildJulia(c)
+				;
+		
+		return fractale.generateFractal();
+	}
 
 //	public BufferedImage generateJulia(double reel, double imaginaire, double pas, int iterateur, int largeur, int hauteur, int color) {
 //		Complexe c = Complexe.newComplexe(reel, imaginaire);
