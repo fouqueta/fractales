@@ -2,11 +2,6 @@ package modele;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.stream.IntStream;
-
-import javax.imageio.ImageIO;
 
 //3/(width*x)-1.5
 //3=borne à droite - ma borne à gauche || DIVISER par var = width - 0 = width || ca c'est mon a || fois x || donc on obtient f(x) = ax || mtnt il faut b, donc on fait f(x) - ax = b || ici b = -1.5 si on prend f(x) =  -1.5 et donc x = 0
@@ -148,6 +143,14 @@ public class Julia extends Fractales {
 //				img.setRGB(x, y, color);
 		    }
 		}
+	}
+	
+	public double getReelC() {
+		return this.c.getReel();
+	}
+	
+	public double getImaginaireC() {
+		return this.c.getImaginaire();
 	}
    
 
