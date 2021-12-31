@@ -1,24 +1,24 @@
 # Fractales
 
-Projet de Compléments en Programmation Orientée Objet : Fractales
-Année 2021-2022
-L3 Informatique (Université de Paris)
+Projet de Compléments en Programmation Orientée Objet : Fractales.
+Année 2021-2022.
+L3 Informatique (Université de Paris).
 
 
 ## Protocole
 - Pour compiler, lancer : gradle build
-- Pour avoir l’aide ci-dessous, lancer : gradle run --args=’-h’
-usage: Fractales [-c <arg>] [-cst <arg>] [-h] [-i <arg>] [-m <arg>] [-n <arg>] [-p <arg>] [-t <arg>] [-x <arg>] [-y <arg>]
- -c,--couleur <arg>       Code couleur de la fractale
- -cst,--constante <arg>   Constante pour les fractales Julia, de la forme "partieRéelle partieImaginaire"
- -h,--help                Affiche l'aide
- -i,--max_iter <arg>      Nombre maximal d'itérations
- -m,--mode <arg>          Mode de lancement : terminal (t) / IG (i)
- -n,--nom <arg>           Nom du fichier
- -p,--pas <arg>           Pas de discrétisation
- -t,--type <arg>          Type de la fractale : Julia (j) / Mandelbrot (m) / Burning ship (b) / Tricorn (t)
- -x,--bornesX <arg>       Bornes des abscisses du plan complexe, de la forme "borneInf borneSup"
- -y,--bornesY <arg>       Bornes des ordonnées du plan complexe, de la forme "borneInf borneSup"
+- Pour avoir l’aide ci-dessous, lancer : gradle run --args=’-h’  
+usage: Fractales [-c <arg>] [-cst <arg>] [-h] [-i <arg>] [-m <arg>] [-n <arg>] [-p <arg>] [-t <arg>] [-x <arg>] [-y <arg>]  
+ -c,--couleur <arg>       Code couleur de la fractale  
+ -cst,--constante <arg>   Constante pour les fractales Julia, de la forme "partieRéelle partieImaginaire"  
+ -h,--help                Affiche l'aide  
+ -i,--max_iter <arg>      Nombre maximal d'itérations  
+ -m,--mode <arg>          Mode de lancement : terminal (t) / IG (i)  
+ -n,--nom <arg>           Nom du fichier  
+ -p,--pas <arg>           Pas de discrétisation  
+ -t,--type <arg>          Type de la fractale : Julia (j) / Mandelbrot (m) / Burning ship (b) / Tricorn (t)  
+ -x,--bornesX <arg>       Bornes des abscisses du plan complexe, de la forme "borneInf borneSup"  
+ -y,--bornesY <arg>       Bornes des ordonnées du plan complexe, de la forme "borneInf borneSup"  
 
 
 ## Points forts
