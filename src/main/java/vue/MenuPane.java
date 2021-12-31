@@ -31,9 +31,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
-public class MenuPane {
-	
-	
+public class MenuPane {	
 	private Dimension tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
 	
 	private Scene menu_scene;
@@ -270,7 +268,7 @@ public class MenuPane {
         return p;
 	}
 	
-	//FONCTIONS AUXILIAIRE
+	//FONCTIONS AUXILIAIRES
 	public void new_scan(String fichier) {
     	try {
     		scan = new Scanner(new File(fichier), "UTF-8");

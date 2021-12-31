@@ -86,7 +86,6 @@ public class Vue {
 		this.controleur = controleur;
 		this.menu = new MenuPane(this,controleur);
 		
-		
 		stage = new Stage();
 		stage.setTitle("Fractales");
 		stage.setMaximized(true);
@@ -121,7 +120,7 @@ public class Vue {
 		paneParametres.setStyle("-fx-background-color:#D7E5E5");
 	}
 	
-		void pane_parametres(String s) {
+	public void pane_parametres(String s) {
 		Label titre = new Label("Parametres");
 		titre.setFont(new Font("Arial", 20));
 		titre.setPadding(new Insets(40, 0, 0, 140));
@@ -158,8 +157,7 @@ public class Vue {
 		    TFimaginaire.setPromptText("imaginaire");
 		    TFimaginaire.setMaxSize(100,100);
 		    gridPaneParametres.add(TFimaginaire, 3, 4);
-	   }
-	
+	    }
 		
 		Label pas = new Label("Pas de discretisation:"); //pas de discretisation
 	    gridPaneParametres.add(pas, 0, 5, 2, 1);
@@ -171,7 +169,6 @@ public class Vue {
 	    TFite = new TextField();
 	    TFite.setMaxSize(100,100);
 	    gridPaneParametres.add(TFite, 3, 6);
-	    
 	    
 	    Label Lborne = new Label("Bornes du plan complexe"); 
 	    Lborne.setFont(new Font("Arial", 13));
@@ -263,7 +260,6 @@ public class Vue {
 			paneParametres.getChildren().remove(erreur);
 			fractale_pane.getChildren().remove(i);
 
-			//restoreSliderColor();
 			if(s.equals("Julia")) {
 				if (TFreel.getText().isEmpty() || TFimaginaire.getText().isEmpty()) {
 					erreur = new Label("Veuillez remplir tous les champs");
@@ -366,7 +362,6 @@ public class Vue {
 		}else if (s.equals("Mandelbrot")) {
 			generateFractale(controleur.generateMandelbrot(pas,MAX_ITER,borneInfX,borneSupX,borneInfY,borneSupY,couleur,nom));
 		}else if (s.equals("Tricorn")) {
-			System.out.println("oui"); //TODO: enlever de sysout
 			generateFractale(controleur.generateTricorn(pas,MAX_ITER,borneInfX,borneSupX,borneInfY,borneSupY,couleur,nom));
 		}else if (s.equals("BurningShip")){
 			generateFractale(controleur.generateBurningShip(pas,MAX_ITER,borneInfX,borneSupX,borneInfY,borneSupY,couleur,nom));
@@ -463,7 +458,7 @@ public class Vue {
 		buttons_zoom.setLayoutY(paneParametres.getPrefHeight()*0.65);
 		buttons_zoom.toFront();
 		buttons_zoom.getChildren().addAll(zoom,dezoom);
-		paneParametres.getChildren().addAll(buttons_zoom);// Mettre la HBox de buttons pas dans fractale_pane mais le pane d'a cote avec tous les autres choix de parametres		
+		paneParametres.getChildren().addAll(buttons_zoom);
 	}
 	
 	public void buttons_translate() {
@@ -496,7 +491,7 @@ public class Vue {
 	//GETTER
 	public Stage getStage() { return this.stage; }
 	
-	//FONTIONS AUXILIAIRES
+	//FONcTIONS AUXILIAIRES
 	public boolean isDouble(String s) {
         try {
             Double.parseDouble(s);

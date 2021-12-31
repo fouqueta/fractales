@@ -10,7 +10,6 @@ public class Controleur {
 	private Vue vue;
 	private Fractales fractale;
 
-
 	public Controleur() {
 		this.fractale=new Fractales();
 	}
@@ -130,6 +129,7 @@ public class Controleur {
 		return fractale.translate(dir);
 	}
 	
+	//Sauvegarde la fractale en .png et en .txt
 	public void saveFractale() {
 		fractale.saveFractal();
 	}
