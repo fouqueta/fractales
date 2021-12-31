@@ -1,7 +1,7 @@
 TYPE DE FRACTALE:Julia
 ATTRIBUTS:VALEURS
 borneInfX:-1.5
-borneSupX:1.5
+borneSupX:1.43
 borneInfY:-1.0
 borneSupY:1.0
 pas:0.001
@@ -13,5 +13,5 @@ height:2001
 zoom:1.0
 translateX:0
 translateY:0
-reel:-1.476
-imaginaire:0.0
+constante partie reelle:-1.476
+constante partie imaginaire:0.0

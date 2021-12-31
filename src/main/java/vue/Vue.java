@@ -8,7 +8,6 @@ import java.util.Scanner;
 import java.awt.image.BufferedImage;
 
 import controleur.*;
-import modele.*;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -80,7 +79,6 @@ public class Vue {
 	
 	private Controleur controleur;
 	private MenuPane menu;
-	private Fractales fractale;
 	private Scene fractale_scene;
 	
 	
@@ -141,20 +139,27 @@ public class Vue {
 	    	typeF = new Label("Julia"); 
 	    }else if (s.equals("Mandelbrot")) {
 	    	typeF = new Label("Mandelbrot");
+	    }else if (s.equals("Tricorn")) {
+	    	typeF = new Label("Tricorn");
+	    }else if (s.equals("BurningShip")) {
+	    	typeF = new Label("BurningShip");
 	    }
 		typeF.setFont(new Font("Arial", 13));
 	    gridPaneParametres.add(typeF, 2, 3, 2, 1);
 	    
-	    Label constanteC = new Label("constante c:"); //constante c
-	    gridPaneParametres.add(constanteC, 0, 4, 2, 1);
-	    TFreel = new TextField();
-	    TFreel.setPromptText("reel");
-	    TFreel.setMaxSize(100,100);
-	    gridPaneParametres.add(TFreel, 2, 4);
-	    TFimaginaire = new TextField();
-	    TFimaginaire.setPromptText("imaginaire");
-	    TFimaginaire.setMaxSize(100,100);
-	    gridPaneParametres.add(TFimaginaire, 3, 4);
+	    if(s.equals("Julia")) {
+		    Label constanteC = new Label("constante c:"); //constante c
+		    gridPaneParametres.add(constanteC, 0, 4, 2, 1);
+		    TFreel = new TextField();
+		    TFreel.setPromptText("reel");
+		    TFreel.setMaxSize(100,100);
+		    gridPaneParametres.add(TFreel, 2, 4);
+		    TFimaginaire = new TextField();
+		    TFimaginaire.setPromptText("imaginaire");
+		    TFimaginaire.setMaxSize(100,100);
+		    gridPaneParametres.add(TFimaginaire, 3, 4);
+	   }
+	
 		
 		Label pas = new Label("Pas de discretisation:"); //pas de discretisation
 	    gridPaneParametres.add(pas, 0, 5, 2, 1);
@@ -175,26 +180,26 @@ public class Vue {
 	    paneParametres.getChildren().add(Lborne);
 	    
 	    Label abscisse = new Label("abscisses:"); //taille matrice 
-	    gridPaneParametres.add(abscisse, 0, 22, 2, 1);
+	    gridPaneParametres.add(abscisse, 0, 23, 2, 1);
 	    TFinfX = new TextField();
 	    TFinfX.setPromptText("borne inf");
 	    TFinfX.setMaxSize(100,100);
-	    gridPaneParametres.add(TFinfX, 2, 22);
+	    gridPaneParametres.add(TFinfX, 2, 23);
 	    TFsupX = new TextField();
 	    TFsupX.setPromptText("borne sup");
 	    TFsupX.setMaxSize(100,100);
-	    gridPaneParametres.add(TFsupX, 3, 22);
+	    gridPaneParametres.add(TFsupX, 3, 23);
 	    
 	    Label ordonnee = new Label("ordonnees:"); //taille matrice 
-	    gridPaneParametres.add(ordonnee, 0, 23, 2, 1);
+	    gridPaneParametres.add(ordonnee, 0, 24, 2, 1);
 	    TFinfY = new TextField();
 	    TFinfY.setPromptText("borne inf");
 	    TFinfY.setMaxSize(100,100);
-	    gridPaneParametres.add(TFinfY, 2, 23);
+	    gridPaneParametres.add(TFinfY, 2, 24);
 	    TFsupY = new TextField();
 	    TFsupY.setPromptText("borne sup");
 	    TFsupY.setMaxSize(100,100);
-	    gridPaneParametres.add(TFsupY, 3, 23);
+	    gridPaneParametres.add(TFsupY, 3, 24);
 	    
 	    Label fichier = new Label("Nom du fichier:"); //Nom du fichier
 	    gridPaneParametres.add(fichier, 0, 25, 2, 1);
@@ -210,7 +215,6 @@ public class Vue {
 	    buttons_zoom();
 	    buttons_translate();
 	    initSliderColor();
-		//root.getChildren().add(paneParametres);
 	}
 	
 	
@@ -235,11 +239,9 @@ public class Vue {
 		paneParametres.getChildren().addAll(HBoxBouton1,HBoxBouton2);
 		
 		retourMenu.setOnAction(actionEvent->{
-			//	root.getChildren().remove(paneParametres);
 				menu.initialisation_pane_accueil();
 		});
 		choixFractale.setOnAction(actionEvent->{
-			//root.getChildren().remove(paneParametres);
 			try {
 				menu.choixFractale();
 			} catch (IOException e) {
@@ -250,30 +252,39 @@ public class Vue {
 		});
 		sauvegarder.setOnAction(actionEvent->{
 			if (TFfichier.getText().isEmpty()){
+				paneParametres.getChildren().remove(erreur);
 				erreur = new Label("Veuillez remplir tous les champs");
 				set_erreur();
 			}else {
-			controleur.saveFractale();
+				controleur.saveFractale();
 			}
 		});
 		valider.setOnAction(actionEvent->{
 			paneParametres.getChildren().remove(erreur);
 			fractale_pane.getChildren().remove(i);
-			if (TFpas.getText().isEmpty() || TFreel.getText().isEmpty() || TFimaginaire.getText().isEmpty() || TFite.getText().isEmpty() || 
-					TFinfX.getText().isEmpty() || TFsupX.getText().isEmpty() || TFinfY.getText().isEmpty() || TFinfY.getText().isEmpty()) { 
+
+			//restoreSliderColor();
+			if(s.equals("Julia")) {
+				if (TFreel.getText().isEmpty() || TFimaginaire.getText().isEmpty()) {
+					erreur = new Label("Veuillez remplir tous les champs");
+					set_erreur();
+				}else if (!(isDouble(TFreel.getText()) && isDouble(TFimaginaire.getText()))){
+					erreur = new Label("Veuillez entrer un reel ou imaginaire de type double");
+					set_erreur();
+				}
+			}
+			if (TFpas.getText().isEmpty() || TFite.getText().isEmpty() || TFinfX.getText().isEmpty() || TFsupX.getText().isEmpty() ||
+					TFinfY.getText().isEmpty() || TFsupY.getText().isEmpty() || TFfichier.getText().isEmpty()) { 
 				erreur = new Label("Veuillez remplir tous les champs");
 				set_erreur();
-			}else if (!(isDouble(TFreel.getText()) && isDouble(TFimaginaire.getText()))){
-				erreur = new Label("Veuillez entrer un reel ou imaginaire de type double");
-				set_erreur();	
 			}else if (!isDouble(TFpas.getText())) {
 				erreur = new Label("Veuillez entrer un pas de type double");
 				set_erreur();
 			}else if (!isInt(TFite.getText())){
-				erreur = new Label("Veuillez entrer un iterateur de type int");
+				erreur = new Label("Veuillez entrer un nombre max d'iterations de type int");
 				set_erreur();
 			}else if (!(isDouble(TFinfX.getText()) && isDouble(TFsupX.getText()) && isDouble(TFinfY.getText()) && isDouble(TFsupY.getText()))){
-				erreur = new Label("Veuillez entrer une largeur ou hauteur de type double");
+				erreur = new Label("Veuillez entrer une abscisse et une ordonnee de type double");
 				set_erreur();
 			}else if (Double.parseDouble(TFsupX.getText()) - Double.parseDouble(TFinfX.getText()) > 2.93){
 				erreur = new Label("Rentrer des bornes abscisses d'une distance < 2.94");
@@ -283,24 +294,23 @@ public class Vue {
 				set_erreur();
 			}
 			else {
-				if (s.equals("Julia")) {
-					System.out.println("gne");
-					FJulia();
-				} else if (s.equals("Mandelbrot")) {
-					FMandelbrot();
-				}
+				FInstance(s);
 			}
 		});
 		restaurer.setOnAction(actionEvent->{
+			fractale_pane.getChildren().remove(i);
 			paneParametres.getChildren().remove(erreur);
-			TFreel.clear();
-			TFimaginaire.clear();
+			if(s.equals("Julia")) {
+				TFreel.clear();
+				TFimaginaire.clear();
+			}
 			TFpas.clear();
 			TFite.clear();
 			TFinfX.clear();
 			TFsupX.clear();
 			TFinfY.clear();
 			TFsupY.clear();
+			TFfichier.clear();
 		});
 		quitter.setOnAction(actionEvent->{
 			stage.close();
@@ -338,21 +348,33 @@ public class Vue {
 	    });
 	    return couleur;
 	}
-		
+
 	
-	public void FJulia() {
-		double reel = Double.parseDouble(TFreel.getText());
-		double imaginaire = Double.parseDouble(TFimaginaire.getText());
+	//Instanciation des arguments pour creer la fractale
+	public void FInstance(String s) {
 		double pas = Double.parseDouble(TFpas.getText());
-		int iterateur = Integer.parseInt(TFite.getText());
-		double infX = Double.parseDouble(TFinfX.getText());
-		double supX = Double.parseDouble(TFsupX.getText());
-		double infY = Double.parseDouble(TFinfY.getText());
-		double supY = Double.parseDouble(TFsupY.getText());
-		generateFractale(controleur.generateJulia(reel,imaginaire,pas,iterateur,infX,supX,infY,supY,couleur,TFfichier.getText()));
+		int MAX_ITER = Integer.parseInt(TFite.getText());
+		double borneInfX = Double.parseDouble(TFinfX.getText());
+		double borneSupX = Double.parseDouble(TFsupX.getText());
+		double borneInfY = Double.parseDouble(TFinfY.getText());
+		double borneSupY = Double.parseDouble(TFsupY.getText());
+		String nom = TFfichier.getText();
+		if (s.equals("Julia")) {
+			double reel = Double.parseDouble(TFreel.getText());
+			double imaginaire = Double.parseDouble(TFimaginaire.getText());
+			generateFractale(controleur.generateJulia(reel,imaginaire,pas,MAX_ITER,borneInfX,borneSupX,borneInfY,borneSupY,couleur,nom));
+		}else if (s.equals("Mandelbrot")) {
+			generateFractale(controleur.generateMandelbrot(pas,MAX_ITER,borneInfX,borneSupX,borneInfY,borneSupY,couleur,nom));
+		}else if (s.equals("Tricorn")) {
+			System.out.println("oui"); //TODO: enlever de sysout
+			generateFractale(controleur.generateTricorn(pas,MAX_ITER,borneInfX,borneSupX,borneInfY,borneSupY,couleur,nom));
+		}else if (s.equals("BurningShip")){
+			generateFractale(controleur.generateBurningShip(pas,MAX_ITER,borneInfX,borneSupX,borneInfY,borneSupY,couleur,nom));
+		}	
 	}
+
 	
-	public void FJuliaTxt(String s) {
+	public void FInstanceTxt(String s) {
 		new_scan("src/main/sauvegardes/"+s);
 		while (scan.hasNextLine()) {
 			String caract = scan.nextLine();
@@ -361,51 +383,57 @@ public class Vue {
 				case "TYPE DE FRACTALE": type=attributs[1];
 					break;
 				case "borneInfX": borneInfX=Double.parseDouble(attributs[1]);
-					;break;
+					break;
 				case "borneSupX":borneSupX=Double.parseDouble(attributs[1]);
 					break;
-				case "borneInfY": borneInfY=Double.parseDouble(attributs[1]); 	
+				case "borneInfY": borneInfY=Double.parseDouble(attributs[1]);
 					break;
 				case "borneSupY": borneSupY=Double.parseDouble(attributs[1]);
 					break;
-				case "pas": pas=Double.parseDouble(attributs[1]); 
+				case "pas": pas=Double.parseDouble(attributs[1]);
 					break;
-				case "MAX_ITER": MAX_ITER=Integer.parseInt(attributs[1]); 
+				case "MAX_ITER": MAX_ITER=Integer.parseInt(attributs[1]);
 					break;
-				case "couleur": couleur=Integer.parseInt(attributs[1]); 
+				case "couleur": couleur=Integer.parseInt(attributs[1]);
 					break;
-				case "name": name=attributs[1]; 
+				case "name": name=attributs[1];
 					break;
 				case "zoom": zoom=Double.parseDouble(attributs[1]);
 					break;
-				case "translateX": translateX=Integer.parseInt(attributs[1]); 
+				case "translateX": translateX=Integer.parseInt(attributs[1]);
 					break;
-				case "translateY": translateY=Integer.parseInt(attributs[1]); 
+				case "translateY": translateY=Integer.parseInt(attributs[1]);
 					break;
 				case "constante partie reelle": reel=Double.parseDouble(attributs[1]);
 					break;
-				case "constante partie imaginaire": imaginaire=Double.parseDouble(attributs[1]); 
+				case "constante partie imaginaire": imaginaire=Double.parseDouble(attributs[1]);
 					break;
 			}
 		}
-		JuliaPredef();
-		generateFractale(controleur.generateJuliaBis(type,borneInfX,borneSupX,borneInfY,borneSupY,pas,MAX_ITER,couleur,name,zoom,translateX,translateY,reel,imaginaire));
+		ConvertPredef();
+		if (type.equals("Julia")) {
+			generateFractale(controleur.generateJuliaBis(type,borneInfX,borneSupX,borneInfY,borneSupY,pas,MAX_ITER,couleur,name,zoom,translateX,translateY,reel,imaginaire));
+		}else if (type.equals("Mandelbrot")) {
+			generateFractale(controleur.generateMandelbrotBis(type,borneInfX,borneSupX,borneInfY,borneSupY,pas,MAX_ITER,couleur,name,zoom,translateX,translateY));
+		}else if (type.equals("Tricorn")) {
+			generateFractale(controleur.generateTricornBis(type,borneInfX,borneSupX,borneInfY,borneSupY,pas,MAX_ITER,couleur,name,zoom,translateX,translateY));
+		}else if (type.equals("BurningShip")){
+			generateFractale(controleur.generateBurningShipBis(type,borneInfX,borneSupX,borneInfY,borneSupY,pas,MAX_ITER,couleur,name,zoom,translateX,translateY));
+		}
 	}
 	
-	public void FMandelbrot(){
-		
-	}
-	
-	public void JuliaPredef() {
+	public void ConvertPredef() {
 		pane_parametres(type);
+		if (type.equals("Julia")){
+			TFreel.setText(String.valueOf(reel));
+			TFimaginaire.setText(String.valueOf(imaginaire));
+		}
 		TFinfX.setText(String.valueOf(borneInfX));
 		TFsupX.setText(String.valueOf(borneSupX));
 		TFinfY.setText(String.valueOf(borneInfY));
 		TFsupY.setText(String.valueOf(borneSupY));
 		TFpas.setText(String.valueOf(pas));
 		TFite.setText(String.valueOf(MAX_ITER));
-		TFreel.setText(String.valueOf(reel));
-		TFimaginaire.setText(String.valueOf(imaginaire));
 		sliderColor.setValue(couleur);
 		TFfichier.setText(name);
 	}

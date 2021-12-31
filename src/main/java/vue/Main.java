@@ -61,9 +61,7 @@ public class Main extends Application{
         else if (mode.equals("t")) {
 	        //On parse le reste des options
 	        final CommandLine line = parser.parse(options, args);
-	
-	//      final String mode = line.getOptionValue("mode"); //Mode terminal ou IG
-	        
+		        
 	        final String type = line.getOptionValue("type","j"); //Par defaut, on genere Julia
 	        
 	        final String name = line.getOptionValue("nom","MaFractale"); //Par defaut, le nom du fichier sera MaFractale
@@ -137,9 +135,7 @@ public class Main extends Application{
         }
         else {
         	System.out.println("Le mode de lancement est incorrect");
-        }
-        
-      
+        }      
 	}
 	
 	//Construit une fractale du type donne en argu, genere les fichiers png et txt correspondants
@@ -177,7 +173,7 @@ public class Main extends Application{
 				.name(name);
 	}
 	
-	//Creation de l'option help
+	//Creation de l'option help et du mode
 	private static Options configPremParametres() {
 	    final Option helpOption = Option.builder("h") 
 	            .longOpt("help") 
@@ -201,7 +197,7 @@ public class Main extends Application{
 	//Creation des options
 	private static Options configParametres(final Options premOptions) {		 
 	    final Option typeOption = Option.builder("t") 
-	            .longOpt("type") //
+	            .longOpt("type") 
 	            .desc("Type de la fractale : Julia (j) / Mandelbrot (m) / Burning ship (b) / Tricorn (t)") 
 	            .hasArg(true) 
 	            .required(false) 
@@ -238,8 +234,7 @@ public class Main extends Application{
 	    final Option bornesXOption = Option.builder("x") 
 	            .longOpt("bornesX") 
 	            .desc("Bornes des abscisses du plan complexe, de la forme \"borneInf borneSup\"") 
-	            .hasArg(true) 
-//	            .valueSeparator(' ')
+	            .hasArg(true)
 	            .required(false) 
 	            .build();
 	    bornesXOption.setArgs(2);
@@ -247,8 +242,7 @@ public class Main extends Application{
 	    final Option bornesYOption = Option.builder("y") 
 	            .longOpt("bornesY") 
 	            .desc("Bornes des ordonnees du plan complexe, de la forme \"borneInf borneSup\"") 
-	            .hasArg(true) 
-//	            .valueSeparator(' ')
+	            .hasArg(true)
 	            .required(false) 
 	            .build();
 	    bornesYOption.setArgs(2);
@@ -257,7 +251,6 @@ public class Main extends Application{
 	            .longOpt("constante") 
 	            .desc("Constante pour les fractales Julia, de la forme \"partieReelle partieImaginaire\"") 
 	            .hasArg(true)
-//	            .valueSeparator(' ')
 	            .required(false) 
 	            .build();
 	    constanteOption.setArgs(2);

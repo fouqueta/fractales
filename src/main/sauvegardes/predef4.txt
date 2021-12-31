@@ -1,0 +1,15 @@
+TYPE DE FRACTALE:Tricorn
+ATTRIBUTS:VALEURS
+borneInfX:-1.5
+borneSupX:1.4
+borneInfY:-1.0
+borneSupY:1.0
+pas:0.001
+MAX_ITER:50
+couleur:0
+name:predef4
+width:2901
+height:2001
+zoom:1.0
+translateX:-580
+translateY:0

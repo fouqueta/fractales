@@ -11,9 +11,14 @@ import java.util.Scanner;
 
 import controleur.Controleur;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -21,6 +26,8 @@ import javafx.scene.text.Font;
 import modele.Fractales;
 import modele.Fractales.FractaleBuilder;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
@@ -44,6 +51,8 @@ public class MenuPane {
 	private Button visualisation_frct;
 	private Button julia;
 	private Button mandelbrot;
+	private Button tricorn;
+	private Button burningship;
 	private Button retour = new Button ("Retour");
 	private Button nbFractale;
 	
@@ -79,7 +88,7 @@ public class MenuPane {
 		double paneMenu_x = paneMenu.getPrefWidth();
 		double paneMenu_y = paneMenu.getPrefHeight();
 		generer_frct = new Button("Generer une fractale");
-		visualisation_frct = new Button("Visualiser nos fractales");
+		visualisation_frct = new Button("Visualiser mes fractales");
 		HBoxBouton.getChildren().addAll(generer_frct,visualisation_frct);
 		HBoxBouton.setLayoutX((paneMenu_x*43)/100);
 		HBoxBouton.setLayoutY((paneMenu_y*50)/100);
@@ -109,21 +118,58 @@ public class MenuPane {
 		titre.setFont(new Font("Arial", 20));
 		titre.setLayoutX(tailleEcran.width*0.43);
 		titre.setLayoutY(tailleEcran.height*0.2);
-		boutonChoix();
 		imageFractale();
+		boutonChoix();
 		paneChoixFractale.getChildren().add(titre);
 		choix_scene = new Scene(paneChoixFractale);
 		vue.getStage().setScene(choix_scene);
 	}
 	
+	public void imageFractale() throws IOException{
+		Image imageJulia = new Image(new FileInputStream("src/main/ressources/julia.jpg"));
+	    ImageView imageView1 = new ImageView();
+	    imageView1.setImage(imageJulia);
+	    imageView1.setX(tailleEcran.width*0.02);
+	    imageView1.setY(tailleEcran.height*0.30);
+	    imageView1.setFitWidth(320);
+      	imageView1.setPreserveRatio(true);
+      	paneChoixFractale.getChildren().add(imageView1);
+      	Image imageMandelbrot = new Image(new FileInputStream("src/main/ressources/mandelbrot.png"));
+	    ImageView imageView2 = new ImageView();
+	    imageView2.setImage(imageMandelbrot);
+	    imageView2.setX(tailleEcran.width*0.24);
+	    imageView2.setY(tailleEcran.height*0.30);
+	    imageView2.setFitWidth(338);
+      	imageView2.setPreserveRatio(true);
+      	paneChoixFractale.getChildren().add(imageView2);
+      	Image imageTricorn = new Image(new FileInputStream("src/main/ressources/tricorn.png"));
+	    ImageView imageView3 = new ImageView();
+	    imageView3.setImage(imageTricorn);
+	    imageView3.setX(tailleEcran.width*0.47);
+	    imageView3.setY(tailleEcran.height*0.30);
+	    imageView3.setFitWidth(359);
+	    imageView3.setPreserveRatio(true);
+      	paneChoixFractale.getChildren().add(imageView3);
+      	Image imageBurningShip = new Image(new FileInputStream("src/main/ressources/burningship.png"));
+	    ImageView imageView4 = new ImageView();
+	    imageView4.setImage(imageBurningShip);
+	    imageView4.setX(tailleEcran.width*0.71);
+	    imageView4.setY(tailleEcran.height*0.30);
+	    imageView4.setFitWidth(425);
+	    imageView4.setPreserveRatio(true);
+      	paneChoixFractale.getChildren().add(imageView4);
+	}
+	
 	public void boutonChoix(){
-		HBoxBouton = new HBox(400);
+		HBoxBouton = new HBox(308);
 		double paneChoixFractale_x = paneChoixFractale.getPrefWidth();
 		double paneChoixFractale_y = paneChoixFractale.getPrefHeight();
 		julia = new Button("Julia");
 		mandelbrot = new Button("Mandelbrot");
-		HBoxBouton.getChildren().addAll(julia,mandelbrot);
-		HBoxBouton.setLayoutX(paneChoixFractale_x*0.36);
+		tricorn = new Button("Tricorn");
+		burningship = new Button("BurningShip");
+		HBoxBouton.getChildren().addAll(julia,mandelbrot,tricorn,burningship);
+		HBoxBouton.setLayoutX(paneChoixFractale_x*0.10);
 		HBoxBouton.setLayoutY(paneChoixFractale_y*0.65);
 		paneChoixFractale.getChildren().add(HBoxBouton);	
 		paneChoixFractale.getChildren().add(boutonRetour());
@@ -134,30 +180,18 @@ public class MenuPane {
 			
 		});
 		mandelbrot.setOnAction(actionEvent->{
-			//TODO: initialiser une fractale type Mandelbrot du constructeur
-			vue.initialisation_pane_fractale();
+			vue.initialisation_HBox_principale();
 			vue.pane_parametres("Mandelbrot");
 		});
-	}
-	
-	public void imageFractale() throws IOException{
-		Image imageJulia = new Image(new FileInputStream("src/main/ressources/julia.jpg"));
-	    ImageView imageView1 = new ImageView();
-	    imageView1.setImage(imageJulia);
-	    imageView1.setX(tailleEcran.width*0.25);
-	    imageView1.setY(tailleEcran.width*0.15);
-	    imageView1.setFitWidth(400);
-      	imageView1.setPreserveRatio(true);
-      	paneChoixFractale.getChildren().add(imageView1);
-      	Image imageMandelbrot = new Image(new FileInputStream("src/main/ressources/mandelbrot.png"));
-	    ImageView imageView2 = new ImageView();
-	    imageView2.setImage(imageMandelbrot);
-	    imageView2.setX(tailleEcran.width*0.52);
-	    imageView2.setY(tailleEcran.width*0.15);
-	    imageView2.setFitWidth(422);
-      	imageView2.setPreserveRatio(true);
-      	paneChoixFractale.getChildren().add(imageView2);
-	}
+		tricorn.setOnAction(actionEvent->{
+			vue.initialisation_HBox_principale();
+			vue.pane_parametres("Tricorn");
+		});
+		burningship.setOnAction(actionEvent->{
+			vue.initialisation_HBox_principale();
+			vue.pane_parametres("BurningShip");
+		});
+	}	
 	
 	public void fractale_sauvegarde() throws IOException{
 		paneChoixSauvegardes = new AnchorPane();
@@ -165,7 +199,7 @@ public class MenuPane {
 		paneChoixSauvegardes.setStyle("-fx-background-color: #E8EAEA");
 		Label titre = new Label("FRACTALES SAUVEGARDEES");
 		titre.setFont(new Font("Arial", 20));
-		titre.setLayoutX((tailleEcran.width*43)/100);
+		titre.setLayoutX((tailleEcran.width*42)/100);
 		titre.setLayoutY((tailleEcran.height*5)/100);
 		paneChoixSauvegardes.getChildren().add(titre);
 		sauvegardes_scene = new Scene(paneChoixSauvegardes);
@@ -181,6 +215,16 @@ public class MenuPane {
 		gridFractales.setMaxWidth(tailleEcran.width);
 		gridFractales.setMaxHeight(tailleEcran.height);
 		
+		ScrollPane scrollPane = new ScrollPane();
+		scrollPane.setHbarPolicy(ScrollBarPolicy.ALWAYS);
+		scrollPane.setContent(gridFractales);
+		scrollPane.setPrefSize(tailleEcran.width*0.9, tailleEcran.height*0.7);
+		scrollPane.setLayoutX(tailleEcran.width*5/100);
+		scrollPane.setLayoutY(tailleEcran.height*12/100);
+		scrollPane.setStyle("-fx-background-color: white");
+		
+		paneChoixSauvegardes.getChildren().add(scrollPane);
+
 		File path = new File("src/main/sauvegardes");
 		File [] files = path.listFiles();
 		int x=1;
@@ -190,7 +234,6 @@ public class MenuPane {
 	        	int k=files[i].getName().lastIndexOf('.');
 	        	if (k>0) {
 	        		if((files[i].getName().substring(k+1)).equals("png")) {
-	        			System.out.println("coucou");
 			            imagePredef = new Image(new FileInputStream(files[i]));
 					    imageView = new ImageView();
 					    imageView.setImage(imagePredef);
@@ -199,7 +242,6 @@ public class MenuPane {
 					    imageView.setFitWidth(300);
 				      	imageView.setPreserveRatio(true);
 				      	gridFractales.add(imageView, x,y);
-				      	//nbFractale = new Button(Integer.toString(x));
 				      	
 				      	nbFractale = new Button(files[i].getName());
 				      	gridFractales.add(nbFractale, x,y+1);  
@@ -208,25 +250,18 @@ public class MenuPane {
 				    	  String s = files[i].getName();
 				      	nbFractale.setOnAction(actionEvent->{
 				      		vue.initialisation_HBox_principale();
-				      		vue.FJuliaTxt(s);
-				      		
-				      		
-				      		
-						});
+				      		vue.FInstanceTxt(s);
+				      		});
 				      	x++;	
 				      }
 	        	}
 	        }
 		}
-		paneChoixSauvegardes.getChildren().add(gridFractales);
 	}
 
-	
-	
-	
 	public Pane boutonRetour() {
 		Pane p = new Pane();
-		p.relocate(tailleEcran.width*0.5, tailleEcran.height*0.8);
+		p.relocate(tailleEcran.width*0.5, tailleEcran.height*0.85);
         p.getChildren().add(retour);
         
         retour.setOnAction(actionEvent->{
