@@ -6,7 +6,6 @@ public class BurningShip extends Fractales {
 	
 	public BurningShip(FractaleBuilder fb) {
 		super(fb);
-		//f = (z,cst) -> z.multiply(z).add(cst);
 		f = ((z,cst) -> { 
 				Complexe zAbs = Complexe.newComplexe(Math.abs(z.getReel()), Math.abs(z.getImaginaire()));
 				return zAbs.multiply(zAbs).add(cst);
@@ -20,12 +19,12 @@ public class BurningShip extends Fractales {
 		double zY = (((borneSupY - borneInfY)/height)*(y+translateY)*gapY) + borneInfY*gapY;
 		Complexe z = Complexe.newComplexe(zX, zY);
 		Complexe c = z;
-		while (z.module() <= 2 && i < MAX_ITER-1) {
+		while (z.module() <= 2 && i < MAX_ITER) {
 			z = f.apply(z,c);
 			i++;
 		}
 		int rgb;
-		if (i == MAX_ITER-1) {
+		if (i == MAX_ITER) {
 			rgb = 0;
 		}
 		else {

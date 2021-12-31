@@ -21,12 +21,12 @@ public class Tricorn extends Fractales {
 		double zY = (((borneSupY - borneInfY)/height)*(y+translateY)*gapY) + borneInfY*gapY;
 		Complexe z = Complexe.newComplexe(zX, zY);
 		Complexe c = z;
-		while (z.module() <= 2 && i < MAX_ITER-1) {
+		while (z.module() <= 2 && i < MAX_ITER) {
 			z = f.apply(z,c);
 			i++;
 		}
 		int rgb;
-		if (i == MAX_ITER-1) {
+		if (i == MAX_ITER) {
 			rgb = 0;
 		}
 		else {
@@ -34,6 +34,5 @@ public class Tricorn extends Fractales {
 		}
 		img.setRGB(x, y, rgb);
 	}
-	
 	
 }
