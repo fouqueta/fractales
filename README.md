@@ -1,8 +1,8 @@
 # Fractales
 
-Projet de Compléments en Programmation Orientée Objet : Fractales.
-Année 2021-2022.
-L3 Informatique (Université de Paris).
+Projet de Compléments en Programmation Orientée Objet : Fractales.  
+Année 2021-2022.  
+L3 Informatique (Université de Paris).  
 
 
 ## Protocole
