@@ -1,0 +1,15 @@
+TYPE DE FRACTALE:Mandelbrot
+ATTRIBUTS:VALEURS
+borneInfX:-1.5
+borneSupX:1.43
+borneInfY:-1.0
+borneSupY:1.0
+pas:0.001
+MAX_ITER:1000
+couleur:675
+name:predef3
+width:2930
+height:2001
+zoom:1.0
+translateX:-586
+translateY:0

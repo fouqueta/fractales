@@ -1,0 +1,17 @@
+TYPE DE FRACTALE:Julia
+ATTRIBUTS:VALEURS
+constante partie reelle:-0.7269
+constante partie imaginaire:0.1889
+borneInfX:-1.5
+borneSupX:1.43
+borneInfY:-1.0
+borneSupY:1.0
+pas:0.001
+MAX_ITER:1000
+couleur:0
+name:predef1
+width:2930
+height:2001
+zoom:1.0
+translateX:0
+translateY:0

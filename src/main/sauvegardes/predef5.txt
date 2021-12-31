@@ -1,0 +1,15 @@
+TYPE DE FRACTALE:BurningShip
+ATTRIBUTS:VALEURS
+borneInfX:-2.0
+borneSupX:0.93
+borneInfY:-1.0
+borneSupY:1.0
+pas:0.001
+MAX_ITER:500
+couleur:787
+name:predef5
+width:2931
+height:2001
+zoom:11.0
+translateX:-18166
+translateY:-200
