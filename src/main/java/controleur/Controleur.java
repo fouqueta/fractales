@@ -12,14 +12,90 @@ public class Controleur {
 
 
 	public Controleur() {
-		//this.fractale = fractale;
 		this.fractale=new Fractales();
 	}
 	
 	
-	public BufferedImage generateJulia(double reel, double imaginaire, double pas, int max_iter, double infX, double supX, double infY, double supY, int couleur, String name) {
-		Complexe c = Complexe.newComplexe(reel, imaginaire);
-		fractale = FractaleBuilder.newFractaleBuilder()
+	//Build une fractale Julia selon les parametres et retourne son image
+	public BufferedImage generateJulia(double cstR, double cstI, double pas, int max_iter, double infX, double supX, double infY, double supY, int couleur, String name) {
+		Complexe c = Complexe.newComplexe(cstR, cstI);
+		fractale = builder(pas, max_iter, infX, supX, infY, supY, couleur, name).buildJulia(c);
+		return fractale.generateFractal();
+	}
+	
+	public BufferedImage generateJuliaBis(String type, double infX, double supX, double infY, double supY, double pas, int max_iter, 
+			int couleur, String name, double zoom, int translateX, int translateY, double cstR, double cstI) {
+		Complexe c = Complexe.newComplexe(cstR, cstI);
+		fractale = builder(pas, max_iter, infX, supX, infY, supY, couleur, name)
+					.type(type)				
+					.zoom(zoom)
+					.translateX(translateX)
+					.translateY(translateY)
+					.buildJulia(c)
+					;
+		return fractale.generateFractal();
+	}
+	
+	
+	//Build une fractale Mandelbrot selon les parametres et retourne son image
+	public BufferedImage generateMandelbrot(double pas, int max_iter, double infX, double supX, double infY, double supY, int couleur, String name) {
+		fractale = builder(pas, max_iter, infX, supX, infY, supY, couleur, name).buildMandelbrot();				;
+		return fractale.generateFractal();
+	}
+	
+	public BufferedImage generateMandelbrotBis(String type, double infX, double supX, double infY, double supY, double pas, int max_iter, 
+			int couleur, String name, double zoom, int translateX, int translateY) {
+		fractale = builder(pas, max_iter, infX, supX, infY, supY, couleur, name)
+				.type(type)				
+				.zoom(zoom)
+				.translateX(translateX)
+				.translateY(translateY)
+				.buildMandelbrot()
+				;
+		return fractale.generateFractal();
+	}
+	
+	
+	//Build une fractale Burning ship selon les parametres et retourne son image
+	public BufferedImage generateBurningShip(double pas, int max_iter, double infX, double supX, double infY, double supY, int couleur, String name) {
+		fractale = builder(pas, max_iter, infX, supX, infY, supY, couleur, name).buildBurningShip();
+		return fractale.generateFractal();
+	}
+	
+	public BufferedImage generateBurningShipBis(String type, double infX, double supX, double infY, double supY, double pas, int max_iter, 
+			int couleur, String name, double zoom, int translateX, int translateY) {
+		fractale = builder(pas, max_iter, infX, supX, infY, supY, couleur, name)
+				.type(type)				
+				.zoom(zoom)
+				.translateX(translateX)
+				.translateY(translateY)
+				.buildBurningShip()
+				;
+		return fractale.generateFractal();
+	}
+	
+	
+	//Build une fractale Tricorn selon les parametres et retourne son image
+	public BufferedImage generateTricorn(double pas, int max_iter, double infX, double supX, double infY, double supY, int couleur, String name) {
+		fractale = builder(pas, max_iter, infX, supX, infY, supY, couleur, name).buildTricorn();
+		return fractale.generateFractal();
+	}
+	
+	public BufferedImage generateTricornBis(String type, double infX, double supX, double infY, double supY, double pas, int max_iter, 
+			int couleur, String name, double zoom, int translateX, int translateY) {
+		fractale = builder(pas, max_iter, infX, supX, infY, supY, couleur, name)
+				.type(type)				
+				.zoom(zoom)
+				.translateX(translateX)
+				.translateY(translateY)
+				.buildTricorn()
+				;
+		return fractale.generateFractal();
+	}
+	
+	//Fonction auxilliaire qui retourne un FractaleBuilder
+	public FractaleBuilder builder(double pas, int max_iter, double infX, double supX, double infY, double supY, int couleur, String name) {
+		return FractaleBuilder.newFractaleBuilder()
 				.borneInfX(infX)
 				.borneSupX(supX)
 				.borneInfY(infY)
@@ -27,149 +103,10 @@ public class Controleur {
 				.pas(pas)
 				.MAX_ITER(max_iter)
 				.couleur(couleur)
-				.name(name)
-				.buildJulia(c)
-				;
-		return fractale.generateFractal();
+				.name(name);
 	}
 	
-	public BufferedImage generateJuliaBis(String type, double borneInfX, double borneSupX, double borneInfY, double borneSupY, double pas, int MAX_ITER, 
-			int couleur, String name, double zoom, int translateX, int translateY, double reel, double imaginaire) {
-		Complexe c = Complexe.newComplexe(reel, imaginaire);
-		fractale = FractaleBuilder.newFractaleBuilder()
-				.type(type)
-				.borneInfX(borneInfX)
-				.borneSupX(borneSupX)
-				.borneInfY(borneInfY)
-				.borneSupY(borneSupY)
-				.pas(pas)
-				.MAX_ITER(MAX_ITER)
-				.couleur(couleur)
-				.name(name)
-				.zoom(zoom)
-				.translateX(translateX)
-				.translateY(translateY)
-				.buildJulia(c)
-				;
-		
-		return fractale.generateFractal();
-	}
-	
-	
-	public BufferedImage generateMandelbrot(double pas, int iterateur, double infX, double supX, double infY, double supY, int color, String name) {
-		fractale = FractaleBuilder.newFractaleBuilder()
-				.borneInfX(infX)
-				.borneSupX(supX)
-				.borneInfY(infY)
-				.borneSupY(supY)
-				.pas(pas)
-				.MAX_ITER(iterateur)
-				.couleur(color)
-				.name(name)
-				.buildMandelbrot()
-				;
-		
-		return fractale.generateFractal();
-	}
-	
-	public BufferedImage generateMandelbrotBis(String type, double borneInfX, double borneSupX, double borneInfY, double borneSupY, double pas, int MAX_ITER, 
-			int couleur, String name, double zoom, int translateX, int translateY) {
-		fractale = FractaleBuilder.newFractaleBuilder()
-				.type(type)
-				.borneInfX(borneInfX)
-				.borneSupX(borneSupX)
-				.borneInfY(borneInfY)
-				.borneSupY(borneSupY)
-				.pas(pas)
-				.MAX_ITER(MAX_ITER)
-				.couleur(couleur)
-				.name(name)
-				.zoom(zoom)
-				.translateX(translateX)
-				.translateY(translateY)
-				.buildMandelbrot()
-				;
-		
-		return fractale.generateFractal();
-	}
-	
-	
-	public BufferedImage generateBurningShip(double pas, int iterateur, double infX, double supX, double infY, double supY, int color, String name) {
-		fractale = FractaleBuilder.newFractaleBuilder()
-				.borneInfX(infX)
-				.borneSupX(supX)
-				.borneInfY(infY)
-				.borneSupY(supY)
-				.pas(pas)
-				.MAX_ITER(iterateur)
-				.couleur(color)
-				.name(name)
-				.buildBurningShip()
-				;
-		
-		return fractale.generateFractal();
-	}
-	
-	public BufferedImage generateBurningShipBis(String type, double borneInfX, double borneSupX, double borneInfY, double borneSupY, double pas, 
-			int MAX_ITER, int couleur, String name, double zoom, int translateX, int translateY) {
-		fractale = FractaleBuilder.newFractaleBuilder()
-				.type(type)
-				.borneInfX(borneInfX)
-				.borneSupX(borneSupX)
-				.borneInfY(borneInfY)
-				.borneSupY(borneSupY)
-				.pas(pas)
-				.MAX_ITER(MAX_ITER)
-				.couleur(couleur)
-				.name(name)
-				.zoom(zoom)
-				.translateX(translateX)
-				.translateY(translateY)
-				.buildBurningShip()
-				;
-		
-		return fractale.generateFractal();
-	}
-	
-	
-	public BufferedImage generateTricorn(double pas, int iterateur, double infX, double supX, double infY, double supY, int color, String name) {
-		fractale = FractaleBuilder.newFractaleBuilder()
-				.borneInfX(infX)
-				.borneSupX(supX)
-				.borneInfY(infY)
-				.borneSupY(supY)
-				.pas(pas)
-				.MAX_ITER(iterateur)
-				.couleur(color)
-				.name(name)
-				.buildTricorn()
-				;
-		
-		return fractale.generateFractal();
-	}
-	
-	public BufferedImage generateTricornBis(String type, double borneInfX, double borneSupX, double borneInfY, double borneSupY, double pas, int MAX_ITER, 
-			int couleur, String name, double zoom, int translateX, int translateY) {
-		fractale = FractaleBuilder.newFractaleBuilder()
-				.type(type)
-				.borneInfX(borneInfX)
-				.borneSupX(borneSupX)
-				.borneInfY(borneInfY)
-				.borneSupY(borneSupY)
-				.pas(pas)
-				.MAX_ITER(MAX_ITER)
-				.couleur(couleur)
-				.name(name)
-				.zoom(zoom)
-				.translateX(translateX)
-				.translateY(translateY)
-				.buildTricorn()
-				;
-		
-		return fractale.generateFractal();
-	}
-	
-	
+	//Incremente ou decremente le zoom
 	public BufferedImage zoom(boolean zoom) {
 		if (zoom) { //Si true, zoom
 			fractale.zoom();
@@ -180,6 +117,7 @@ public class Controleur {
 		return fractale.generateFractal();
 	}
 	
+	//Deplacement dans l'image
 	public BufferedImage translateX(boolean sign) {
 		fractale.translateX(sign);
 		char dir = sign ? 'R' : 'L';
