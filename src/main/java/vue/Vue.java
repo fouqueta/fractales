@@ -274,14 +274,14 @@ public class Vue {
 				}
 			}
 			if (TFpas.getText().isEmpty() || TFite.getText().isEmpty() || TFinfX.getText().isEmpty() || TFsupX.getText().isEmpty() ||
-					TFinfY.getText().isEmpty() || TFsupY.getText().isEmpty()) { 
+					TFinfY.getText().isEmpty() || TFsupY.getText().isEmpty() || TFfichier.getText().isEmpty()) { 
 				erreur = new Label("Veuillez remplir tous les champs");
 				set_erreur();
 			}else if (!isDouble(TFpas.getText())) {
 				erreur = new Label("Veuillez entrer un pas de type double");
 				set_erreur();
 			}else if (!isInt(TFite.getText())){
-				erreur = new Label("Veuillez entrer un iterateur de type int");
+				erreur = new Label("Veuillez entrer un nombre max d'iterations de type int");
 				set_erreur();
 			}else if (!(isDouble(TFinfX.getText()) && isDouble(TFsupX.getText()) && isDouble(TFinfY.getText()) && isDouble(TFsupY.getText()))){
 				erreur = new Label("Veuillez entrer une abscisse et une ordonnee de type double");
