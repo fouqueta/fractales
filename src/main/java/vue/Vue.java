@@ -97,7 +97,7 @@ public class Vue {
 		stage.show();
 	}
 	
-	
+	//initialisation de la HBox contenant une pane pour generer la fractale et une pane pour afficher les parametres
 	public void initialisation_HBox_principale() {
 		HBox_fenetre = new HBox();
 		initialisation_pane_fractale();
@@ -120,6 +120,7 @@ public class Vue {
 		paneParametres.setStyle("-fx-background-color:#D7E5E5");
 	}
 	
+	//mise en place des parametres
 	public void pane_parametres(String s) {
 		Label titre = new Label("Parametres");
 		titre.setFont(new Font("Arial", 20));
@@ -239,13 +240,7 @@ public class Vue {
 				menu.initialisation_pane_accueil();
 		});
 		choixFractale.setOnAction(actionEvent->{
-			try {
-				menu.choixFractale();
-			} catch (IOException e) {
-				System.out.println("Erreur lors d ouverture fichier:");
-				e.printStackTrace();
-				System.exit(1);
-			}
+			menu.choixFractale();
 		});
 		sauvegarder.setOnAction(actionEvent->{
 			if (TFfichier.getText().isEmpty()){
@@ -259,7 +254,7 @@ public class Vue {
 		valider.setOnAction(actionEvent->{
 			paneParametres.getChildren().remove(erreur);
 			fractale_pane.getChildren().remove(i);
-
+			//debut des tests pour verifier d'eventuelles erreurs au moment d'entrer les donnees
 			if(s.equals("Julia")) {
 				if (TFreel.getText().isEmpty() || TFimaginaire.getText().isEmpty()) {
 					erreur = new Label("Veuillez remplir tous les champs");
@@ -313,7 +308,7 @@ public class Vue {
 		});
 	}
 	
-	
+	//slider pour choisir la couleur
 	public int initSliderColor() {
 		Label labelColor = new Label("Choisir la couleur");
 	    sliderColor = new Slider();
@@ -368,7 +363,7 @@ public class Vue {
 		}	
 	}
 
-	
+	//fonction qui lit un fichier et qui affecte aux attributs de la fractale les valeurs correspondantes 
 	public void FInstanceTxt(String s) {
 		new_scan("src/main/sauvegardes/"+s);
 		while (scan.hasNextLine()) {
@@ -417,6 +412,7 @@ public class Vue {
 		}
 	}
 	
+	//fonction qui remplit les TextField par les attributs de la fractale
 	public void ConvertPredef() {
 		pane_parametres(type);
 		if (type.equals("Julia")){
@@ -433,6 +429,7 @@ public class Vue {
 		TFfichier.setText(name);
 	}
 	
+	//affichage de la fractale
 	public void generateFractale(BufferedImage img) {
 		Image image = SwingFXUtils.toFXImage(img, null);
 		i = new ImageView(image);
@@ -443,6 +440,7 @@ public class Vue {
 		fractale_pane.getChildren().add(i);
 	}
 	
+	//boutons zoom
 	public void buttons_zoom() {
 		Button zoom = new Button("+");
 		Button dezoom = new Button("-");
@@ -461,6 +459,7 @@ public class Vue {
 		paneParametres.getChildren().addAll(buttons_zoom);
 	}
 	
+	//boutons de deplacement
 	public void buttons_translate() {
 		Button moveR = new Button(">");
 		moveR.setOnAction(actionEvent->{

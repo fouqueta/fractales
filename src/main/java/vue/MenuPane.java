@@ -67,6 +67,7 @@ public class MenuPane {
 		this.controleur=controleur;
 	}
 	
+	//initialisation du pane de l'accueil
 	public void initialisation_pane_accueil() {
 		paneMenu = new AnchorPane();
 		paneMenu.setPrefSize(tailleEcran.width, tailleEcran.height);
@@ -81,6 +82,7 @@ public class MenuPane {
 		vue.getStage().setScene(menu_scene);
 	}
 	
+	//boutons du menu
 	public void boutons_menu() {
 		HBoxBouton= new HBox(15);
 		double paneMenu_x = paneMenu.getPrefWidth();
@@ -93,22 +95,15 @@ public class MenuPane {
 		paneMenu.getChildren().add(HBoxBouton);
 		
 		generer_frct.setOnAction(actionEvent->{
-			try {
 				choixFractale();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 		});
 		visualisation_frct.setOnAction(actionEvent->{
-			try {
 				fractale_sauvegarde();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 		});
 	}
 	
-	public void choixFractale() throws IOException {
+	//pane pour choisir le type de fractale a generer
+	public void choixFractale()  {
 		paneChoixFractale = new AnchorPane();
 		paneChoixFractale.setPrefSize(tailleEcran.width, tailleEcran.height);
 		paneChoixFractale.setStyle("-fx-background-color: #E8EAEA");
@@ -116,7 +111,13 @@ public class MenuPane {
 		titre.setFont(new Font("Arial", 20));
 		titre.setLayoutX(tailleEcran.width*0.43);
 		titre.setLayoutY(tailleEcran.height*0.2);
-		imageFractale();
+		try {
+			imageFractale();
+		} catch (IOException e) {
+			System.out.println("Erreur lors d ouverture fichier:");
+    		e.printStackTrace();
+    		System.exit(1);
+		}
 		boutonChoix();
 		paneChoixFractale.getChildren().add(titre);
 		choix_scene = new Scene(paneChoixFractale);
@@ -191,7 +192,8 @@ public class MenuPane {
 		});
 	}	
 	
-	public void fractale_sauvegarde() throws IOException{
+	//pane pour visualiser les fractales deja generes
+	public void fractale_sauvegarde(){
 		paneChoixSauvegardes = new AnchorPane();
 		paneChoixSauvegardes.setPrefSize(tailleEcran.width, tailleEcran.height);
 		paneChoixSauvegardes.setStyle("-fx-background-color: #E8EAEA");
@@ -202,10 +204,17 @@ public class MenuPane {
 		paneChoixSauvegardes.getChildren().add(titre);
 		sauvegardes_scene = new Scene(paneChoixSauvegardes);
 		paneChoixSauvegardes.getChildren().add(boutonRetour());
-		affichage_sauvegarde();
+		try {
+			affichage_sauvegarde();
+		} catch (FileNotFoundException e) {
+			System.out.println("Erreur lors d ouverture fichier:");
+    		e.printStackTrace();
+    		System.exit(1);
+		}
 		vue.getStage().setScene(sauvegardes_scene);
 	}
 	
+	//affichage des fractales et des boutons permettant de les generer
 	public void affichage_sauvegarde() throws FileNotFoundException {
 		gridFractales = new GridPane();
 		gridFractales.setHgap(20);
@@ -267,17 +276,4 @@ public class MenuPane {
 		});
         return p;
 	}
-	
-	//FONCTIONS AUXILIAIRES
-	public void new_scan(String fichier) {
-    	try {
-    		scan = new Scanner(new File(fichier), "UTF-8");
-    	}
-    	catch(Exception e) {
-    		System.out.println("Erreur lors d ouverture fichier:");
-    		e.printStackTrace();
-    		System.exit(1);
-    	}
-    }
-
 }

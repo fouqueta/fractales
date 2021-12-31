@@ -26,4 +26,3 @@ run{
     standardInput = System.in
 }
 
-//pour affichage terminal, mettre gradlew --console plain run
