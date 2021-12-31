@@ -21,15 +21,14 @@ public class Main extends Application{
 	
 	@Override
 	public void start(Stage primaryStage) {
-
 		Controleur controleur = new Controleur();
-
 		vue = new Vue(controleur);
 		controleur.setVue(vue);
 	}
 	
 	
 	public static void main(String[] args) throws ParseException {
+		//Valeurs par defaut
 		double borneInfX = -1.;
     	double borneSupX = 1.;
 		double borneInfY = -1.;
@@ -40,7 +39,7 @@ public class Main extends Application{
         final Options premOptions = configPremParametres();
         final Options options = configParametres(premOptions);
 
-        //On parse l'aide
+        //On parse l'aide et le mode
         final CommandLineParser parser = new DefaultParser();
         final CommandLine firstLine = parser.parse(premOptions, args, true);
 
@@ -194,7 +193,7 @@ public class Main extends Application{
 	    return firstOptions;
 	}
 	
-	//Creation des options
+	//Creation des autres options
 	private static Options configParametres(final Options premOptions) {		 
 	    final Option typeOption = Option.builder("t") 
 	            .longOpt("type") 
