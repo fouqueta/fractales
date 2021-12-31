@@ -374,7 +374,7 @@ public class Vue {
 	}
 
 	
-	public void FInstanceTxt(String s) {
+	public void FInstanceTxt(String s) throws IOException {
 		new_scan("src/main/sauvegardes/"+s);
 		while (scan.hasNextLine()) {
 			String caract = scan.nextLine();
@@ -517,11 +517,11 @@ public class Vue {
         }
     }
 	
-	public void new_scan(String fichier) {
+	public void new_scan(String fichier){
     	try {
     		scan = new Scanner(new File(fichier), "UTF-8");
     	}
-    	catch(Exception e) {
+    	catch(IOException e) {
     		System.out.println("Erreur lors d ouverture fichier:");
     		e.printStackTrace();
     		System.exit(1);

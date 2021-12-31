@@ -110,7 +110,7 @@ public class MenuPane {
 		});
 	}
 	
-	public void choixFractale() throws IOException {
+	public void choixFractale() throws FileNotFoundException {
 		paneChoixFractale = new AnchorPane();
 		paneChoixFractale.setPrefSize(tailleEcran.width, tailleEcran.height);
 		paneChoixFractale.setStyle("-fx-background-color: #E8EAEA");
@@ -125,39 +125,45 @@ public class MenuPane {
 		vue.getStage().setScene(choix_scene);
 	}
 	
-	public void imageFractale() throws IOException{
-		Image imageJulia = new Image(new FileInputStream("src/main/ressources/julia.jpg"));
-	    ImageView imageView1 = new ImageView();
-	    imageView1.setImage(imageJulia);
-	    imageView1.setX(tailleEcran.width*0.02);
-	    imageView1.setY(tailleEcran.height*0.30);
-	    imageView1.setFitWidth(320);
-      	imageView1.setPreserveRatio(true);
-      	paneChoixFractale.getChildren().add(imageView1);
-      	Image imageMandelbrot = new Image(new FileInputStream("src/main/ressources/mandelbrot.png"));
-	    ImageView imageView2 = new ImageView();
-	    imageView2.setImage(imageMandelbrot);
-	    imageView2.setX(tailleEcran.width*0.24);
-	    imageView2.setY(tailleEcran.height*0.30);
-	    imageView2.setFitWidth(338);
-      	imageView2.setPreserveRatio(true);
-      	paneChoixFractale.getChildren().add(imageView2);
-      	Image imageTricorn = new Image(new FileInputStream("src/main/ressources/tricorn.png"));
-	    ImageView imageView3 = new ImageView();
-	    imageView3.setImage(imageTricorn);
-	    imageView3.setX(tailleEcran.width*0.47);
-	    imageView3.setY(tailleEcran.height*0.30);
-	    imageView3.setFitWidth(359);
-	    imageView3.setPreserveRatio(true);
-      	paneChoixFractale.getChildren().add(imageView3);
-      	Image imageBurningShip = new Image(new FileInputStream("src/main/ressources/burningship.png"));
-	    ImageView imageView4 = new ImageView();
-	    imageView4.setImage(imageBurningShip);
-	    imageView4.setX(tailleEcran.width*0.71);
-	    imageView4.setY(tailleEcran.height*0.30);
-	    imageView4.setFitWidth(425);
-	    imageView4.setPreserveRatio(true);
-      	paneChoixFractale.getChildren().add(imageView4);
+	public void imageFractale() {
+		try {
+			Image imageJulia = new Image(new FileInputStream("src/main/ressources/julia.jpg"));
+		    ImageView imageView1 = new ImageView();
+		    imageView1.setImage(imageJulia);
+		    imageView1.setX(tailleEcran.width*0.02);
+		    imageView1.setY(tailleEcran.height*0.30);
+		    imageView1.setFitWidth(320);
+	      	imageView1.setPreserveRatio(true);
+	      	paneChoixFractale.getChildren().add(imageView1);
+	      	Image imageMandelbrot = new Image(new FileInputStream("src/main/ressources/mandelbrot.png"));
+		    ImageView imageView2 = new ImageView();
+		    imageView2.setImage(imageMandelbrot);
+		    imageView2.setX(tailleEcran.width*0.24);
+		    imageView2.setY(tailleEcran.height*0.30);
+		    imageView2.setFitWidth(338);
+	      	imageView2.setPreserveRatio(true);
+	      	paneChoixFractale.getChildren().add(imageView2);
+	      	Image imageTricorn = new Image(new FileInputStream("src/main/ressources/tricorn.png"));
+		    ImageView imageView3 = new ImageView();
+		    imageView3.setImage(imageTricorn);
+		    imageView3.setX(tailleEcran.width*0.47);
+		    imageView3.setY(tailleEcran.height*0.30);
+		    imageView3.setFitWidth(359);
+		    imageView3.setPreserveRatio(true);
+	      	paneChoixFractale.getChildren().add(imageView3);
+	      	Image imageBurningShip = new Image(new FileInputStream("src/main/ressources/burningship.png"));
+		    ImageView imageView4 = new ImageView();
+		    imageView4.setImage(imageBurningShip);
+		    imageView4.setX(tailleEcran.width*0.71);
+		    imageView4.setY(tailleEcran.height*0.30);
+		    imageView4.setFitWidth(425);
+		    imageView4.setPreserveRatio(true);
+	      	paneChoixFractale.getChildren().add(imageView4);
+		}catch (FileNotFoundException e) {
+			System.out.println("Fichier introuvable");
+			e.printStackTrace();
+    		System.exit(1);
+		}
 	}
 	
 	public void boutonChoix(){
@@ -193,7 +199,7 @@ public class MenuPane {
 		});
 	}	
 	
-	public void fractale_sauvegarde() throws IOException{
+	public void fractale_sauvegarde() throws FileNotFoundException{
 		paneChoixSauvegardes = new AnchorPane();
 		paneChoixSauvegardes.setPrefSize(tailleEcran.width, tailleEcran.height);
 		paneChoixSauvegardes.setStyle("-fx-background-color: #E8EAEA");
@@ -208,54 +214,59 @@ public class MenuPane {
 		vue.getStage().setScene(sauvegardes_scene);
 	}
 	
-	public void affichage_sauvegarde() throws FileNotFoundException {
-		gridFractales = new GridPane();
-		gridFractales.setHgap(20);
-		gridFractales.setVgap(60);
-		gridFractales.setMaxWidth(tailleEcran.width);
-		gridFractales.setMaxHeight(tailleEcran.height);
-		
-		ScrollPane scrollPane = new ScrollPane();
-		scrollPane.setHbarPolicy(ScrollBarPolicy.ALWAYS);
-		scrollPane.setContent(gridFractales);
-		scrollPane.setPrefSize(tailleEcran.width*0.9, tailleEcran.height*0.7);
-		scrollPane.setLayoutX(tailleEcran.width*5/100);
-		scrollPane.setLayoutY(tailleEcran.height*12/100);
-		scrollPane.setStyle("-fx-background-color: white");
-		
-		paneChoixSauvegardes.getChildren().add(scrollPane);
-
-		File path = new File("src/main/sauvegardes");
-		File [] files = path.listFiles();
-		int x=1;
-		int y=2;
-		for (int i = 0; i < files.length; i++){
-	        if (files[i].isFile()){
-	        	int k=files[i].getName().lastIndexOf('.');
-	        	if (k>0) {
-	        		if((files[i].getName().substring(k+1)).equals("png")) {
-			            imagePredef = new Image(new FileInputStream(files[i]));
-					    imageView = new ImageView();
-					    imageView.setImage(imagePredef);
-					    imageView.setX(tailleEcran.width*0.52);
-					    imageView.setY(tailleEcran.width*0.15);
-					    imageView.setFitWidth(300);
-				      	imageView.setPreserveRatio(true);
-				      	gridFractales.add(imageView, x,y);
-				      	
-				      	nbFractale = new Button(files[i].getName());
-				      	gridFractales.add(nbFractale, x,y+1);  
-	        		}
-				      if((files[i].getName().substring(k+1)).equals("txt")) { 
-				    	  String s = files[i].getName();
-				      	nbFractale.setOnAction(actionEvent->{
-				      		vue.initialisation_HBox_principale();
-				      		vue.FInstanceTxt(s);
-				      		});
-				      	x++;	
-				      }
-	        	}
-	        }
+	public void affichage_sauvegarde(){
+		try { 
+			gridFractales = new GridPane();
+			gridFractales.setHgap(20);
+			gridFractales.setVgap(60);
+			gridFractales.setMaxWidth(tailleEcran.width);
+			gridFractales.setMaxHeight(tailleEcran.height);
+			
+			ScrollPane scrollPane = new ScrollPane();
+			scrollPane.setHbarPolicy(ScrollBarPolicy.ALWAYS);
+			scrollPane.setContent(gridFractales);
+			scrollPane.setPrefSize(tailleEcran.width*0.9, tailleEcran.height*0.7);
+			scrollPane.setLayoutX(tailleEcran.width*5/100);
+			scrollPane.setLayoutY(tailleEcran.height*12/100);
+			scrollPane.setStyle("-fx-background-color: white");
+			paneChoixSauvegardes.getChildren().add(scrollPane);
+	
+			File path = new File("src/main/sauvegardes");
+			File [] files = path.listFiles();
+			int x=1;
+			int y=2;
+			for (int i = 0; i < files.length; i++){
+		        if (files[i].isFile()){
+		        	int k=files[i].getName().lastIndexOf('.');
+		        	if (k>0) {
+		        		if((files[i].getName().substring(k+1)).equals("png")) {
+				            imagePredef = new Image(new FileInputStream(files[i]));
+						    imageView = new ImageView();
+						    imageView.setImage(imagePredef);
+						    imageView.setX(tailleEcran.width*0.52);
+						    imageView.setY(tailleEcran.width*0.15);
+						    imageView.setFitWidth(300);
+					      	imageView.setPreserveRatio(true);
+					      	gridFractales.add(imageView, x,y);
+					      	
+					      	nbFractale = new Button(files[i].getName());
+					      	gridFractales.add(nbFractale, x,y+1);  
+		        		}
+					      if((files[i].getName().substring(k+1)).equals("txt")) { 
+					    	  String s = files[i].getName();
+					      	nbFractale.setOnAction(actionEvent->{
+					      		vue.initialisation_HBox_principale();
+					      		vue.FInstanceTxt(s);
+					      		});
+					      	x++;	
+					      }
+		        	}
+		        }
+			}
+		}catch (FileNotFoundException e) {
+			System.out.println("Fichier introuvable");
+			e.printStackTrace();
+    		System.exit(1);
 		}
 	}
 
