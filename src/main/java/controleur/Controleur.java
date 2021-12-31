@@ -99,7 +99,6 @@ public class Controleur {
 	}
 	
 	public BufferedImage generateMandelbrotBis(String type, double borneInfX, double borneSupX, double borneInfY, double borneSupY, double pas, int MAX_ITER, int couleur, String name, double zoom, int translateX, int translateY) {
-		System.out.println("oui");
 		fractale = FractaleBuilder.newFractaleBuilder()
 				.type(type)
 				.borneInfX(borneInfX)
@@ -147,7 +146,6 @@ public class Controleur {
 	}
 	
 	public BufferedImage generateTricornBis(String type, double borneInfX, double borneSupX, double borneInfY, double borneSupY, double pas, int MAX_ITER, int couleur, String name, double zoom, int translateX, int translateY) {
-		System.out.println("oui");
 		fractale = FractaleBuilder.newFractaleBuilder()
 				.type(type)
 				.borneInfX(borneInfX)

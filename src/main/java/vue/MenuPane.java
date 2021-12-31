@@ -236,7 +236,7 @@ public class MenuPane {
 				    	  String s = files[i].getName();
 				      	nbFractale.setOnAction(actionEvent->{
 				      		vue.initialisation_HBox_principale();
-				      		vue.FJuliaTxt(s);
+				      		vue.FInstanceTxt(s);
 				      		});
 				      	x++;	
 				      }

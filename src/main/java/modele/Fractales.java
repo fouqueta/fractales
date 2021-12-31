@@ -151,7 +151,7 @@ public class Fractales {
 		
 	
 	public BufferedImage generateFractal() {
-		System.out.println(borneInfX+" "+borneSupX+" "+borneInfY+" "+borneSupY+" "+pas+" "+MAX_ITER+" "+couleur+" "+name+" "+zoom+" "+translateX+" "+translateY+" " );
+		//System.out.println(borneInfX+" "+borneSupX+" "+borneInfY+" "+borneSupY+" "+pas+" "+MAX_ITER+" "+couleur+" "+name+" "+zoom+" "+translateX+" "+translateY+" " );
 		long start=System.currentTimeMillis();
 		stream(0,width,0,height, couleur);
 	    long end=System.currentTimeMillis();
