@@ -1,8 +1,6 @@
 package modele;
 
 import java.awt.Color;
-import java.awt.image.BufferedImage;
-
 
 public class Julia extends Fractales {
 	private final Complexe c;

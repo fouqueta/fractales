@@ -3,7 +3,6 @@ package vue;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.File;
-import java.io.IOException;
 import java.util.Scanner;
 import java.awt.image.BufferedImage;
 
