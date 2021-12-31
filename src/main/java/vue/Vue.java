@@ -8,7 +8,6 @@ import java.util.Scanner;
 import java.awt.image.BufferedImage;
 
 import controleur.*;
-import modele.*;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -80,7 +79,6 @@ public class Vue {
 	
 	private Controleur controleur;
 	private MenuPane menu;
-	private Fractales fractale;
 	private Scene fractale_scene;
 	
 	
@@ -217,7 +215,6 @@ public class Vue {
 	    buttons_zoom();
 	    buttons_translate();
 	    initSliderColor();
-		//root.getChildren().add(paneParametres);
 	}
 	
 	
@@ -242,11 +239,9 @@ public class Vue {
 		paneParametres.getChildren().addAll(HBoxBouton1,HBoxBouton2);
 		
 		retourMenu.setOnAction(actionEvent->{
-			//	root.getChildren().remove(paneParametres);
 				menu.initialisation_pane_accueil();
 		});
 		choixFractale.setOnAction(actionEvent->{
-			//root.getChildren().remove(paneParametres);
 			try {
 				menu.choixFractale();
 			} catch (IOException e) {
@@ -257,6 +252,7 @@ public class Vue {
 		});
 		sauvegarder.setOnAction(actionEvent->{
 			if (TFfichier.getText().isEmpty()){
+				paneParametres.getChildren().remove(erreur);
 				erreur = new Label("Veuillez remplir tous les champs");
 				set_erreur();
 			}else {
@@ -266,6 +262,7 @@ public class Vue {
 		valider.setOnAction(actionEvent->{
 			paneParametres.getChildren().remove(erreur);
 			fractale_pane.getChildren().remove(i);
+
 			//restoreSliderColor();
 			if(s.equals("Julia")) {
 				if (TFreel.getText().isEmpty() || TFimaginaire.getText().isEmpty()) {
@@ -276,14 +273,15 @@ public class Vue {
 					set_erreur();
 				}
 			}
-			if (TFpas.getText().isEmpty() || TFite.getText().isEmpty() || TFinfX.getText().isEmpty() || TFsupX.getText().isEmpty() || TFinfY.getText().isEmpty() || TFsupY.getText().isEmpty()) { 
+			if (TFpas.getText().isEmpty() || TFite.getText().isEmpty() || TFinfX.getText().isEmpty() || TFsupX.getText().isEmpty() ||
+					TFinfY.getText().isEmpty() || TFsupY.getText().isEmpty() || TFfichier.getText().isEmpty()) { 
 				erreur = new Label("Veuillez remplir tous les champs");
 				set_erreur();
 			}else if (!isDouble(TFpas.getText())) {
 				erreur = new Label("Veuillez entrer un pas de type double");
 				set_erreur();
 			}else if (!isInt(TFite.getText())){
-				erreur = new Label("Veuillez entrer un iterateur de type int");
+				erreur = new Label("Veuillez entrer un nombre max d'iterations de type int");
 				set_erreur();
 			}else if (!(isDouble(TFinfX.getText()) && isDouble(TFsupX.getText()) && isDouble(TFinfY.getText()) && isDouble(TFsupY.getText()))){
 				erreur = new Label("Veuillez entrer une abscisse et une ordonnee de type double");
@@ -350,7 +348,7 @@ public class Vue {
 	    });
 	    return couleur;
 	}
-	
+
 	
 	//Instanciation des arguments pour creer la fractale
 	public void FInstance(String s) {

@@ -88,7 +88,7 @@ public class MenuPane {
 		double paneMenu_x = paneMenu.getPrefWidth();
 		double paneMenu_y = paneMenu.getPrefHeight();
 		generer_frct = new Button("Generer une fractale");
-		visualisation_frct = new Button("Visualiser nos fractales");
+		visualisation_frct = new Button("Visualiser mes fractales");
 		HBoxBouton.getChildren().addAll(generer_frct,visualisation_frct);
 		HBoxBouton.setLayoutX((paneMenu_x*43)/100);
 		HBoxBouton.setLayoutY((paneMenu_y*50)/100);

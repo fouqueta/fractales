@@ -15,26 +15,39 @@ import javax.imageio.ImageIO;
 
 public class Fractales {
 
-	protected String type;
-	protected int width;
-	protected int height;
-	protected double borneInfX;
-	protected double borneSupX;
-	protected double borneInfY;
-	protected double borneSupY;
+	protected final String type;
+	protected final String name;
+	protected final int width;
+	protected final int height;
+	protected final double borneInfX;
+	protected final double borneSupX;
+	protected final double borneInfY;
+	protected final double borneSupY;
+	protected final double pas;
+	protected final int couleur;
+	protected final int MAX_ITER;
 	protected double zoom;
 	protected int translateX;
 	protected int translateY;
-	protected double pas;
-	protected int couleur;
-	protected String name;
-	protected int MAX_ITER;
 	protected FonctionFractale f;
 	protected BufferedImage img;
 	
 	
 	
-	public Fractales() {}
+	public Fractales() {
+		this.type = "";
+		this.name = "";
+		this.width = 0;
+		this.height = 0;
+		this.borneInfX = 0;
+		this.borneSupX = 0;
+		this.borneInfY = 0;
+		this.borneSupY = 0;
+		this.pas = 0;
+		this.couleur = 0;
+		this.MAX_ITER = 0;
+	}
+	
 	
 	public static class FractaleBuilder{
 		private String type;
@@ -149,15 +162,7 @@ public class Fractales {
 		this.couleur=f.couleur;
 	}
 		
-	
-	public BufferedImage generateFractal() {
-		//System.out.println(borneInfX+" "+borneSupX+" "+borneInfY+" "+borneSupY+" "+pas+" "+MAX_ITER+" "+couleur+" "+name+" "+zoom+" "+translateX+" "+translateY+" " );
-		long start=System.currentTimeMillis();
-		stream(0,width,0,height, couleur);
-	    long end=System.currentTimeMillis();
-	    System.out.println("Parallel stream took time : "+(end-start));
-	    return img;
-	}
+
 	
 	public void saveFractal() {
 		File fImg = new File("src/main/sauvegardes/" + name + ".png");
@@ -197,6 +202,16 @@ public class Fractales {
 		else if (this instanceof Mandelbrot) { return "Mandelbrot"; }
 		else if (this instanceof BurningShip) { return "BurningShip"; }
 		else { return "Tricorn"; }
+	}
+	
+	
+	public BufferedImage generateFractal() {
+		//System.out.println(borneInfX+" "+borneSupX+" "+borneInfY+" "+borneSupY+" "+pas+" "+MAX_ITER+" "+couleur+" "+name+" "+zoom+" "+translateX+" "+translateY+" " );
+		long start=System.currentTimeMillis();
+		stream(0,width,0,height, couleur);
+	    long end=System.currentTimeMillis();
+	    System.out.println("Parallel stream took time : "+(end-start));
+	    return img;
 	}
 	
 	
