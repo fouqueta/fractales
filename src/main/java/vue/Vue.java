@@ -259,7 +259,6 @@ public class Vue {
 		valider.setOnAction(actionEvent->{
 			paneParametres.getChildren().remove(erreur);
 			fractale_pane.getChildren().remove(i);
-			//restoreSliderColor();
 			if (TFpas.getText().isEmpty() || TFreel.getText().isEmpty() || TFimaginaire.getText().isEmpty() || TFite.getText().isEmpty() || 
 					TFinfX.getText().isEmpty() || TFsupX.getText().isEmpty() || TFinfY.getText().isEmpty() || TFinfY.getText().isEmpty()) { 
 				erreur = new Label("Veuillez remplir tous les champs");
@@ -339,17 +338,7 @@ public class Vue {
 	    });
 	    return couleur;
 	}
-	
-//	void FJulia() {
-//		double reel = Double.parseDouble(TFreel.getText());
-//		double imaginaire = Double.parseDouble(TFimaginaire.getText());
-//		double pas = Double.parseDouble(TFpas.getText());
-//		int iterateur = Integer.parseInt(TFite.getText());
-//		int largeur = Integer.parseInt(TFwidth.getText());
-//		int hauteur = Integer.parseInt(TFheight.getText());
-//		generateFractale(controleur.generateJulia(reel,imaginaire,pas,iterateur,largeur,hauteur,couleur));
-//	}
-	
+		
 	
 	public void FJulia() {
 		double reel = Double.parseDouble(TFreel.getText());
