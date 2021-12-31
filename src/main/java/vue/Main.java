@@ -97,9 +97,7 @@ public class Main extends Application{
 	        
 	        if (line.hasOption("bornesX")) {	        	    
 		        String borneInfXFromParam = line.getOptionValues("bornesX")[0]; //Par defaut, les bornes des abscisses seront [-1;1]
-		       System.out.println("borneX = " + borneInfXFromParam);
 		        String borneSupXFromParam =  line.getOptionValues("bornesX")[1];
-		        System.out.println("borneSupX = " + borneSupXFromParam);
 		        try {
 		        	borneInfX = Double.valueOf(borneInfXFromParam);
 		        	borneSupX = Double.valueOf(borneSupXFromParam);
