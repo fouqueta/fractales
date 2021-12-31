@@ -33,7 +33,6 @@ public class Fractales {
 	protected BufferedImage img;
 	
 	
-	
 	public Fractales() {
 		this.type = "";
 		this.name = "";
@@ -63,13 +62,10 @@ public class Fractales {
 		private int translateX = 0;
 		private int translateY = 0;
 		
-		private FractaleBuilder() {}
-		
 		public static FractaleBuilder newFractaleBuilder() {
 			return new FractaleBuilder();
 		}
 
-		
 		public FractaleBuilder type(String type) {
 			this.type=type;
 			return this;
@@ -145,25 +141,24 @@ public class Fractales {
 	
 	protected Fractales (FractaleBuilder f) {
 		this.type=f.type;
+		this.name = f.name;
 		this.borneInfX = f.borneInfX;
 		this.borneSupX = f.borneSupX;
 		this.borneInfY = f.borneInfY;
 		this.borneSupY = f.borneSupY;		
 		this.pas = f.pas;
-		this.width = (int) ((borneSupX - borneInfX) * 1/pas +1);
-		this.height = (int) ((borneSupY - borneInfY) * 1/pas +1);
 		this.MAX_ITER = f.MAX_ITER;
-		this.name = f.name;
-		
 		this.zoom = f.zoom;
 		this.translateX = f.translateX;
 		this.translateY = f.translateY;
-		this.img = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
 		this.couleur=f.couleur;
+		this.width = (int) ((borneSupX - borneInfX) * 1/pas +1);
+		this.height = (int) ((borneSupY - borneInfY) * 1/pas +1);
+		this.img = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);		
 	}
 		
-
 	
+	//Sauvegarde l'image de la fractale dans un .png et sa description dans un .txt
 	public void saveFractal() {
 		File fImg = new File("src/main/sauvegardes/" + name + ".png");
 		
@@ -176,7 +171,7 @@ public class Fractales {
 		lignes.add("borneSupY:" + borneSupY);
 		lignes.add("pas:" + pas);
 		lignes.add("MAX_ITER:" + MAX_ITER);
-		lignes.add("couleur:" + couleur); //jusqu'à couleur on utilise les builder, le reste faudra generer avec des setters/ OU TOUT EN BUILDER ?
+		lignes.add("couleur:" + couleur);
 		lignes.add("name:" + name);
 		lignes.add("width:" + width);
 		lignes.add("height:" + height);
@@ -205,8 +200,8 @@ public class Fractales {
 	}
 	
 	
+	//Fonction principale qui calcule la fractale et met a jour l'image
 	public BufferedImage generateFractal() {
-		//System.out.println(borneInfX+" "+borneSupX+" "+borneInfY+" "+borneSupY+" "+pas+" "+MAX_ITER+" "+couleur+" "+name+" "+zoom+" "+translateX+" "+translateY+" " );
 		long start=System.currentTimeMillis();
 		stream(0,width,0,height, couleur);
 	    long end=System.currentTimeMillis();
@@ -215,7 +210,7 @@ public class Fractales {
 	}
 	
 	
-	//Utilisation de parallel stream pour le calcul des fractales
+	//Utilisation de stream paralleles pour le calcul des fractales
 	public void stream(int startX, int endX, int startY, int endY, int couleur) {
 		double gapX = 1./zoom;
 		double gapY = 1./zoom;
@@ -226,10 +221,10 @@ public class Fractales {
                 .forEach(j -> iterStream(i,j, gapX, gapY, couleur)));
 	}
 	
-	//pour un point dans la plan, calcule son nombre nombre d'iterations et lui associe une couleur en fonction
+	//Pour un point dans la plan, calcule son nombre nombre d'iterations et lui associe une couleur en fonction de ce nombre
 	public void iterStream(int x, int y, double gapX, double gapY, int couleur) { }
 	
-	//Deplacement de la fractale en fonction de la direction dir
+	//Deplacement dans l'image de la fractale en fonction de la direction dir
 	public BufferedImage translate(char dir) {
 		//bornes pour le calcul de la nouvelle bande de pixels, modifiees en fonction de la direction
 		int startX = 0;
@@ -243,7 +238,7 @@ public class Fractales {
 			startX = (int) (width-width*0.1);
 			endX = width;
 			break;
-		case 'L' : //inversement
+		case 'L' : //inverse
 			translate_pixels_LtoR(width, (int) (width*0.1), height, 0, width*0.1, 0);
 			endX = (int) (width*0.1);
 			break;
@@ -251,7 +246,7 @@ public class Fractales {
 			translate_pixels_LtoR(width, 0, height, (int) (height*0.1), 0, height*0.1);
 			endY = (int) (height*0.1);
 			break;
-		case 'D' : //inversement
+		case 'D' : //inverse
 			translate_pixels_RtoL(0, width, 0, (int) (height-height*0.1), 0, height*0.1);
 			startY = (int) (height-height*0.1);
 			endY = height;
@@ -261,13 +256,14 @@ public class Fractales {
 		return img;
 	}
 	
+	//Pour un point courant, on regarde la couleur a la position (posCourante + pas) et on met a jour
 	public void translate_pixels_RtoL(int startX, int endX, int startY, int endY, double moveX, double moveY) {		
 		IntStream.range(startX, endX)
         .forEach(i -> IntStream.range(startY, endY)
                .forEach(j -> switch_colors(i,j, moveX, moveY)));
 	}
 	
-	
+	//Pour un point courant, on regarde la couleur a la position (posCourante - pas) et on met a jour
 	public void translate_pixels_LtoR(int startX, int endX, int startY, int endY, double moveX, double moveY) {		
 		for (int i = startX-1; i >= endX; i--) {
 			for (int j = startY-1; j >= endY; j--) {
@@ -276,21 +272,24 @@ public class Fractales {
 		}
 	}
 	
+	//Le pixel courant prend la couleur du pixel a la position voulue
 	public void switch_colors(int x, int y, double moveX, double moveY) {
 		int rgb = img.getRGB((int) (x+moveX), (int) (y+moveY));
 		img.setRGB(x, y, rgb);
 	}
 	
-	
+	//incremente le zoom
 	public void zoom() {
 		this.zoom += 1;
 	}
 	
+	//decremente le zoom
 	public void dezoom() {
 		this.zoom -= 1;
 		if (this.zoom < 1) { this.zoom = 1; }
 	}
 	
+	//fonctions pour les attributs de position dans l'image
 	public void translateX(boolean sign) {
 		if (sign) {  //Deplacement vers la droite
 			this.translateX += (int) (width*0.1);
@@ -309,18 +308,5 @@ public class Fractales {
 		}
 	}
 	
-	//GETTER
-	public String getMatrice() { return this.width+" x "+this.height; }
-
-
-
 	
-//	int divergenceIndex(Complexe z0) {
-//	int ite = 0; Complex zn = z0;
-//	// sortie de boucle si divergence
-//	while (ite < MAX_ITER-1 && |zn| <= RADIUS)
-//	zn = f(zn); ite++;
-//	return ite;
-//	}
-
 }
