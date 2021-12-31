@@ -366,7 +366,7 @@ public class Vue {
 		}else if (s.equals("Mandelbrot")) {
 			generateFractale(controleur.generateMandelbrot(pas,MAX_ITER,borneInfX,borneSupX,borneInfY,borneSupY,couleur,nom));
 		}else if (s.equals("Tricorn")) {
-			System.out.println("oui");
+			System.out.println("oui"); //TODO: enlever de sysout
 			generateFractale(controleur.generateTricorn(pas,MAX_ITER,borneInfX,borneSupX,borneInfY,borneSupY,couleur,nom));
 		}else if (s.equals("BurningShip")){
 			generateFractale(controleur.generateBurningShip(pas,MAX_ITER,borneInfX,borneSupX,borneInfY,borneSupY,couleur,nom));

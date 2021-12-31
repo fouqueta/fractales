@@ -12,9 +12,13 @@ import java.util.Scanner;
 import controleur.Controleur;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -23,6 +27,7 @@ import modele.Fractales;
 import modele.Fractales.FractaleBuilder;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
@@ -194,7 +199,7 @@ public class MenuPane {
 		paneChoixSauvegardes.setStyle("-fx-background-color: #E8EAEA");
 		Label titre = new Label("FRACTALES SAUVEGARDEES");
 		titre.setFont(new Font("Arial", 20));
-		titre.setLayoutX((tailleEcran.width*43)/100);
+		titre.setLayoutX((tailleEcran.width*42)/100);
 		titre.setLayoutY((tailleEcran.height*5)/100);
 		paneChoixSauvegardes.getChildren().add(titre);
 		sauvegardes_scene = new Scene(paneChoixSauvegardes);
@@ -210,6 +215,16 @@ public class MenuPane {
 		gridFractales.setMaxWidth(tailleEcran.width);
 		gridFractales.setMaxHeight(tailleEcran.height);
 		
+		ScrollPane scrollPane = new ScrollPane();
+		scrollPane.setHbarPolicy(ScrollBarPolicy.ALWAYS);
+		scrollPane.setContent(gridFractales);
+		scrollPane.setPrefSize(tailleEcran.width*0.9, tailleEcran.height*0.7);
+		scrollPane.setLayoutX(tailleEcran.width*5/100);
+		scrollPane.setLayoutY(tailleEcran.height*12/100);
+		scrollPane.setStyle("-fx-background-color: white");
+		
+		paneChoixSauvegardes.getChildren().add(scrollPane);
+
 		File path = new File("src/main/sauvegardes");
 		File [] files = path.listFiles();
 		int x=1;
@@ -227,7 +242,6 @@ public class MenuPane {
 					    imageView.setFitWidth(300);
 				      	imageView.setPreserveRatio(true);
 				      	gridFractales.add(imageView, x,y);
-				      	//nbFractale = new Button(Integer.toString(x));
 				      	
 				      	nbFractale = new Button(files[i].getName());
 				      	gridFractales.add(nbFractale, x,y+1);  
@@ -243,15 +257,11 @@ public class MenuPane {
 	        	}
 	        }
 		}
-		paneChoixSauvegardes.getChildren().add(gridFractales);
 	}
 
-	
-	
-	
 	public Pane boutonRetour() {
 		Pane p = new Pane();
-		p.relocate(tailleEcran.width*0.5, tailleEcran.height*0.8);
+		p.relocate(tailleEcran.width*0.5, tailleEcran.height*0.85);
         p.getChildren().add(retour);
         
         retour.setOnAction(actionEvent->{
