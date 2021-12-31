@@ -93,7 +93,7 @@ public class Controleur {
 		return fractale.generateFractal();
 	}
 	
-	//Fonction auxilliaire qui retourne un FractaleBuilder
+	//Fonction auxiliaire qui retourne un FractaleBuilder
 	public FractaleBuilder builder(double pas, int max_iter, double infX, double supX, double infY, double supY, int couleur, String name) {
 		return FractaleBuilder.newFractaleBuilder()
 				.borneInfX(infX)

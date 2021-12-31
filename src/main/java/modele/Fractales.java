@@ -210,7 +210,7 @@ public class Fractales {
 		long start=System.currentTimeMillis();
 		stream(0,width,0,height, couleur);
 	    long end=System.currentTimeMillis();
-	    System.out.println("Parallel stream took time : "+(end-start));
+	    System.out.println("Temps de calcul : "+(end-start));
 	    return img;
 	}
 	
@@ -236,7 +236,6 @@ public class Fractales {
 		int endX = width;
 		int startY = 0;
 		int endY = height;
-		int color = couleur;
 		
 		switch(dir) {
 		case 'R' : //on se deplace vers la droite, donc translation des points existants vers la gauche car nouveaux points a calculer a droite
@@ -258,7 +257,7 @@ public class Fractales {
 			endY = height;
 			break;
 		}
-		stream(startX, endX, startY, endY, color);
+		stream(startX, endX, startY, endY, couleur);
 		return img;
 	}
 	

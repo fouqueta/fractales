@@ -75,8 +75,8 @@ public class MenuPane {
 		paneMenu.setStyle("-fx-background-color: #E8EAEA");
 		Label titre = new Label("FRACTALES");
 		titre.setFont(new Font("Arial", 50));
-		titre.setLayoutX((tailleEcran.width*43)/100);
-		titre.setLayoutY((tailleEcran.height*20)/100);
+		titre.setLayoutX(tailleEcran.width*0.43);
+		titre.setLayoutY(tailleEcran.height*0.2);
 		paneMenu.getChildren().add(titre);
 		boutons_menu();
 		menu_scene = new Scene(paneMenu);
@@ -90,8 +90,8 @@ public class MenuPane {
 		generer_frct = new Button("Generer une fractale");
 		visualisation_frct = new Button("Visualiser mes fractales");
 		HBoxBouton.getChildren().addAll(generer_frct,visualisation_frct);
-		HBoxBouton.setLayoutX((paneMenu_x*43)/100);
-		HBoxBouton.setLayoutY((paneMenu_y*50)/100);
+		HBoxBouton.setLayoutX(paneMenu_x*0.43);
+		HBoxBouton.setLayoutY(paneMenu_y*0.5);
 		paneMenu.getChildren().add(HBoxBouton);
 		
 		generer_frct.setOnAction(actionEvent->{
@@ -199,8 +199,8 @@ public class MenuPane {
 		paneChoixSauvegardes.setStyle("-fx-background-color: #E8EAEA");
 		Label titre = new Label("FRACTALES SAUVEGARDEES");
 		titre.setFont(new Font("Arial", 20));
-		titre.setLayoutX((tailleEcran.width*42)/100);
-		titre.setLayoutY((tailleEcran.height*5)/100);
+		titre.setLayoutX(tailleEcran.width*0.42);
+		titre.setLayoutY(tailleEcran.height*0.05);
 		paneChoixSauvegardes.getChildren().add(titre);
 		sauvegardes_scene = new Scene(paneChoixSauvegardes);
 		paneChoixSauvegardes.getChildren().add(boutonRetour());
@@ -219,8 +219,8 @@ public class MenuPane {
 		scrollPane.setHbarPolicy(ScrollBarPolicy.ALWAYS);
 		scrollPane.setContent(gridFractales);
 		scrollPane.setPrefSize(tailleEcran.width*0.9, tailleEcran.height*0.7);
-		scrollPane.setLayoutX(tailleEcran.width*5/100);
-		scrollPane.setLayoutY(tailleEcran.height*12/100);
+		scrollPane.setLayoutX(tailleEcran.width*0.05);
+		scrollPane.setLayoutY(tailleEcran.height*0.12);
 		scrollPane.setStyle("-fx-background-color: white");
 		
 		paneChoixSauvegardes.getChildren().add(scrollPane);
